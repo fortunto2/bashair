@@ -15,20 +15,20 @@ services:
 #      - rabbit
     ports:
       - "80:8000"
-  command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
-
-  db:
-    image: mongo:4.4
-    env_file:
-      - .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-    volumes:
-      - .docker/mongo:/data/db
-    ports:
-      - "27017:27017"
+#
+#  db:
+#    image: mongo:4.4
+#    env_file:
+#      - .env
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+#    volumes:
+#      - .docker/mongo:/data/db
+#    ports:
+#      - "27017:27017"
 
   influxdb:
     image: influxdb:2.0
@@ -41,6 +41,6 @@ services:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
       - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
-      - DOCKER_INFLUXDB_INIT_ORG=zenpulsar
-      - DOCKER_INFLUXDB_INIT_BUCKET=trends
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_V2_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=air
 

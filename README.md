@@ -2,7 +2,7 @@
 Air Monitoring for Bashkiria
 
 
-## Example
+## Inspired
 
 * https://github.com/stefanthoss/air-quality-influxdb-bridge
-
+* https://github.com/leoncvlt/loconotion

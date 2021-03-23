@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
 
     TIMEZONE: str = "Europe/Moscow"
+    MEASUREMENT_NAME: str = "bashair"
 
     INFLUXDB_USERNAME: str
     INFLUXDB_PASSWORD: str
