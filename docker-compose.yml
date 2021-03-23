@@ -1,0 +1,46 @@
+version: "3.3"
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./compose/fastapi/Dockerfile
+    image: backend_fastapi
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+#    depends_on:
+#      - db
+#      - rabbit
+    ports:
+      - "80:8000"
+  command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+
+  db:
+    image: mongo:4.4
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - .docker/mongo:/data/db
+    ports:
+      - "27017:27017"
+
+  influxdb:
+    image: influxdb:2.0
+    ports:
+      - '8086:8086'
+    volumes:
+      - .docker/influxdb/data:/var/lib/influxdb2
+      - .docker/influxdb/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=zenpulsar
+      - DOCKER_INFLUXDB_INIT_BUCKET=trends
+
