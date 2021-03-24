@@ -48,7 +48,7 @@ async def upload_measurement(data: SensorData):
 
     write_api.write(bucket=settings.MEASUREMENT_NAME, record=p)
 
-    return data
+    return sensor_measurement.dict()
 
 
 @app.post('/notify')
