@@ -1,0 +1,21 @@
+{
+  "_check_id": "074564c2b875a000",
+  "_check_name": "PM2.5 warning",
+  "_level": "crit",
+  "_measurement": "notifications",
+  "_message": "Check: PM2.5 warning is: crit",
+  "_notification_endpoint_id": "07456722ce067000",
+  "_notification_endpoint_name": "Api warning",
+  "_notification_rule_id": "0745674eb17da000",
+  "_notification_rule_name": "All Crit warning",
+  "_source_measurement": "air",
+  "_source_timestamp": 1616613240000000000,
+  "_start": "2021-03-24T19:13:55Z",
+  "_status_timestamp": 1616613240000000000,
+  "_stop": "2021-03-24T19:14:05Z",
+  "_time": "2021-03-24T19:14:05Z",
+  "_type": "threshold",
+  "_version": 1,
+  "node": "esp8266-6504878",
+  "pm25": 10.2
+}

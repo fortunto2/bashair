@@ -1,92 +1,13 @@
-import secrets
-from datetime import datetime, time
-from typing import Dict, Optional, List, Union
-
-from fastapi import FastAPI, Request, Form, Depends, HTTPException, Body
-from fastapi.responses import HTMLResponse, RedirectResponse, Response
-from fastapi import status
-import aqi
+from fastapi import FastAPI, Body
 from influxdb_client import Point
-from influxdb_client.client.write_api import ASYNCHRONOUS, SYNCHRONOUS
-from pydantic import BaseModel
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 from config import settings
 from db.influx import client
-from db.mongo_async import engine
+from db.schemas.influx_warning import InfluxWarning
+from db.schemas.sensor_measurement import SensorMeasurement, SensorData
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-
-AQI_CATEGORIES = {
-    (-1, 50): "Good",
-    (50, 100): "Moderate",
-    (100, 150): "Unhealthy for Sensitive Groups",
-    (150, 200): "Unhealthy",
-    (200, 300): "Very Unhealthy",
-    (300, 500): "Hazardous",
-}
-
-
-def get_aqi_category(aqi_value):
-    for limits, category in AQI_CATEGORIES.items():
-        if aqi_value > limits[0] and aqi_value <= limits[1]:
-            return category
-
-
-class SensorMeasurement(BaseModel):
-    """
-    Final data to save
-    """
-    pm25: float
-    pm10: float
-    temperature: float
-    pressure: float
-    humidity: float
-    aqi: Optional[float]
-    aqi_category: Optional[str]
-
-    samples: int
-    min_micro: int
-    max_micro: int
-    signal: float
-
-    @property
-    def get_aqi_value(self):
-        if self.pm25 and self.pm10:
-            self.aqi = float(
-                aqi.to_aqi([(aqi.POLLUTANT_PM10, self.pm10), (aqi.POLLUTANT_PM25, self.pm25)])
-            )
-            return self.aqi
-
-    @property
-    def get_aqi_category(self):
-        self.aqi_category = get_aqi_category(self.get_aqi_value)
-        return self.aqi_category
-
-
-class SensorDataValues(BaseModel):
-    value_type: str
-    value: Union[float, int]
-
-
-class SensorData(BaseModel):
-    """
-    Measurement from air sensor to store in DB
-    """
-    sensordatavalues: List[SensorDataValues]
-    software_version: str
-    esp8266id: Optional[str]
-    rpiid: Optional[str]
-
-    @property
-    def node_tag(self):
-        node_tag = "unknown"
-
-        if self.esp8266id:
-            node_tag = f"esp8266-{self.esp8266id}"
-        elif self.rpiid:
-            node_tag = f"rpi-{self.rpiid}"
-
-        return node_tag
 
 
 @app.post('/upload_measurement')
@@ -131,7 +52,7 @@ async def upload_measurement(data: SensorData):
 
 
 @app.post('/notify')
-async def influx_notify(payload: dict = Body(...)):
+async def influx_notify(payload: InfluxWarning):
     print(payload)
     return payload
 
@@ -143,7 +64,6 @@ async def test(payload: dict = Body(...)):
 
 
 if __name__ == "__main__":
-    import asyncio
     import uvicorn
 
     # loop = asyncio.get_event_loop()
