@@ -10,14 +10,14 @@ client = TestClient(app)
 with open('tests/data/warning.json') as json_file:
     data = json.load(json_file)
 
-r_data = {'aqi': None,
-          'aqi_category': None,
-          'humidity': None,
+r_data = {'check_id': '074564c2b875a000',
+          'check_name': 'PM2.5 warning',
+          'level': 'crit',
           'node': 'esp8266-6504878',
-          'pm10': None,
           'pm25': 10.2,
-          'pressure': None,
-          'temperature': None}
+          'start': '2021-03-24T19:13:55+00:00',
+          'stop': '2021-03-24T19:14:05+00:00',
+          'time': '2021-03-24T19:14:05+00:00'}
 
 
 def test_api_warning():
