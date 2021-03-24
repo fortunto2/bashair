@@ -23,3 +23,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 
 ```
+
+## Pydantic models
+
+* Telegram https://github.com/devtud/pygramtic/blob/master/pygramtic/models.py

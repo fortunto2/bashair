@@ -2,6 +2,7 @@ from fastapi import FastAPI, Body
 from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
+from bots.telega import bot
 from config import settings
 from db.influx import client
 from db.schemas.influx_warning import InfluxWarning
@@ -63,6 +64,16 @@ async def influx_notify(payload: dict = Body(...)):
 
     influx_warning = InfluxWarning(**new_payload)
     print(influx_warning.dict(skip_defaults=True))
+
+    txt=f"""
+Тревога: {influx_warning.check_name}!
+Уровень: {influx_warning.level}
+Показания: {influx_warning.pm25}
+Датчик: {influx_warning.node}
+Время: {influx_warning.stop}
+    """
+
+    await bot.send_message(chat_id=121250082, text=txt)
     return influx_warning.dict(skip_defaults=True)
 
 

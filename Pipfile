@@ -8,6 +8,7 @@ fastapi = "*"
 odmantic = "*"
 python-aqi = "*"
 uvicorn = "*"
+aiogram = "*"
 
 [dev-packages]
 pytest = "*"

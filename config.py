@@ -13,6 +13,7 @@ class Settings(BaseSettings):
 
     TIMEZONE: str = "Europe/Moscow"
     MEASUREMENT_NAME: str = "bashair"
+    TELEGRAM_TOKEN: Optional[str]
 
     INFLUXDB_USERNAME: str
     INFLUXDB_PASSWORD: str
@@ -21,15 +22,12 @@ class Settings(BaseSettings):
     INFLUXDB_V2_ORG: str = 'zenpulsar'
     INFLUXDB_V2_TOKEN: str = 'token'
 
-
     # INFLUXDB_V2_URL - the url to connect to InfluxDB
     # INFLUXDB_V2_ORG - default destination organization for writes and queries
     # INFLUXDB_V2_TOKEN - the token to use for the authorization
     # INFLUXDB_V2_TIMEOUT - socket timeout in ms (default value is 10000)
     # INFLUXDB_V2_VERIFY_SSL - set this to false to skip verifying SSL certificate when calling API from https server
     # INFLUXDB_V2_SSL_CA_CERT - set this to customize the certificate file to verify the peer
-
-
 
     MONGO_DB: str
     MONGO_USER: str
