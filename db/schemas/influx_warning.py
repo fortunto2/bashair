@@ -14,11 +14,11 @@ class InfluxWarning(BaseModel):
     aqi: Optional[float]
     aqi_category: Optional[str]
 
-    _check_id: str
-    _check_name: str
-    _level: str
-    _start: datetime
-    _stop: datetime
-    _time: datetime
+    check_id: str
+    check_name: str
+    level: str
+    start: datetime
+    stop: datetime
+    time: datetime
 
 

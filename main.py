@@ -52,9 +52,18 @@ async def upload_measurement(data: SensorData):
 
 
 @app.post('/notify')
-async def influx_notify(payload: InfluxWarning):
-    print(payload)
-    return payload
+async def influx_notify(payload: dict = Body(...)):
+
+    new_payload = {}
+    # remove kew with like '_start' to 'start'
+    for key, value in payload.items():
+        if key[0] == '_':
+            key = key[1:]
+        new_payload[key] = value
+
+    influx_warning = InfluxWarning(**new_payload)
+    print(influx_warning.dict(skip_defaults=True))
+    return influx_warning.dict(skip_defaults=True)
 
 
 @app.post('/test')
