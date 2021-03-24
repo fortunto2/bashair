@@ -4,7 +4,7 @@ services:
   fastapi:
     build:
       context: .
-      dockerfile: ./compose/fastapi/Dockerfile
+      dockerfile: Dockerfile
     image: backend_fastapi
     volumes:
       - .:/app
