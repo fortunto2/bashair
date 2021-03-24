@@ -130,6 +130,16 @@ async def upload_measurement(data: SensorData):
     return data
 
 
+@app.post('/notify')
+async def influx_notify(payload: dict = Body(...)):
+        return payload
+
+
+@app.post('/test')
+async def test(payload: dict = Body(...)):
+        return payload
+
+
 if __name__ == "__main__":
     import asyncio
     import uvicorn
