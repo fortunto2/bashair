@@ -91,7 +91,7 @@ class SensorData(BaseModel):
 
 @app.post('/upload_measurement')
 async def upload_measurement(data: SensorData):
-    print(data)
+    # print(data)
 
     data_points = {}
     for dp in data.sensordatavalues:
@@ -112,7 +112,7 @@ async def upload_measurement(data: SensorData):
     sensor_measurement.aqi = sensor_measurement.get_aqi_value
     sensor_measurement.aqi_category = sensor_measurement.get_aqi_category
 
-    print(sensor_measurement.dict())
+    # print(sensor_measurement.dict())
 
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
@@ -132,12 +132,14 @@ async def upload_measurement(data: SensorData):
 
 @app.post('/notify')
 async def influx_notify(payload: dict = Body(...)):
-        return payload
+    print(payload)
+    return payload
 
 
 @app.post('/test')
 async def test(payload: dict = Body(...)):
-        return payload
+    print(payload)
+    return payload
 
 
 if __name__ == "__main__":
