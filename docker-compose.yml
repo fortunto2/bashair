@@ -42,8 +42,8 @@ services:
   influxdb:
 #    https://theorangeone.net/posts/traefik-influx-metrics/:
     image: influxdb:2.0
-#    ports:
-#      - '8086:8086'
+    expose:
+      - '8086'
     volumes:
       - .docker/influxdb/data:/var/lib/influxdb2
       - .docker/influxdb/config:/etc/influxdb2
@@ -75,4 +75,13 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+
+  notion:
+    image: lifefilm/loconotion
+    volumes:
+      - ./dist:/app/loconotion/dist
+    restart: always
+    command: ${NOTION_START_PAGE}
+
 
