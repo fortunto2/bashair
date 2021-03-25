@@ -63,3 +63,7 @@ page = "https://www.notion.so/life2film/BashAir-3efc1277101e4259a12d51445fd6a95f
   [[site.inject.body.script]]
   type="text/javascript"
   src="/example/custom-script.js"
+
+[pages]
+  [pages.5e78c401a8d14fd599413c73bf609071]
+    slug = "alarm"
