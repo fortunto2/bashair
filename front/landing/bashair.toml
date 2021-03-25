@@ -67,3 +67,11 @@ page = "https://www.notion.so/life2film/BashAir-3efc1277101e4259a12d51445fd6a95f
 [pages]
   [pages.5e78c401a8d14fd599413c73bf609071]
     slug = "alarm"
+
+  [pages.aa7f300f85fa49c5b642c728bf01ee82]
+      slug = "pm25"
+
+  [pages.da7ac8190ac845b7a2dc3aa0859108f6]
+      slug = "sensors"
+
+
