@@ -68,12 +68,12 @@ async def influx_notify(payload: dict = Body(...)):
     txt=f"""
 Тревога: {influx_warning.check_name}!
 Уровень: {influx_warning.level}
-Показания: {influx_warning.pm25}
 Датчик: {influx_warning.node}
 Время: {influx_warning.stop}
-    """
+---
+   """
 
-    await bot.send_message(chat_id=121250082, text=txt)
+    bot.send_message(chat_id=121250082, text=txt)
     return influx_warning.dict(skip_defaults=True)
 
 

@@ -38,7 +38,7 @@ def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="ai
           |> range(start: {start})
           |> filter(fn: (r) => r["_measurement"] == "{measurement}")
           |> filter(fn: (r) => r["_field"] == "{field}")
-          |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
+          |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
           |> yield(name: "mean")
         """
     )

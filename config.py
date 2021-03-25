@@ -11,6 +11,9 @@ class MongoDsn(AnyUrl):
 class Settings(BaseSettings):
     DEBUG: bool = False
 
+    DOMAIN_API: str = "air.localhost"
+    DOMAIN_INFLUX: str = "panel.localhost"
+
     TIMEZONE: str = "Europe/Moscow"
     MEASUREMENT_NAME: str = "bashair"
     TELEGRAM_TOKEN: Optional[str]
