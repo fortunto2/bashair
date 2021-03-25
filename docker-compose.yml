@@ -18,7 +18,7 @@ services:
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.fastapi.rule=Host(`api.localhost`)"
+      - traefik.http.routers.fastapi.rule=Host(`${DOMAIN_API}`)
 
   telega:
     <<: *fastapi
@@ -58,7 +58,7 @@ services:
     labels:
       - "traefik.enable=true"
 #      - "traefik.http.routers.influxdb.entryPoints=port8086"
-      - "traefik.http.routers.influxdb.rule=Host(`panel.localhost`)"
+      - traefik.http.routers.influxdb.rule=Host(`${DOMAIN_INFLUX}`)
 
   traefik:
     image: "traefik:v2.4"
