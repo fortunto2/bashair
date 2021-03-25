@@ -13,12 +13,9 @@ services:
 #    depends_on:
 #      - db
 #      - rabbit
-    expose:
-      - "8000"
+    ports:
+      - "80:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
-    labels:
-      - "traefik.enable=true"
-      - traefik.http.routers.fastapi.rule=Host(`${DOMAIN_API}`)
 
   telega:
     <<: *fastapi
@@ -38,12 +35,10 @@ services:
 #    ports:
 #      - "27017:27017"
 
-
   influxdb:
-#    https://theorangeone.net/posts/traefik-influx-metrics/:
     image: influxdb:2.0
-    expose:
-      - '8086'
+    ports:
+      - '8086:8086'
     volumes:
       - .docker/influxdb/data:/var/lib/influxdb2
       - .docker/influxdb/config:/etc/influxdb2
@@ -53,12 +48,7 @@ services:
       - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
       - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_V2_ORG}
       - DOCKER_INFLUXDB_INIT_BUCKET=air
-      - INFLUXDB_UDP_ENABLED=true
-      - INFLUXDB_UDP_DATABASE=traefik
-    labels:
-      - "traefik.enable=true"
-#      - "traefik.http.routers.influxdb.entryPoints=port8086"
-      - traefik.http.routers.influxdb.rule=Host(`${DOMAIN_INFLUX}`)
+
 
   traefik:
     image: "traefik:v2.4"
