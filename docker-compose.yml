@@ -71,7 +71,8 @@ services:
     image: lifefilm/loconotion
     volumes:
       - ./dist:/app/loconotion/dist
+      - ./front/landing:/app/loconotion/front/landing
     restart: always
-    command: ${NOTION_START_PAGE}
+    command: front/landing/bashair.toml
 
 

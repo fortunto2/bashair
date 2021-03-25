@@ -15,7 +15,7 @@ generate: ## Билдим статичный сайт из Notion
 
 reg: ## Отсылаем на сервер Reg.ru (bashair.ru)
 # 	@scp -r dist/life2film/bashair/* reg:www/bashair.ru
-	@rsync -a --ignore-existing -e ssh --stats --progress dist/life2film/bashair/* reg:www/bashair.ru
+	@rsync -a --ignore-existing -e ssh --stats --progress dist/bashair/* reg:www/bashair.ru
 
 gcloud: ## Отсылаем на сервер gcloud life
 	@gsutil cp -r dist/* gs://bashair_ru
