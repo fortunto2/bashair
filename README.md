@@ -28,7 +28,7 @@ sudo chown 472:472 .docker/grafana
 
 add crontab -e
 ```shell
-* * * * * /usr/bin/rsync -a --ignore-existing -e ssh /home/rustam/bashair/dist/bashair/* reg:www/bashair.ru
+* * * * * /usr/bin/rsync -a -e ssh /home/rustam/bashair/dist/bashair/* reg:www/bashair.ru
 ```
 
 ## Pydantic models
