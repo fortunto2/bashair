@@ -14,7 +14,7 @@ services:
 #      - db
 #      - rabbit
     ports:
-      - "80:8000"
+      - "8000:8000"
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
   telega:
