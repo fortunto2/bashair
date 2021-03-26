@@ -75,4 +75,22 @@ services:
     restart: always
     command: front/landing/bashair.toml
 
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+#    user: "0"
+    links:
+      - influxdb
+    volumes:
+      # Data persistency
+      # sudo chown 472:472 .docker/grafana
+      - .docker/grafana:/var/lib/grafana
+      - ./compose/grafana/:/etc/grafana/provisioning
 

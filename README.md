@@ -22,6 +22,8 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 
 sudo apt-get install rsync
+
+sudo chown 472:472 .docker/grafana
 ```
 
 add crontab -e
