@@ -93,7 +93,7 @@ services:
       # sudo chown 472:472 .docker/grafana
       - .docker/grafana:/var/lib/grafana
       - ./compose/grafana/provisioning:/etc/grafana/provisioning
-      - /compose/grafana/config.ini:/etc/grafana/grafana.ini
+      - ./compose/grafana/config.ini:/etc/grafana/grafana.ini
 
 #volumes:
 #  grafana_provisioning:
