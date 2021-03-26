@@ -50,21 +50,21 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=air
 
 
-  traefik:
-    image: "traefik:v2.4"
-    container_name: "traefik"
-    command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--api.dashboard=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.fastapi.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#  traefik:
+#    image: "traefik:v2.4"
+#    container_name: "traefik"
+#    command:
+#      - "--log.level=DEBUG"
+#      - "--api.insecure=true"
+#      - "--providers.docker=true"
+#      - "--api.dashboard=true"
+#      - "--providers.docker.exposedbydefault=false"
+#      - "--entrypoints.fastapi.address=:80"
+#    ports:
+#      - "80:80"
+#      - "8080:8080"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
 
   notion:
@@ -85,12 +85,16 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
-#    user: "0"
+    user: "0"
     links:
       - influxdb
     volumes:
       # Data persistency
       # sudo chown 472:472 .docker/grafana
       - .docker/grafana:/var/lib/grafana
-      - ./compose/grafana/:/etc/grafana/provisioning
+      - ./compose/grafana/provisioning:/etc/grafana/provisioning
+      - /compose/grafana/config.ini:/etc/grafana/grafana.ini
+
+#volumes:
+#  grafana_provisioning:
 

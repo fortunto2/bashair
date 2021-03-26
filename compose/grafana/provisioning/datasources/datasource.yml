@@ -1,0 +1,14 @@
+apiVersion: 1
+datasources:
+  - name: flux-datasource
+    type: influxdb
+    url: http://influxdb:8086/
+    jsonData:
+      editable: false
+      version: Flux
+      defaultBucket: air
+      organization: $INFLUXDB_V2_ORG
+    user: $INFLUXDB_USERNAME
+    secureJsonData:
+      token: $INFLUXDB_V2_TOKEN
+      password: $INFLUXDB_PASSWORD
