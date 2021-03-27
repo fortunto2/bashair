@@ -17,7 +17,7 @@ MONGO_HOST=db
 TELEGRAM_TOKEN=
 NOTION_START_PAGE=
 
-GF_INSTALL_PLUGINS=grafana-clock-panel,briangann-gauge-panel,natel-plotly-panel,grafana-simple-json-datasource
+GF_INSTALL_PLUGINS=
 GRAFANA_USERNAME=admin
 GRAFANA_PASSWORD=admin
 GRAFANA_DOMAIN=localhost
