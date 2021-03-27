@@ -4,14 +4,14 @@ from pprint import pprint
 sys.path.append('../')
 sys.path.append('.')
 
-from config import settings
+from config.base import settings
 
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
 
 # Configure logging
-from db.influx import client, get_air_values_mean
+from back.measurements.air import get_air_values_mean
 
 logging.basicConfig(level=logging.INFO)
 

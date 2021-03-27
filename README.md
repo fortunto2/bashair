@@ -1,5 +1,15 @@
-# bashair
-Air Monitoring for Bashkiria
+# BashAir
+
+Civil Air Monitoring for Honest People from TERRA BASHKIRIA
+
+
+## Backend dirs Structure
+
+* adapters: The adapters to retrieve Django ORMs
+* measurements: InfluxDB retrieve
+* models: Django ORM
+* routers: FastAPI routers
+* schemas: FastAPI Pydantic models
 
 
 ## Inspired
@@ -30,6 +40,16 @@ used:
 
 * https://github.com/leoncvlt/loconotion - Landing from Notion.so
 
+
+Django+Fastapi:
+
+* https://www.stavros.io/posts/fastapi-with-django/
+* https://github.com/kigawas/fastapi-django
+
+GEO:
+* https://docs.djangoproject.com/en/3.1/ref/contrib/gis/
+* https://raphael-leger.medium.com/django-handle-latitude-and-longitude-54a4bb2f6e3b
+* https://github.com/developmentseed/geojson-pydantic
 
 
 ### install 

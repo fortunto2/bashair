@@ -13,7 +13,11 @@ whitenoise = "^5.2.0"
 fastapi = "^0.63.0"
 aiogram = "^2.12.1"
 python-aqi = "^0.6.1"
-pydantic = "^1.8.1"
+pydantic = {extras = ["dotenv"], version = "^1.8.1"}
+psycopg2-binary = "^2.8.6"
+influxdb-client = "^1.15.0"
+django-extensions = "^3.1.1"
+requests = "^2.25.1"
 
 
 
