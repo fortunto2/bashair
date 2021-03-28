@@ -21,7 +21,7 @@ r_data = {'check_id': '074564c2b875a000',
 
 
 def test_api_warning():
-    response = client.post("/v1/notify", json=data)
+    response = client.post("/influx/notify", json=data)
     pprint(response.json())
     assert response.status_code == 200
     assert response.json() == r_data

@@ -16,7 +16,7 @@ router = APIRouter()
 #     return FastChoices.from_qs(choices)
 
 
-@router.post('/push-sensor-data')
+@router.post('/push')
 async def upload_measurement(data: SensorData):
     # print(data)
 

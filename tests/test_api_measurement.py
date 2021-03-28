@@ -24,7 +24,7 @@ r_data = {'aqi': 16.0,
 
 
 def test_api_warning():
-    response = client.post("/v1/push-sensor-data", json=data)
+    response = client.post("/sensor/push", json=data)
     pprint(response.json())
     assert response.status_code == 200
     assert response.json() == r_data
