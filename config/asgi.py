@@ -10,12 +10,17 @@ import os
 
 from django.core.asgi import get_asgi_application
 
+from back.routers import sensors, ping, notify
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 application = get_asgi_application()
 
 from fastapi import FastAPI
-from back.routers import sensors_router
 
 fastapp = FastAPI()
-fastapp.include_router(sensors_router, tags=["sensors"], prefix="/api")
+# fastapp = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
+
+fastapp.include_router(sensors.router, tags=["sensors"], prefix="/v1")
+fastapp.include_router(notify.router, tags=["notify"], prefix="/v1")
+fastapp.include_router(ping.router, tags=["ping"], prefix="")
