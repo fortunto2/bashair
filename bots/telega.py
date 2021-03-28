@@ -11,7 +11,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 
 # Configure logging
-from back.measurements.air import get_air_values_mean
+from back.time_series.air import get_air_values_mean
 
 logging.basicConfig(level=logging.INFO)
 

@@ -6,10 +6,10 @@ Civil Air Monitoring for Honest People from TERRA BASHKIRIA
 ## Backend dirs Structure
 
 * adapters: The adapters to retrieve Django ORMs
-* measurements: InfluxDB retrieve
+* api: FastAPI routers
 * models: Django ORM
-* routers: FastAPI routers
 * schemas: FastAPI Pydantic models
+* timeseries: InfluxDB retrieve
 
 
 ## Inspired
