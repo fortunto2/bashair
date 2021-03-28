@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from odmantic import AIOEngine
-from config.base import settings
+from config.envs import settings
 
 
 db_client = AsyncIOMotorClient(settings.MONGO_DATABASE_URI)

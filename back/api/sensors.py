@@ -1,9 +1,13 @@
+import os
+# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+from http.client import HTTPException
+
 from fastapi import APIRouter
 from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 from back.schemas.sensors import SensorData, SensorMeasurement
-from config.base import settings
+from config.envs import envs
 from config.influx import client
 
 router = APIRouter()
@@ -19,6 +23,16 @@ router = APIRouter()
 @router.post('/push')
 async def upload_measurement(data: SensorData):
     # print(data)
+
+    from back.models.sensors import Node
+
+    instance = Node.objects.filter(uid=data.node_tag).first()
+    if not instance:
+        raise HTTPException(status_code=404, detail="Node not found.")
+    return instance
+
+
+    print(node)
 
     data_points = {}
     for dp in data.sensordatavalues:
@@ -44,7 +58,7 @@ async def upload_measurement(data: SensorData):
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
     p = Point.from_dict({
-        "measurement": settings.MEASUREMENT_NAME,
+        "measurement": envs.MEASUREMENT_NAME,
         "fields": sensor_measurement.dict(),
         "tags": {
             "node": data.node_tag
@@ -52,6 +66,6 @@ async def upload_measurement(data: SensorData):
     }
     )
 
-    write_api.write(bucket=settings.MEASUREMENT_NAME, record=p)
+    write_api.write(bucket=envs.MEASUREMENT_NAME, record=p)
 
     return sensor_measurement.dict()

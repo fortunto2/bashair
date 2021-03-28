@@ -1,12 +1,12 @@
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from config.base import settings
+from config.envs import envs
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# Quick-start development envs - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -63,18 +63,18 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.1/ref/envs/#databases
 
 DEFAULT_CHARSET = 'utf8'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': settings.POSTGRES_DB,
-        'USER': settings.POSTGRES_USER,
-        'PASSWORD': settings.POSTGRES_PASSWORD,
-        'HOST': settings.POSTGRES_HOST,
-        'PORT': settings.POSTGRES_PORT,
+        'NAME': envs.POSTGRES_DB,
+        'USER': envs.POSTGRES_USER,
+        'PASSWORD': envs.POSTGRES_PASSWORD,
+        'HOST': envs.POSTGRES_HOST,
+        'PORT': envs.POSTGRES_PORT,
         'CONN_MAX_AGE': 60 * 5,  # 10 minutes
     },
 }
@@ -82,7 +82,7 @@ DATABASES = {
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
+# https://docs.djangoproject.com/en/3.1/ref/envs/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

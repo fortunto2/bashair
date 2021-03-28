@@ -1,11 +1,11 @@
 from influxdb_client import InfluxDBClient, BucketRetentionRules
 
-from config.base import settings
+from config.envs import envs
 
 client = InfluxDBClient(
-    url=settings.INFLUXDB_V2_URL,
-    org=settings.INFLUXDB_V2_ORG,
-    token=settings.INFLUXDB_V2_TOKEN
+    url=envs.INFLUXDB_V2_URL,
+    org=envs.INFLUXDB_V2_ORG,
+    token=envs.INFLUXDB_V2_TOKEN
 )
 
 buckets_api = client.buckets_api()

@@ -17,7 +17,7 @@ async def influx_notify(payload: dict = Body(...)):
         new_payload[key] = value
 
     influx_warning = InfluxWarning(**new_payload)
-    print(influx_warning.dict(skip_defaults=True))
+    print(influx_warning.dict(exclude_unset=True))
 
     txt=f"""
 Тревога: {influx_warning.check_name}!
@@ -27,5 +27,5 @@ async def influx_notify(payload: dict = Body(...)):
 ---
    """
 
-    bot.send_message(chat_id=121250082, text=txt)
-    return influx_warning.dict(skip_defaults=True)
+    await bot.send_message(chat_id=121250082, text=txt)
+    return influx_warning.dict(exclude_unset=True)

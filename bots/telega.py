@@ -4,7 +4,7 @@ from pprint import pprint
 sys.path.append('../')
 sys.path.append('.')
 
-from config.base import settings
+from config.envs import envs
 
 import logging
 
@@ -16,7 +16,7 @@ from back.time_series.air import get_air_values_mean
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
-bot = Bot(token=settings.TELEGRAM_TOKEN)
+bot = Bot(token=envs.TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
 

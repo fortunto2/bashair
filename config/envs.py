@@ -2,11 +2,13 @@ from typing import Optional
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
+class EnvSettings(BaseSettings):
     DEBUG: bool = False
 
     DOMAIN_API: str = "air.localhost"
     DOMAIN_INFLUX: str = "panel.localhost"
+
+    # DJANGO_SETTINGS_MODULE: str = "config.settings"
 
     TIMEZONE: str = "Europe/Moscow"
     MEASUREMENT_NAME: str = "bashair"
@@ -58,5 +60,5 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-settings = Settings()
+envs = EnvSettings()
 

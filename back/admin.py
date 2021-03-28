@@ -4,12 +4,21 @@ from django.contrib import admin
 from back.models.sensors import *
 
 
+class SensorInline(admin.TabularInline):
+    model = Sensor
+    max_num=5
+    extra=0
+
+
 @admin.register(Node)
 class NodeAdmin(admin.ModelAdmin):
     search_fields = ['uid', 'description']
     list_display = ['uid', 'owner', 'location',
                     'description', 'created', 'modified']
     list_filter = ['owner', 'location']
+    inlines = [
+        SensorInline,
+    ]
 
 
 @admin.register(Sensor)
@@ -18,25 +27,6 @@ class SensorAdmin(admin.ModelAdmin):
     list_display = ['node', 'pin', 'sensor_type',
                     'description', 'created', 'modified']
     list_filter = ['node__owner', 'sensor_type']
-
-
-# @admin.register(SensorData)
-# class SensorDataAdmin(admin.ModelAdmin):
-#     search_fields = ['sensor__uid', ]
-#     list_display = ['sensor', 'sampling_rate', 'timestamp',
-#                     'location', 'created', 'modified']
-#     list_filter = ['sensor', 'location', 'sensor__sensor_type']
-#     show_full_result_count = False
-#
-#
-# @admin.register(SensorDataValue)
-# class SensorDataValueAdmin(admin.ModelAdmin):
-#     list_display = ['sensordata', 'value_type', 'value',
-#                     'created', 'modified']
-#     list_filter = ['value_type', 'sensordata__sensor',
-#                    'sensordata__sensor__sensor_type']
-#     readonly_fields = ['sensordata']
-#     show_full_result_count = False
 
 
 @admin.register(SensorLocation)
@@ -52,3 +42,8 @@ class SensorTypeAdmin(admin.ModelAdmin):
     search_fields = ['uid', 'name', 'manufacturer', 'description']
     list_display = ['uid', 'name', 'manufacturer',
                     'description', 'created', 'modified']
+
+
+
+
+

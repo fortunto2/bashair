@@ -1,12 +1,12 @@
 from influxdb_client import BucketRetentionRules
 
-from config.base import settings
+from config.envs import envs
 from config.influx import client, buckets_api
 
 
 def create_bucket(bucket):
 
-    org = list(filter(lambda it: it.name == settings.INFLUXDB_V2_ORG, client.organizations_api().find_organizations()))[
+    org = list(filter(lambda it: it.name == envs.INFLUXDB_V2_ORG, client.organizations_api().find_organizations()))[
         0]
 
     retention_rules = BucketRetentionRules(type="expire", every_seconds=3600)

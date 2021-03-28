@@ -53,7 +53,7 @@ class Sensor(TimeStampedModel):
     )
     sensor_type = models.ForeignKey(SensorType, on_delete=models.DO_NOTHING)
     description = models.TextField(null=True, blank=True)
-    public = models.BooleanField(default=False, db_index=True)
+    public = models.BooleanField(default=True, db_index=True)
 
     class Meta:
         unique_together = ('node', 'pin')
