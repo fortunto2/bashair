@@ -21,6 +21,7 @@ class SensorType(TimeStampedModel):
 
 class Node(TimeStampedModel):
     uid = models.SlugField(unique=True)
+    # mac = models.SlugField(unique=True)
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     name = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)

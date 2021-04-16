@@ -8,6 +8,8 @@ class EnvSettings(BaseSettings):
     DOMAIN_API: str = "air.localhost"
     DOMAIN_INFLUX: str = "panel.localhost"
 
+    SENTRY: str = None
+
     # DJANGO_SETTINGS_MODULE: str = "config.settings"
 
     TIMEZONE: str = "Europe/Moscow"
