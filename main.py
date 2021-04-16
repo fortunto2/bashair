@@ -1,12 +1,15 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, HTTPException
 from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
+from starlette.responses import JSONResponse
+from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 from bots.telega import bot
 from config import settings
 from db.influx import client
 from db.schemas.influx_warning import InfluxWarning
 from db.schemas.sensor_measurement import SensorMeasurement, SensorData
+from fastapi import Request
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
@@ -15,21 +18,30 @@ app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 async def upload_measurement(data: SensorData):
     # print(data)
 
+    NAME_MAP = {
+        "Max_cycle": "max_micro",
+        "Samples": "samples",
+        "Min_cycle": "min_micro",
+        "Signal": "signal",
+        "SDS_P1": "pm10",
+        "SDS_P2": "pm25",
+        "BME280_temperature": "temperature",
+        "BME280_humidity": "humidity",
+        "BME280_pressure": "pressure",
+    }
+
     data_points = {}
     for dp in data.sensordatavalues:
         data_points[dp.value_type] = dp.value
+        data_points[NAME_MAP.get(dp.value_type, dp.value_type)] = dp.value
 
-    sensor_measurement = SensorMeasurement(
-        pm10=data_points.get('SDS_P1', None),
-        pm25=data_points.get('SDS_P2', None),
-        temperature=data_points.get('BME280_temperature', None),
-        pressure=data_points.get('BME280_pressure', None),
-        humidity=data_points.get('BME280_humidity', None),
-        samples=data_points.get('samples', None),
-        min_micro=data_points.get('min_micro', None),
-        max_micro=data_points.get('max_micro', None),
-        signal=data_points.get('signal', None),
-    )
+    try:
+        sensor_measurement = SensorMeasurement(**data_points)
+    except Exception as e:
+        print(data.node_tag, e)
+        raise HTTPException(
+            status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(e))
 
     sensor_measurement.aqi = sensor_measurement.get_aqi_value
     sensor_measurement.aqi_category = sensor_measurement.get_aqi_category
@@ -44,8 +56,7 @@ async def upload_measurement(data: SensorData):
         "tags": {
             "node": data.node_tag
         },
-    }
-    )
+    })
 
     write_api.write(bucket=settings.MEASUREMENT_NAME, record=p)
 
@@ -63,7 +74,7 @@ async def influx_notify(payload: dict = Body(...)):
         new_payload[key] = value
 
     influx_warning = InfluxWarning(**new_payload)
-    print(influx_warning.dict(skip_defaults=True))
+    print(influx_warning.dict(exclude_unset=True))
 
     txt=f"""
 Тревога: {influx_warning.check_name}!
@@ -73,15 +84,14 @@ async def influx_notify(payload: dict = Body(...)):
 ---
    """
 
-    bot.send_message(chat_id=121250082, text=txt)
-    return influx_warning.dict(skip_defaults=True)
+    await bot.send_message(chat_id=121250082, text=txt)
+    return influx_warning.dict(exclude_unset=True)
 
 
 @app.post('/test')
-async def test(payload: dict = Body(...)):
-    print(payload)
-    return payload
-
+async def test(request: Request):
+    print(await request.body())
+    return await request.body()
 
 if __name__ == "__main__":
     import uvicorn

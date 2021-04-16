@@ -68,9 +68,9 @@ class SensorData(BaseModel):
     def node_tag(self):
         node_tag = "unknown"
 
-        if self.esp8266id:
-            node_tag = f"esp8266-{self.esp8266id}"
-        elif self.rpiid:
-            node_tag = f"rpi-{self.rpiid}"
+        # if self.esp8266id:
+        #     node_tag = f"esp8266-{self.esp8266id}"
+        # elif self.rpiid:
+        #     node_tag = f"rpi-{self.rpiid}"
 
-        return node_tag
+        return self.esp8266id

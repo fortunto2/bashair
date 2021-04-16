@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     DOMAIN_INFLUX: str = "panel.localhost"
 
     TIMEZONE: str = "Europe/Moscow"
-    MEASUREMENT_NAME: str = "bashair"
+    MEASUREMENT_NAME: str = "air"
     TELEGRAM_TOKEN: Optional[str]
 
     INFLUXDB_USERNAME: str
