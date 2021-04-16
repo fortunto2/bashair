@@ -11,7 +11,7 @@ class EnvSettings(BaseSettings):
     # DJANGO_SETTINGS_MODULE: str = "config.settings"
 
     TIMEZONE: str = "Europe/Moscow"
-    MEASUREMENT_NAME: str = "bashair"
+    MEASUREMENT_NAME: str = "air"
     TELEGRAM_TOKEN: Optional[str]
 
     POSTGRES_PORT: int = 5432

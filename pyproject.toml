@@ -27,6 +27,7 @@ django-stubs = {git = "https://github.com/typeddjango/django-stubs.git"}
 flake8 = "^3.8.3"
 mypy = "^0.790"
 pytest = "^6.2.2"
+pandas = "^1.2.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
