@@ -20,7 +20,8 @@ reg: ## Отсылаем на сервер Reg.ru (bashair.ru)
 gcloud: ## Отсылаем на сервер gcloud life
 	@gsutil cp -r dist/* gs://bashair_ru
 
-
+import: ## Импортим в базу данные из Madavi
+	@docker-compose run --rm fastapi python backup/madavi/import_all.py
 # MAIN
 
 # Быстрая команда: сбилдить и залить на сервер
