@@ -20,15 +20,15 @@ async def upload_measurement(data: SensorData):
         data_points[dp.value_type] = dp.value
 
     sensor_measurement = SensorMeasurement(
-        pm10=data_points['SDS_P1'],
-        pm25=data_points['SDS_P2'],
-        temperature=data_points['BME280_temperature'],
-        pressure=data_points['BME280_pressure'],
-        humidity=data_points['BME280_humidity'],
-        samples=data_points['samples'],
-        min_micro=data_points['min_micro'],
-        max_micro=data_points['max_micro'],
-        signal=data_points['signal'],
+        pm10=data_points.get('SDS_P1', None),
+        pm25=data_points.get('SDS_P2', None),
+        temperature=data_points.get('BME280_temperature', None),
+        pressure=data_points.get('BME280_pressure', None),
+        humidity=data_points.get('BME280_humidity', None),
+        samples=data_points.get('samples', None),
+        min_micro=data_points.get('min_micro', None),
+        max_micro=data_points.get('max_micro', None),
+        signal=data_points.get('signal', None),
     )
 
     sensor_measurement.aqi = sensor_measurement.get_aqi_value
