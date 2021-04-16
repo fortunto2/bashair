@@ -13,6 +13,13 @@ AQI_CATEGORIES = {
 }
 
 
+def get_aqi(pm10, pm25):
+    aqi_value = float(
+        aqi.to_aqi([(aqi.POLLUTANT_PM10, pm10), (aqi.POLLUTANT_PM25, pm25)])
+    )
+    return aqi_value
+
+
 def get_aqi_category(aqi_value):
     for limits, category in AQI_CATEGORIES.items():
         if aqi_value > limits[0] and aqi_value <= limits[1]:

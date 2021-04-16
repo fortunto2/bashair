@@ -1,4 +1,9 @@
 import sys
+
+import aqi
+
+from db.schemas.sensor_measurement import get_aqi_category, get_aqi
+
 sys.path.append('.')
 
 import pandas as pd
@@ -38,21 +43,21 @@ for node_id, sds_id, bme_id in sensors:
         bme_url = f"https://archive.sensor.community/{xdate}/{xdate}_bme280_sensor_{bme_id}.csv"
         sds_url = f"https://archive.sensor.community/{xdate}/{xdate}_sds011_sensor_{sds_id}.csv"
 
-        try:
-            bme_df = pd.read_csv(bme_url, delimiter=';')
-            bme_df.index = bme_df.timestamp
-            bme_df['node'] = node_id
-
-            print('bme:', bme_df.shape)
-
-            write_api.write(bucket=settings.MEASUREMENT_NAME,
-                            record=bme_df[['temperature', 'humidity', 'pressure'] + tags],
-                            data_frame_measurement_name='air',
-                            data_frame_tag_columns=tags
-                            )
-
-        except Exception as e:
-            print(e)
+        # try:
+        #     bme_df = pd.read_csv(bme_url, delimiter=';')
+        #     bme_df.index = bme_df.timestamp
+        #     bme_df['node'] = node_id
+        #
+        #     print('bme:', bme_df.shape)
+        #
+        #     write_api.write(bucket=settings.MEASUREMENT_NAME,
+        #                     record=bme_df[['temperature', 'humidity', 'pressure'] + tags],
+        #                     data_frame_measurement_name='air',
+        #                     data_frame_tag_columns=tags
+        #                     )
+        #
+        # except Exception as e:
+        #     print(e)
 
         try:
             sds_df = pd.read_csv(sds_url, delimiter=';')
@@ -65,8 +70,12 @@ for node_id, sds_id, bme_id in sensors:
             # print(sds_df[['pm25']].mean())
             # print(sds_df[['pm10']].mean())
 
+            sds_df['aqi'] = sds_df.apply(lambda x: get_aqi(x.pm10, x.pm25), axis=1)
+            sds_df['aqi_category'] = sds_df.apply(lambda x: get_aqi_category(x.aqi), axis=1)
+            print(sds_df)
+
             write_api.write(bucket=settings.MEASUREMENT_NAME,
-                            record=sds_df[['pm10', 'pm25'] + tags],
+                            record=sds_df[['pm10', 'pm25', 'aqi', 'aqi_category'] + tags],
                             data_frame_measurement_name='air',
                             data_frame_tag_columns=tags
                             )
