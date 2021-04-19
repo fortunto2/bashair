@@ -28,7 +28,7 @@ sensors = [
 start_date = dt.datetime(2021, 3, 20)
 end_date = dt.datetime.now()
 
-tags = ['location', 'lat', 'lon', 'sensor_type', 'sensor_id', 'node']
+tags = ['location', 'lat', 'lon', 'node']
 
 write_api = client.write_api(write_options=SYNCHRONOUS)
 
@@ -62,7 +62,7 @@ for node_id, sds_id, bme_id in sensors:
         try:
             sds_df = pd.read_csv(sds_url, delimiter=';')
             sds_df.index = sds_df.timestamp
-            sds_df['node'] = node_id
+            sds_df['node'] = f"esp8266-{node_id}"
 
             sds_df = sds_df.rename(columns={'P1': 'pm10', 'P2': 'pm25'})
 

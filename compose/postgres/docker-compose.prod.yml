@@ -1,0 +1,21 @@
+version: '3.2'
+
+volumes:
+  prod_postgres_data: {}
+  prod_postgres_data_backups: {}
+
+services:
+  postgres: &postgres
+    env_file:
+      - ../../.env
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - prod_postgres_data:/var/lib/postgresql/data
+      - prod_postgres_data_backups:/backups
+
+  pgadmin:
+    ports:
+      - "127.0.0.1:8077:80"
+    env_file:
+      - ../../.env

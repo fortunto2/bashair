@@ -11,40 +11,40 @@ services:
     env_file:
       - .env
     depends_on:
-#      - postgres
+      - postgres
       - influxdb
     ports:
       - "8000:8000"
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    command: uvicorn config.asgi:fastapp --reload --host 0.0.0.0 --port 8000
 
-  telega:
-    <<: *fastapi
-    ports: []
-    command: python bots/telega.py
-
-#  django:
+#  telega:
 #    <<: *fastapi
-#    ports:
-#      - "8001:8000"
-##    command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings
-#    command: uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000 --lifespan off
+#    ports: []
+#    command: python bots/telega.py
+
+  django:
+    <<: *fastapi
+    ports:
+      - "8001:8000"
+#    command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings
+    command: uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000 --lifespan off
 
 
-#  postgres:
-#    build:
-#      context: compose/postgres
-#      dockerfile: ./Dockerfile
-#    image: postgres
-#    volumes:
-#      - .docker/postgres/data:/var/lib/postgresql/data
-#      - .docker/postgres/backup:/backups
-#    ports:
-#      - "5432:5432"
-#    env_file:
-#      - .env
-#    stdin_open: true
-#    tty: true
-#    command: postgres -c 'max_connections=1000'
+  postgres:
+    build:
+      context: compose/postgres
+      dockerfile: ./Dockerfile
+    image: postgres
+    volumes:
+      - .docker/postgres/data:/var/lib/postgresql/data
+      - .docker/postgres/backup:/backups
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    command: postgres -c 'max_connections=1000'
 
 #
 #  mongo:

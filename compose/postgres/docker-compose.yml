@@ -1,0 +1,29 @@
+version: '3.2'
+
+services:
+  postgres: &postgres
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+#   image: registry.gitlab.com/life2film_team/django_api/postgres
+    expose:
+      - "5432"
+    restart: always
+#    networks:
+#      - private
+
+#  postgres-test:
+#    <<: *postgres
+#    ports: []
+#    volumes: []
+
+  pgadmin:
+    image: 'dpage/pgadmin4'
+    links:
+      - postgres
+#    networks:
+#      - private
+
+
+#networks:
+#  private:
