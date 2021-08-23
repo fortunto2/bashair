@@ -6,5 +6,4 @@ services:
     volumes:
       - ./dist:/app/loconotion/dist
       - ./front/landing:/app/loconotion/front/landing
-    restart: always
     command: front/landing/bashair.toml
