@@ -1,8 +1,7 @@
-version: "3.6"
+version: "3.9"
 
 services:
   fastapi: &fastapi
-
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,10 +19,10 @@ services:
       - "8000:8000"
     command: uvicorn config.asgi:fastapp --reload --host 0.0.0.0 --port 8000
 
-#  telega:
-#    <<: *fastapi
-#    ports: []
-#    command: python bots/telega.py
+  telega:
+    <<: *fastapi
+    ports: []
+    command: python bots/telega.py
 
   django:
     <<: *fastapi
