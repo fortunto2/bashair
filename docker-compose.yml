@@ -42,7 +42,7 @@ services:
       - .docker/postgres/data:/var/lib/postgresql/data
       - .docker/postgres/backup:/backups
     ports:
-      - "5432:5432"
+      - "5433:5432"
     env_file:
       - .env
     stdin_open: true
@@ -68,7 +68,7 @@ services:
 #      - "27017:27017"
 
   influxdb:
-    image: influxdb:2.0
+    image: influxdb:2.1
     restart: unless-stopped
     ports:
       - '8086:8086'
