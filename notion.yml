@@ -1,9 +1,0 @@
-version: "3.9"
-
-services:
-  notion:
-    image: lifefilm/loconotion
-    volumes:
-      - ./dist:/app/loconotion/dist
-      - ./front/landing:/app/loconotion/front/landing
-    command: front/landing/bashair.toml

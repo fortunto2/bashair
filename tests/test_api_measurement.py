@@ -1,5 +1,9 @@
 import json
 from pprint import pprint
+import sys
+sys.path.append('..')
+sys.path.append('.')
+
 
 from fastapi.testclient import TestClient
 
@@ -23,8 +27,8 @@ r_data = {'aqi': 16.0,
           'temperature': 26.43}
 
 
-def test_api_warning():
-    response = client.post("/sensor/push", json=data)
+def test_api_measurement():
+    response = client.post("/upload_measurement", json=data)
     pprint(response.json())
     assert response.status_code == 200
     assert response.json() == r_data
