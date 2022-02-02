@@ -10,7 +10,7 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-from back.api import sensors, ping, notify
+from back.api import sensors, ping, notify, nodes
 from config.envs import envs
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
