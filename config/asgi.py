@@ -23,7 +23,7 @@ fastapp = FastAPI()
 # fastapp = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 fastapp.include_router(sensors.router, tags=["sensors"], prefix="")
-fastapp.include_router(notify.router, tags=["notify"], prefix="/influx")
+# fastapp.include_router(notify.router, tags=["notify"], prefix="/influx")
 fastapp.include_router(ping.router, tags=["ping"], prefix="")
 # fastapp.include_router(nodes.router, tags=["nodes"], prefix="")
 
