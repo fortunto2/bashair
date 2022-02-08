@@ -29,6 +29,11 @@ NAME_MAP = {
 }
 
 
+@router.get('/upload_measurement')
+async def upload_measurement(data: SensorData, request: Request):
+    return {'detail': 'Send Post please'}
+
+
 @router.post('/upload_measurement')
 async def upload_measurement(data: SensorData, request: Request):
     print('upload_measurement', data)
