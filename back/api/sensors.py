@@ -55,9 +55,7 @@ async def upload_measurement(data: SensorData, request: Request):
         sensor_measurement = SensorMeasurement(**data_points)
     except Exception as e:
         print(data.node_tag, e)
-        raise HTTPException(
-            status_code=HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=str(e))
+        return JSONResponse(content={'result': False})
 
     sensor_measurement.aqi = sensor_measurement.get_aqi_value
     sensor_measurement.aqi_category = sensor_measurement.get_aqi_category
