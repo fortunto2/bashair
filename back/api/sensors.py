@@ -28,11 +28,11 @@ NAME_MAP = {
     "BME280_pressure": "pressure",
 }
 
-
-@router.get('/upload_measurement')
-async def upload_measurement(data: SensorData, request: Request):
-    return {'detail': 'Send Post please'}
-
+#
+# @router.get('/upload_measurement')
+# async def upload_measurement(data: SensorData, request: Request):
+#     return {'detail': 'Send Post please'}
+#
 
 @router.post('/upload_measurement')
 async def upload_measurement(data: SensorData, request: Request):
