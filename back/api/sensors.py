@@ -33,7 +33,7 @@ NAME_MAP = {
 
 @router.post('/upload_measurement')
 async def upload_measurement(data: SensorData, request: Request):
-    print('upload_measurement', data)
+    # print('upload_measurement', data)
     from back.models.sensors import Node, SensorLocation
     node = None
     try:
