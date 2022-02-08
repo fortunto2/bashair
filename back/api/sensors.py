@@ -8,6 +8,8 @@ from fastapi import APIRouter
 from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from fastapi import Request
+from fastapi.responses import JSONResponse
+
 
 from back.schemas.sensors import SensorData, SensorMeasurement
 from config.envs import envs
@@ -28,20 +30,20 @@ NAME_MAP = {
     "BME280_pressure": "pressure",
 }
 
-#
-# @router.get('/upload_measurement')
-# async def upload_measurement(data: SensorData, request: Request):
-#     return {'detail': 'Send Post please'}
-#
 
 @router.post('/upload_measurement')
 async def upload_measurement(data: SensorData, request: Request):
     print('upload_measurement', data)
     from back.models.sensors import Node, SensorLocation
+    node = None
+    try:
+        node: Node = await sync_to_async(Node.objects.select_related('location').get, thread_sensitive=True)(uid=data.node_tag)
+    except Exception as e:
+        print(e, data.node_tag)
 
-    node: Node = await sync_to_async(Node.objects.select_related('location').get, thread_sensitive=True)(uid=data.node_tag)
     if not node:
-        raise HTTPException(status_code=404, detail="Node not found.")
+        return JSONResponse(content={'result': False})
+
     print(request.client.host, node)
 
     data_points = {}
@@ -81,4 +83,4 @@ async def upload_measurement(data: SensorData, request: Request):
 
     write_api.write(bucket=envs.MEASUREMENT_NAME, record=p)
 
-    return True
+    return JSONResponse(content={'result': True})

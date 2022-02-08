@@ -32,4 +32,12 @@ def test_api_measurement():
     pprint(response.json())
     assert response.status_code == 200
     # assert response.json() == r_data
-    assert response.json() == True
+    assert response.json() == {'result': True}
+
+
+def test_bad_sensor_api_measurement():
+    data['esp8266id'] = 'xxxx'
+    response = client.post("/upload_measurement", json=data)
+    pprint(response.status_code)
+    assert response.json() == {'result': False}
+
