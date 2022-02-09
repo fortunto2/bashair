@@ -41,3 +41,8 @@ def test_bad_sensor_api_measurement():
     pprint(response.status_code)
     assert response.json() == {'result': False}
 
+
+def test_data_mean():
+    response = client.get("/data/mean")
+    pprint(response.status_code)
+    assert response.json()['result']
