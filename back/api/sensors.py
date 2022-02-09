@@ -2,6 +2,7 @@ import os
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 from http.client import HTTPException
 
+from typing import Optional
 import logging
 from asgiref.sync import sync_to_async
 from fastapi import APIRouter
@@ -9,7 +10,7 @@ from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from fastapi import Request
 from fastapi.responses import JSONResponse
-
+from back.time_series.air import get_air_values_mean
 
 from back.schemas.sensors import SensorData, SensorMeasurement
 from config.envs import envs
@@ -29,6 +30,20 @@ NAME_MAP = {
     "BME280_humidity": "humidity",
     "BME280_pressure": "pressure",
 }
+
+
+@router.get('/data/mean')
+async def get_sensor_data(city: Optional[str] = '', field: Optional[str] = 'pm25', period: Optional[str] = '-1h'):
+
+    result = get_air_values_mean(field=field, start=period, city=city)
+    print(f'get mean city: {city} = {result}')
+
+    return JSONResponse(content={
+        'result': result,
+        'field': field,
+        'period': period,
+        'city': city,
+    })
 
 
 @router.post('/upload_measurement')

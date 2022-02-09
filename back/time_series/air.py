@@ -3,9 +3,12 @@ from statistics import mean
 from config.influx import query_api
 
 
-def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="air"):
-    print(bucket, field, start)
+def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="air", city=None):
+    # print(bucket, field, start)
     field_mean = None
+    city_q = ''
+    if city:
+        city_q = f'|> filter(fn: (r) => r["city"] == "{city}")'
 
     tables = query_api.query(
         f"""
@@ -13,6 +16,7 @@ def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="ai
           |> range(start: {start})
           |> filter(fn: (r) => r["_measurement"] == "{measurement}")
           |> filter(fn: (r) => r["_field"] == "{field}")
+          {city_q}
           |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
           |> yield(name: "mean")
         """
