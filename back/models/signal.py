@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
+from back.models.instance import Instance
+
 
 class SignalProperties(models.Model):
     """
@@ -46,17 +48,6 @@ class Signal(TimeStampedModel):
 class SignalMedia(TimeStampedModel):
     signal = models.ForeignKey(Signal, null=True, on_delete=models.SET_NULL, related_name='media')
     file = models.FileField(upload_to='')  # TODO: добавить в env
-
-
-class Instance(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    phone = models.CharField(max_length=20)
-    email = models.EmailField(max_length=200)
-    address = models.TextField()
-    website = models.URLField(max_length=200)
-
-    report_url = models.URLField(max_length=200)
 
 
 class SignalToInstance(TimeStampedModel):

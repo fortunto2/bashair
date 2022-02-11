@@ -1,6 +1,6 @@
 from fastapi import Body, APIRouter
 
-router = APIRouter()
+router = APIRouter(tags=["ping"], prefix="")
 
 
 @router.post('/test')

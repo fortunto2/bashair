@@ -11,6 +11,7 @@ import os
 from django.core.asgi import get_asgi_application
 
 from back.api import sensors, ping, notify
+from back.router import app_router
 from config.envs import envs
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
@@ -20,12 +21,8 @@ application = get_asgi_application()
 from fastapi import FastAPI
 
 fastapp = FastAPI()
+fastapp.include_router(app_router)
 # fastapp = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-
-fastapp.include_router(sensors.router, tags=["sensors"], prefix="")
-# fastapp.include_router(notify.router, tags=["notify"], prefix="/influx")
-fastapp.include_router(ping.router, tags=["ping"], prefix="")
-# fastapp.include_router(nodes.router, tags=["nodes"], prefix="")
 
 # import sentry_sdk
 # from sentry_sdk.integrations.asgi import SentryAsgiMiddleware

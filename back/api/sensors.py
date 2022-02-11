@@ -17,7 +17,7 @@ from config.envs import envs
 from config.influx import client
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
-router = APIRouter()
+router = APIRouter(tags=["sensors"], prefix="")
 
 NAME_MAP = {
     "Max_cycle": "max_micro",
