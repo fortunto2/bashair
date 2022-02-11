@@ -11,7 +11,7 @@ class SignalMediaInline(admin.TabularInline):
 @admin.register(Signal)
 class SignalAdmin(admin.ModelAdmin):
     search_fields = ['text', 'location', 'owner']
-    list_display = ['owner', 'text', 'location', 'status', 'created']
+    list_display = ['owner', 'text', 'location', 'status', 'city', 'created']
     list_filter = ['status']
     inlines = [
         SignalMediaInline,
@@ -32,7 +32,7 @@ class SignalMediaAdmin(admin.ModelAdmin):
 
 @admin.register(Instance)
 class InstanceAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'phone', 'email', 'address', 'report_url']
+    search_fields = ['name', 'phone', 'email', 'address', 'city', 'report_url']
     list_display = ['name', 'address']
 
 

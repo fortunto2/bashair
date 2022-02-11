@@ -5,6 +5,8 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
 
+from back.models.citys import City
+
 
 class SensorType(TimeStampedModel):
     uid = models.SlugField(unique=True)
@@ -166,8 +168,9 @@ class SensorLocation(TimeStampedModel):
     street_name = models.TextField(null=True, blank=True)
     street_number = models.TextField(null=True, blank=True)
     postalcode = models.TextField(null=True, blank=True)
-    city = models.TextField(null=True, blank=True)
-    country = models.TextField(null=True, blank=True)
+    # city_old = models.TextField(null=True, blank=True)
+    # country = models.TextField(null=True, blank=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='sensor_location')
     traffic_in_area = models.IntegerField(
         null=True)  # 0 = no information, 1 = far away from traffic, 10 = lot's of traffic in area
     oven_in_area = models.IntegerField(null=True)  # 0 = no information, 1 = no ovens in area, 10 = it REALLY smells
@@ -180,10 +183,10 @@ class SensorLocation(TimeStampedModel):
 
     class Meta:
         ordering = ['location', ]
-        indexes = [
-            models.Index(fields=['country'], name='country_idx'),
-            models.Index(fields=['city'], name='city_idx'),
-        ]
+        # indexes = [
+        #     # models.Index(fields=['country'], name='country_idx'),
+        #     # models.Index(fields=['city'], name='city_idx'),
+        # ]
 
     def __str__(self):
         return "{location}".format(location=self.location)
