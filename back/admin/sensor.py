@@ -31,9 +31,8 @@ class NodeAdmin(admin.ModelAdmin):
 @admin.register(SensorLocation)
 class SensorLocationAdmin(admin.ModelAdmin):
     search_fields = ['location', ]
-    list_display = ['location', 'latitude', 'longitude', 'indoor', 'owner', 'description',
-                    'timestamp', 'created', 'modified']
-    list_filter = ['indoor', 'owner']
+    list_display = ['location', 'city', 'indoor', 'owner', 'description', 'created']
+    list_filter = ['indoor', 'owner', 'city']
 
 
 @admin.register(SensorType)

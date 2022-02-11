@@ -2,19 +2,23 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
+from back.models.citys import City
+
 
 class FactoryType(models.Model):
     "Тип, например химическое производство, тэц, мусорка"
     name = models.CharField(max_length=200)
 
 
-class Factory(models.Model):
+class Factory(TimeStampedModel):
     name = models.CharField(max_length=200)
     description = models.TextField()
     phone = models.CharField(max_length=20)
     email = models.EmailField(max_length=200)
     address = models.TextField()
     website = models.URLField(max_length=200)
+
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, related_name='factory')
 
     location = models.TextField(null=True, blank=True)
     latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
