@@ -1,4 +1,3 @@
-# coding=utf-8
 from django.contrib import admin
 
 from back.models.sensors import *
@@ -6,8 +5,8 @@ from back.models.sensors import *
 
 class SensorInline(admin.TabularInline):
     model = Sensor
-    max_num=5
-    extra=0
+    max_num = 5
+    extra = 0
 
 
 @admin.register(Node)
@@ -21,12 +20,12 @@ class NodeAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(Sensor)
-class SensorAdmin(admin.ModelAdmin):
-    search_fields = ['node__uid', 'description']
-    list_display = ['node', 'pin', 'sensor_type',
-                    'description', 'created', 'modified']
-    list_filter = ['node__owner', 'sensor_type']
+# @admin.register(Sensor)
+# class SensorAdmin(admin.ModelAdmin):
+#     search_fields = ['node__uid', 'description']
+#     list_display = ['node', 'pin', 'sensor_type',
+#                     'description', 'created', 'modified']
+#     list_filter = ['node__owner', 'sensor_type']
 
 
 @admin.register(SensorLocation)
@@ -42,8 +41,3 @@ class SensorTypeAdmin(admin.ModelAdmin):
     search_fields = ['uid', 'name', 'manufacturer', 'description']
     list_display = ['uid', 'name', 'manufacturer',
                     'description', 'created', 'modified']
-
-
-
-
-
