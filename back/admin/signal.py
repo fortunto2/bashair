@@ -33,7 +33,7 @@ class SignalMediaAdmin(admin.ModelAdmin):
 @admin.register(Instance)
 class InstanceAdmin(admin.ModelAdmin):
     search_fields = ['name', 'phone', 'email', 'address', 'city', 'report_url']
-    list_display = ['name', 'address']
+    list_display = ['name', 'address', 'phone', 'city', 'phone']
 
 
 class SignalToInstanceMediaInline(admin.TabularInline):
