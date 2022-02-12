@@ -1,3 +1,4 @@
+from fastapi import FastAPI
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from passlib.context import CryptContext
@@ -6,10 +7,11 @@ from starlette.responses import JSONResponse
 
 from back.models.deny_list import DenyList
 from config import settings
-from config.asgi import fastapp
 from config.envs import envs
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+auth_handler = FastAPI()
 
 
 class AuthJWTSettings(BaseModel):
@@ -25,7 +27,7 @@ def get_config():
     return AuthJWTSettings()
 
 
-@fastapp.exception_handler(AuthJWTException)
+@auth_handler.exception_handler(AuthJWTException)
 def authjwt_exception_handler(exc: AuthJWTException):
     return JSONResponse(
         status_code=exc.status_code,

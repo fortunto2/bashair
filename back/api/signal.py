@@ -1,5 +1,7 @@
-from fastapi import APIRouter
+from django.contrib.auth.models import User
+from fastapi import APIRouter, Depends
 
+from back.depends.user import get_current_active_user
 from back.models.signal import Signal, SignalToInstance, SignalProperties
 from back.models.signal import SignalProperties as SignalPropertiesModel
 from back.schemas.signal import SignalCreate, SignalToInstanceCreate, SignalGet, SignalProperties, SignalToInstanceGet
@@ -27,13 +29,12 @@ async def get_count(time=None, city=None, user=None):
 
 
 @router.post('/', response_model=SignalGet)
-def create_signal(signal: SignalCreate):
+def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_user)):
     """
     Создаем запись с жалобой в базу
     """
-
     properties = signal.properties
-    signal: Signal = Signal.objects.create(**signal.dict(exclude={'properties'}))
+    signal: Signal = Signal.objects.create(owner_id=user.id, **signal.dict(exclude={'properties'}))
     if properties:
         signal.properties.add(*properties)
     return signal
@@ -52,7 +53,7 @@ def get_signal(signal_id: int):
 
 
 @router.post('/instance/', response_model=SignalToInstanceGet)
-def create_signal_to_instance(signal_to_instance: SignalToInstanceCreate):
+def create_signal_to_instance(signal_to_instance: SignalToInstanceCreate, user: User = Depends(get_current_active_user)):
     """
     Для формы жалобы в инстанции различные, такие как ЕДДС
     """

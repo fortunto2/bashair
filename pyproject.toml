@@ -27,6 +27,7 @@ fastapi-jwt-auth = "^0.5.0"
 passlib = "^1.7.4"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 Pillow = "^9.0.1"
+python-multipart = "^0.0.5"
 
 
 
