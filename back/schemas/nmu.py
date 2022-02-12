@@ -7,5 +7,5 @@ from pydantic import BaseModel, validator, AnyUrl
 class NmuBase(BaseModel):
     mode: int
     datetime: datetime
-    # time: time
-    # date: date
+    time: time
+    date: date

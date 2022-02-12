@@ -52,6 +52,8 @@ def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
         return {
             'mode': result,
             'datetime': time,
+            'time': time.strftime("%H:%M"),
+            'date': time.strftime("%Y-%m-%d"),
         }
 
 
