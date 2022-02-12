@@ -23,7 +23,7 @@ async def get_count(time=None, city=None, user=None):
     """
     Количество жалоб счетчик
     """
-    pass
+    return 69
 
 
 @router.post('/', response_model=SignalGet)
