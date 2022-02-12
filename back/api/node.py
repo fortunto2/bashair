@@ -8,7 +8,7 @@ from back.utils.exceptions import NotFound
 router = APIRouter(tags=["node"], prefix="/node")
 
 
-@router.get('/')
+@router.get('/all')
 def get_nodes():
     # список всех датчиков, id, локация, направление ветра, текущее значение
     nodes_query = Node.objects.select_related('location').only(
