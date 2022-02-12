@@ -14,6 +14,11 @@ class NotFound(BaseHTTPException):
     detail = 'Not found'
 
 
+class PermissionDenied(BaseHTTPException):
+    status_code = status.HTTP_403_FORBIDDEN
+    detail = 'Forbidden'
+
+
 class Credentials(BaseHTTPException):
     status_code = status.HTTP_401_UNAUTHORIZED
     detail = "Could not validate credentials"

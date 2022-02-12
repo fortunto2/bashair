@@ -46,10 +46,9 @@ def get_total(city_id: int):
             if row[0] == '' and row[1] == '':
                 field = row[fields['_field']]
                 value = row[fields['_value']]
-                if field in total:
-                    total[field] += float(value)
-                else:
-                    total[field] = float(value)
+                if field not in total:
+                    total[field] = 0
+                total[field] += round(float(value), 1)
 
     total['wind'] = {
         'speed': None,

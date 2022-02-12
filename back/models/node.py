@@ -65,7 +65,40 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                     value_index = next((index for index, col in enumerate(row) if col == '_value'), None)
                 if row[0] == '' and row[1] == '' and value_index is not None:
                     value = row[value_index]
+                    value = round(float(value), 1)
         return value
+
+
+    @property
+    def history(self):
+        table = query_api.query_csv(f"""
+        from(bucket: "air")
+          |> range(start: -24h)
+          |> filter(fn: (r) => r["node"] == "{self.uid}")
+          |> filter(fn: (r) => r["_field"] == "aqi" or r["_field"] == "humidity" or r["_field"] == "pm10" or r["_field"] == "pm25" or r["_field"] == "pressure" or r["_field"] == "temperature")
+          |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
+          |> yield(name: "mean")
+          |> truncateTimeColumn(unit: 1h)
+        """)
+        result = {}
+        fields = {}
+        for row in table:
+            if len(row) > 1:
+                if row[1] == 'result':
+                    for index, col in enumerate(row):
+                        if col in ['_value', '_field', '_time']:
+                            fields[col] = index
+                if row[0] == '' and row[1] == '':
+                    field = row[fields['_field']]
+                    value = row[fields['_value']]
+                    time = row[fields['_time']]
+                    if time not in result:
+                        result[time] = {}
+                    if field not in result[time]:
+                        result[time][field] = 0
+                    result[time][field] += round(float(value), 1)
+        return result
+
 
     @property
     def wind(self):

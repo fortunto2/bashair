@@ -1,16 +1,17 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from back.depends.user import get_current_active_user
 from back.models.node import Node
 from back.schemas.node import NodePointGet
-from back.utils.exceptions import NotFound
+from back.utils.exceptions import NotFound, PermissionDenied
 
 router = APIRouter(tags=["node"], prefix="/node")
 
 
 @router.get('/all')
 def get_nodes():
-    # список всех датчиков, id, локация, направление ветра, текущее значение
     nodes_query = Node.objects.select_related('location').only(
         'id', 'uid', 'location__longitude', 'location__latitude'
     ).filter(
@@ -24,26 +25,30 @@ def get_nodes():
     return nodes
 
 
-@router.get('/{node_uid}/', response_model=NodePointGet)
-def get_node(node_uid: str):
+@router.get('/{node_id}/', response_model=NodePointGet)
+def get_node(node_id: int):
     """
     Данные по датчику
     """
     try:
-        node = Node.objects.get(uid=node_uid)
+        node = Node.objects.get(id=node_id)
     except Node.DoesNotExist:
         raise NotFound
 
     return node
 
 
-@router.get('/{node_uid}/history/')
+@router.get('/{node_id}/history/')
 def get_node_history(node_id: int):
-    # график из инфлюкса
-    pass
+    try:
+        node = Node.objects.get(id=node_id)
+    except Node.DoesNotExist:
+        raise NotFound
+    return node.history
 
 
 @router.post('/')
-def create_node():
-    # Добавить проверку на админа
+def create_node(user: User = Depends(get_current_active_user)):
+    if not user.is_staff:
+        raise PermissionDenied
     pass
