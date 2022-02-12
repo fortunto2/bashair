@@ -11,8 +11,8 @@ from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS, ASYNCHRONOUS
 
 from config import settings
-from db.influx import client
-from db.schemas.sensor_measurement import SensorMeasurement
+from config.influx import client
+from back.schemas.sensors import SensorMeasurement
 
 
 def get_timestamp(timestr):
