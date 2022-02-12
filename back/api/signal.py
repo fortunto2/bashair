@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from back.models.signal import Signal, SignalToInstance, SignalProperties
+from back.models.signal import SignalProperties as SignalPropertiesModel
 from back.schemas.signal import SignalCreate, SignalToInstanceCreate, SignalGet, SignalProperties, SignalToInstanceGet
 from back.utils.exceptions import NotFound
 
@@ -9,7 +10,6 @@ router = APIRouter(tags=["signal"], prefix="/signal")
 
 @router.get('/properties/')
 def get_properties():
-    properties_query = SignalProperties.objects.all()
     """
     Для формы жалобы, параметры такие как возможные запахи и симптомы
     """

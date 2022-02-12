@@ -1,14 +1,27 @@
+from typing import List
+
 from fastapi import APIRouter
 
-from back.models.city import City
+from back.models.city import City as CityModel
+from back.schemas.city import City
+
 from config.influx import query_api
 
 router = APIRouter(tags=["city"], prefix="/city")
 
 
+@router.get('/all')
+def get_all_cities():
+    city_query = CityModel.objects.all()
+    if city_query:
+        cities = [City.from_orm(obj).dict() for obj in city_query]
+        return cities
+
+
+
 @router.get('/{city_id}/total/')
 def get_total(city_id: int):
-    city = City.objects.get(id=city_id)
+    city = CityModel.objects.get(id=city_id)
     query = f"""
     from(bucket: "air")
       |> range(start: -15m)
