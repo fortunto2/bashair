@@ -1,14 +1,19 @@
 from fastapi import APIRouter
 
 from back.models.city import City
+from back.utils.exceptions import NotFound
 from config.influx import query_api
+from config.owm import weather_manager
 
 router = APIRouter(tags=["city"], prefix="/city")
 
 
 @router.get('/{city_id}/total/')
 def get_total(city_id: int):
-    city = City.objects.get(id=city_id)
+    try:
+        city = City.objects.get(id=city_id)
+    except City.DoesNotExist:
+        raise NotFound
     query = f"""
     from(bucket: "air")
       |> range(start: -15m)
@@ -17,9 +22,11 @@ def get_total(city_id: int):
       |> aggregateWindow(every: 15m, fn: sum, createEmpty: false)
       |> last()
     """
+
     total = {}
     fields = {}
     result = query_api.query_csv(query)
+
     for row in result:
         if len(row) > 1:
             if row[1] == 'result':
@@ -33,4 +40,19 @@ def get_total(city_id: int):
                     total[field] += float(value)
                 else:
                     total[field] = float(value)
+
+    total['wind'] = {
+        'speed': None,
+        'deg': None
+    }
+    if city.latitude is not None and city.longitude is not None:
+        try:
+            response = weather_manager.weather_at_coords(
+                lat=float(city.latitude),
+                lon=float(city.longitude)
+            )
+            total['wind'] = response.weather.wnd
+        except Exception as e:
+            print(f'WARNING! Error weather API: {e}')
+
     return total

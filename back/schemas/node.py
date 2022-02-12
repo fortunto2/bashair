@@ -47,7 +47,7 @@ class SensorLocationPointGet(BaseModel):
         orm_mode = True
 
 
-class NodePointWeatherGet(BaseModel):
+class NodePointWindGet(BaseModel):
     speed: Optional[float]
     deg: Optional[int]
 
@@ -58,7 +58,7 @@ class NodePointWeatherGet(BaseModel):
 class NodePointGet(BaseModel):
     id: int
     pm25: Optional[float]
-    weather: NodePointWeatherGet
+    wind: NodePointWindGet
     location: SensorLocationPointGet
 
     class Config:

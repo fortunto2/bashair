@@ -31,6 +31,9 @@ class EnvSettings(BaseSettings):
 
     OWM_KEY: str
 
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 600
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 10080
+
     # INFLUXDB_V2_URL - the url to connect to InfluxDB
     # INFLUXDB_V2_ORG - default destination organization for writes and queries
     # INFLUXDB_V2_TOKEN - the token to use for the authorization
