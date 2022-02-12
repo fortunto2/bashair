@@ -1,22 +1,21 @@
 from django.contrib.auth.models import User
 from fastapi import Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi_jwt_auth import AuthJWT
 from jose import JWTError
 
-from back.schemas.token import TokenData
 from back.utils.exceptions import Credentials
 
 
-def get_current_user(auth: AuthJWT = Depends()):
+def get_current_user(auth: AuthJWT = Depends(), credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
     try:
         username = auth.get_jwt_subject()
         if username is None:
             raise Credentials
-        token_data = TokenData(username=username)
     except JWTError:
         raise Credentials
     try:
-        user = User.objects.get(username=token_data.username)
+        user = User.objects.get(username=username)
     except User.DoesNotExist:
         raise Credentials
     return user

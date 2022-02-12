@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from fastapi import APIRouter, Depends
+from fastapi.security import HTTPBearer
 
 from back.depends.user import get_current_active_user
 from back.models.signal import Signal, SignalToInstance, SignalProperties
@@ -28,7 +29,10 @@ async def get_count(time=None, city=None, user=None):
     return 69
 
 
-@router.post('/', response_model=SignalGet)
+@router.post(
+    '/',
+    response_model=SignalGet
+)
 def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_user)):
     """
     Создаем запись с жалобой в базу

@@ -80,6 +80,7 @@ def create_user(user: UserCreate, auth: AuthJWT = Depends()):
     user = User(**user.dict())
     hashed_password = get_password_hash(user.password)
     user.set_password(hashed_password)
+    user.save()
     access_token = auth.create_access_token(subject=user.username)
     refresh_token = auth.create_refresh_token(subject=user.username)
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
