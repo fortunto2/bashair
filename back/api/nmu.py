@@ -8,17 +8,17 @@ from config.influx import query_api
 router = APIRouter(tags=["nmu"], prefix="/nmu")
 
 
-def get_nmu_influx(measurment='predictions', start='-24h', measurement="air", city=None, region=None):
+def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_id=None):
 
     city_q = ''
     region_q = ''
     result = ''
     time = ''
 
-    if region:
-        region_q = f'|> filter(fn: (r) => r["region"] == "{region}")'
-    if city:
-        city_q = f'|> filter(fn: (r) => r["city"] == "{city}")'
+    if region_id:
+        region_q = f'|> filter(fn: (r) => r["region_id"] == "{region_id}")'
+    if city_id:
+        city_q = f'|> filter(fn: (r) => r["city_id"] == "{city_id}")'
 
     tables = query_api.query(
         f"""
@@ -41,12 +41,12 @@ def get_nmu_influx(measurment='predictions', start='-24h', measurement="air", ci
 
 
 @router.get('')
-def get_nmu(region: Optional[str] = '', city: Optional[str] = ''):
+def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
-    result, time = get_nmu_influx(city=city, region=region)
+    result, time = get_nmu_influx(city_id=city_id, region_id=region_id)
     if result:
 
-        print(f'get NMU for {region}, {city}')
+        print(f'get NMU for {region_id}, {city_id} = {result}')
 
         return JSONResponse(content={
             'result': result,
