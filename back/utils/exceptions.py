@@ -15,6 +15,6 @@ class NotFound(BaseHTTPException):
 
 
 class Credentials(BaseHTTPException):
-    status_code = status.HTTP_401_UNAUTHORIZED,
-    detail = "Could not validate credentials",
-    headers = {"WWW-Authenticate": "Bearer"},
+    status_code = status.HTTP_401_UNAUTHORIZED
+    detail = "Could not validate credentials"
+    headers = {"WWW-Authenticate": "Bearer"}
