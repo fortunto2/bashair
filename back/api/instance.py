@@ -22,7 +22,7 @@ def get_instance(city_id: int):
     """
 
     try:
-        instance = InstanceModel.objects.get(id=city_id)
+        instance = InstanceModel.objects.get(city_id=city_id)
     except InstanceModel.DoesNotExist:
         raise NotFound
     return instance
