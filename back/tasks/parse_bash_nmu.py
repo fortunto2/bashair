@@ -53,6 +53,7 @@ soup = BeautifulSoup(page.text, "html.parser")
 rows = soup.findAll('td')
 
 nmu = 0
+text = ''
 
 for row in rows:
     text = row.get_text()
@@ -79,6 +80,7 @@ tags = {
     'city_id': 1,
     'region': "Башкортостан",
     'region_id': 1,
+    'text': text
 }
 
 print(tags)
