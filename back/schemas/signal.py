@@ -18,18 +18,20 @@ class SignalProperties(SignalPropertiesBase):
 
 class SignalBase(BaseModel):
     text: str
-    location: str
+    location: Optional[str]
     latitude: float
     longitude: float
     time_of_incident: datetime
 
 
 class SignalCreate(SignalBase):
+    city_id: int
     properties: Optional[List[int]]
 
 
 class Signal(SignalBase):
     id: int
+    city_id: int
     owner_id: Optional[int]
     properties: Optional[List[SignalProperties]]
     status: str

@@ -13,6 +13,7 @@ class InstanceBase(BaseModel):
 
 class Instance(InstanceBase):
     id: int
+    city_id: int
 
     class Config:
         orm_mode = True

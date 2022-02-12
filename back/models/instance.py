@@ -13,4 +13,3 @@ class Instance(models.Model):
     website = models.URLField(max_length=200, blank=True, null=True)
     report_url = models.URLField(max_length=200, blank=True, null=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='instance')
-
