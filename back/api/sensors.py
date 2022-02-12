@@ -47,12 +47,12 @@ NAME_MAP = {
 
 
 @router.post('/upload_measurement')
-async def upload_measurement(data: SensorData, request: Request):
+def upload_measurement(data: SensorData, request: Request):
     # print('upload_measurement', data)
     from back.models.node import Node, SensorLocation
     node = None
     try:
-        node: Node = await sync_to_async(Node.objects.select_related('location').get, thread_sensitive=True)(uid=data.node_tag)
+        node: Node = Node.objects.select_related('location').get(uid=data.node_tag)
     except Exception as e:
         print(e, data.node_tag)
 
@@ -87,7 +87,8 @@ async def upload_measurement(data: SensorData, request: Request):
             "location": node.location.location,
             "lat": node.location.latitude,
             "lon": node.location.longitude,
-            "city": node.location.city,
+            "city": node.location.city.name,
+            "city_id": node.location.city.id,
             "street": node.location.street_name,
         },
     }
