@@ -3,6 +3,7 @@ from typing import Optional
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
+from back.schemas.nmu import NmuBase
 from config.influx import query_api
 
 router = APIRouter(tags=["nmu"], prefix="/nmu")
@@ -40,7 +41,7 @@ def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_
     return result, time
 
 
-@router.get('')
+@router.get('', response_model=NmuBase)
 def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
     result, time = get_nmu_influx(city_id=city_id, region_id=region_id)
@@ -48,11 +49,10 @@ def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
         print(f'get NMU for {region_id}, {city_id} = {result}')
 
-        return JSONResponse(content={
-            'result': result,
-            'last_date': str(time.date()),
-            'last_time': str(time.time()).split('.')[0],
-        })
+        return {
+            'mode': result,
+            'datetime': time,
+        }
 
 
 
