@@ -31,8 +31,6 @@ def get_node(node_uid: str):
     """
     try:
         node = Node.objects.get(uid=node_uid)
-        node.pm25
-        node.wind
     except Node.DoesNotExist:
         raise NotFound
 

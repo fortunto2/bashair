@@ -80,6 +80,10 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                 print(f'WARNING! Error weather API: {e}')
         return {}
 
+    @property
+    def city(self):
+        return self.location.city.name
+
 
 class Sensor(TimeStampedModel):  # ЭТО СЕНСОР!
     node = models.ForeignKey(Node, related_name="sensors", on_delete=models.DO_NOTHING)
