@@ -87,7 +87,8 @@ async def upload_measurement(data: SensorData, request: Request):
             "location": node.location.location,
             "lat": node.location.latitude,
             "lon": node.location.longitude,
-            "city": node.location.city,
+            "city": node.location.city.name,
+            "city_id": node.location.city.id,
             "street": node.location.street_name,
         },
     }
