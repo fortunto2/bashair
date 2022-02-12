@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from back.models.sensors import *
+from back.models.node import *
 
 
 class SensorInline(admin.TabularInline):

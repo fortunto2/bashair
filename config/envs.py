@@ -29,6 +29,7 @@ class EnvSettings(BaseSettings):
     INFLUXDB_V2_ORG: str = 'zenpulsar'
     INFLUXDB_V2_TOKEN: str = 'token'
 
+    OWM_KEY: str
 
     # INFLUXDB_V2_URL - the url to connect to InfluxDB
     # INFLUXDB_V2_ORG - default destination organization for writes and queries

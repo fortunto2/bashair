@@ -29,7 +29,7 @@ class SignalCreate(SignalBase):
     properties: Optional[List[int]]
 
 
-class Signal(SignalBase):
+class SignalGet(SignalBase):
     id: int
     city_id: int
     owner_id: Optional[int]
@@ -61,7 +61,7 @@ class SignalToInstanceCreate(SignalToInstanceBase):
     instance_id: int
 
 
-class SignalToInstance(SignalToInstanceBase):
+class SignalToInstanceGet(SignalToInstanceBase):
     id: int
     signal_id: int
     instance_id: int

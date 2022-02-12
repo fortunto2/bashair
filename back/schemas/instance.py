@@ -11,7 +11,7 @@ class InstanceBase(BaseModel):
     report_url: str
 
 
-class Instance(InstanceBase):
+class InstanceGet(InstanceBase):
     id: int
     city_id: int
 

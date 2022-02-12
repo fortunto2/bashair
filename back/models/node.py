@@ -6,6 +6,8 @@ from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
 
 from back.models.citys import City
+from config.influx import query_api
+from config.owm import weather_manager
 
 
 class SensorType(TimeStampedModel):
@@ -21,7 +23,7 @@ class SensorType(TimeStampedModel):
         return self.uid
 
 
-class Node(TimeStampedModel):
+class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
     uid = models.SlugField(unique=True)
     # mac = models.SlugField(unique=True)
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -45,8 +47,41 @@ class Node(TimeStampedModel):
     def __str__(self):
         return self.uid
 
+    @property
+    def pm25(self):
+        result = query_api.query_csv(f"""
+        from(bucket: "air")
+          |> range(start: -15m)
+          |> filter(fn: (r) => r["node"] == "{self.uid}")
+          |> filter(fn: (r) => r["_field"] == "pm25")
+          |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
+          |> last()
+        """)
+        value = None
+        value_index = None
+        for row in result:
+            if len(row) > 1:
+                if row[1] == 'result' and value_index is None:
+                    value_index = next((index for index, col in enumerate(row) if col == '_value'), None)
+                if row[0] == '' and row[1] == '' and value_index is not None:
+                    value = row[value_index]
+        return value
 
-class Sensor(TimeStampedModel):
+    @property
+    def weather(self):
+        if self.location.latitude is not None and self.location.longitude is not None:
+            try:
+                response = weather_manager.weather_at_coords(
+                    lat=float(self.location.latitude),
+                    lon=float(self.location.longitude)
+                )
+                return response.weather.wnd
+            except Exception as e:
+                print(f'WARNING! Error weather API: {e}')
+        return {}
+
+
+class Sensor(TimeStampedModel):  # ЭТО СЕНСОР!
     node = models.ForeignKey(Node, related_name="sensors", on_delete=models.DO_NOTHING)
     pin = models.CharField(
         max_length=10,

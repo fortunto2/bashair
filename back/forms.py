@@ -2,7 +2,7 @@
 
 from django import forms
 
-from back.models.sensors import SensorType
+from back.models.node import SensorType
 
 
 class AddSensordeviceForm(forms.Form):

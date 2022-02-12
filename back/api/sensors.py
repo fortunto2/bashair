@@ -32,24 +32,24 @@ NAME_MAP = {
 }
 
 
-@router.get('/data/mean')
-async def get_sensor_data(city: Optional[str] = '', field: Optional[str] = 'pm25', period: Optional[str] = '-1h'):
-
-    result = get_air_values_mean(field=field, start=period, city=city)
-    print(f'get mean city: {city} = {result}')
-
-    return JSONResponse(content={
-        'result': result,
-        'field': field,
-        'period': period,
-        'city': city,
-    })
+# @router.get('/data/mean')
+# async def get_sensor_data(city: Optional[str] = '', field: Optional[str] = 'pm25', period: Optional[str] = '-1h'):
+#
+#     result = get_air_values_mean(field=field, start=period, city=city)
+#     print(f'get mean city: {city} = {result}')
+#
+#     return JSONResponse(content={
+#         'result': result,
+#         'field': field,
+#         'period': period,
+#         'city': city,
+#     })
 
 
 @router.post('/upload_measurement')
 async def upload_measurement(data: SensorData, request: Request):
     # print('upload_measurement', data)
-    from back.models.sensors import Node, SensorLocation
+    from back.models.node import Node, SensorLocation
     node = None
     try:
         node: Node = await sync_to_async(Node.objects.select_related('location').get, thread_sensitive=True)(uid=data.node_tag)

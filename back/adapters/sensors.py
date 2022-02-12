@@ -3,7 +3,7 @@ from http.client import HTTPException
 from typing import TypeVar, Type
 
 from back import models
-from back.models.sensors import Sensor
+from back.models.node import Sensor
 
 
 ModelT = TypeVar("ModelT", bound=models.Model)
