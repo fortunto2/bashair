@@ -1,6 +1,6 @@
 from django.db import models
 
-from back.models.citys import City
+from back.models.city import City
 from phonenumber_field.modelfields import PhoneNumberField
 
 

@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 
+from back.models.city import City
 from config.influx import query_api
 
 router = APIRouter(tags=["city"], prefix="/city")
@@ -7,6 +8,7 @@ router = APIRouter(tags=["city"], prefix="/city")
 
 @router.get('/{city_id}/total/')
 def get_total(city_id: int):
+    city = City.objects.get(id=city_id)
     query = f"""
     from(bucket: "air")
       |> range(start: -15m)

@@ -4,7 +4,7 @@ from django_extensions.db.models import TimeStampedModel
 
 from back.models.instance import Instance
 
-from back.models.citys import City
+from back.models.city import City
 
 
 class SignalProperties(models.Model):

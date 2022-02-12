@@ -3,7 +3,7 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from phonenumber_field.formfields import PhoneNumberField
 
-from back.models.citys import City
+from back.models.city import City
 
 
 class Community(TimeStampedModel):

@@ -5,7 +5,7 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
 
-from back.models.citys import City
+from back.models.city import City
 from config.influx import query_api
 from config.owm import weather_manager
 
