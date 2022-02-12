@@ -68,7 +68,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
         return value
 
     @property
-    def weather(self):
+    def wind(self):
         if self.location.latitude is not None and self.location.longitude is not None:
             try:
                 response = weather_manager.weather_at_coords(
