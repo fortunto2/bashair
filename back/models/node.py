@@ -68,7 +68,6 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                     value = round(float(value), 1)
         return value
 
-
     @property
     def history(self):
         table = query_api.query_csv(f"""
@@ -98,7 +97,6 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                         result[time][field] = 0
                     result[time][field] += round(float(value), 1)
         return result
-
 
     @property
     def wind(self):
