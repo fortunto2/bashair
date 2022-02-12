@@ -19,8 +19,8 @@ def get_nodes():
     )
     nodes = []
     for node in nodes_query:
-        node = NodePointGet.from_orm(node)
-        nodes.append(node.dict())
+        node_schema = NodePointGet.from_orm(node)
+        nodes.append(node_schema.dict())
     return nodes
 
 

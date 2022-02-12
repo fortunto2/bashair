@@ -22,11 +22,13 @@ def get_properties():
 
 
 @router.get('/count/')
-async def get_count(time=None, city=None, user=None):
+def get_count(time=None, city=None, user=None):
     """
     Количество жалоб счетчик
     """
-    return 69
+    # todo: фильтровать через инфлюкс по параметрам
+    count_query = Signal.objects.count()
+    return int(count_query)
 
 
 @router.post(

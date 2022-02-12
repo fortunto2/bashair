@@ -62,10 +62,10 @@ class NodePointGet(BaseModel):
     description: Optional[str]
     description: Optional[str]
     location_id: int
-    city: str
+    city: Optional[str]
 
     pm25: Optional[float]
-    wind: NodePointWindGet
+    wind: Optional[NodePointWindGet]
     location: SensorLocationPointGet
 
     # @validator(pre=True)
