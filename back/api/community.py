@@ -14,7 +14,8 @@ def get_community(city_id: int):
     """
 
     try:
-        community = CommunityModel.objects.get(id=city_id)
+        community = CommunityModel.objects.get(city_id=city_id)
     except CommunityModel.DoesNotExist:
         raise NotFound
+
     return community
