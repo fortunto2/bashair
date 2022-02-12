@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class SignalPropertiesBase(BaseModel):
@@ -22,7 +22,6 @@ class SignalBase(BaseModel):
     latitude: float
     longitude: float
     time_of_incident: datetime
-    status: str
 
 
 class SignalCreate(SignalBase):
@@ -31,14 +30,19 @@ class SignalCreate(SignalBase):
 
 class Signal(SignalBase):
     id: int
-    owner_id: int
+    owner_id: Optional[int]
     properties: Optional[List[SignalProperties]]
+    status: str
 
     created: datetime
     modified: datetime
 
     class Config:
         orm_mode = True
+
+    @validator('properties', pre=True)
+    def get_properties(cls, v):
+        return [SignalProperties.from_orm(obj) for obj in v.all()]
 
 
 class SignalToInstanceBase(BaseModel):
@@ -47,7 +51,7 @@ class SignalToInstanceBase(BaseModel):
     response: str
     time_of_response: datetime
     status: str
-    other_comment: str
+    other_comment: Optional[str]
 
 
 class SignalToInstanceCreate(SignalToInstanceBase):
