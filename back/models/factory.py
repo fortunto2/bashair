@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
+from phonenumber_field.modelfields import PhoneNumberField
 
 from back.models.citys import City
 
@@ -8,21 +9,22 @@ from back.models.citys import City
 class FactoryType(models.Model):
     "Тип, например химическое производство, тэц, мусорка"
     name = models.CharField(max_length=200)
+    danger_class = models.IntegerField(default=1)
 
 
 class Factory(TimeStampedModel):
     name = models.CharField(max_length=200)
-    description = models.TextField()
-    phone = models.CharField(max_length=20)
-    email = models.EmailField(max_length=200)
-    address = models.TextField()
-    website = models.URLField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    phone = PhoneNumberField(null=True, blank=True)
+    email = models.EmailField(max_length=200, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    website = models.URLField(max_length=200,blank=True, null=True)
 
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, related_name='factory')
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='factory')
 
     location = models.TextField(null=True, blank=True)
     latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
 
-    factory_type = models.ForeignKey(FactoryType, on_delete=models.SET_NULL, related_name='factory')
+    factory_type = models.ForeignKey(FactoryType, on_delete=models.SET_NULL, null=True, blank=True, related_name='factory')
     danger_score = models.FloatField(default=0, max_length=1) # условный вред от производства от 1 до 10
