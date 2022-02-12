@@ -1,15 +1,12 @@
 from fastapi import FastAPI
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
-from passlib.context import CryptContext
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
 from back.models.deny_list import DenyList
 from config import settings
 from config.envs import envs
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 auth_handler = FastAPI()
 
