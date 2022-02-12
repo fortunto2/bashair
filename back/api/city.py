@@ -1,11 +1,23 @@
+from typing import List
+
 from fastapi import APIRouter
 
 from back.models.city import City
+from back.schemas.city import CityGet
 from back.utils.exceptions import NotFound
 from config.influx import query_api
 from config.owm import weather_manager
 
 router = APIRouter(tags=["city"], prefix="/city")
+
+
+@router.get('/all')
+def get_all_cities():
+    city_query = CityModel.objects.all()
+    if city_query:
+        cities = [City.from_orm(obj).dict() for obj in city_query]
+        return cities
+
 
 
 @router.get('/{city_id}/total/')

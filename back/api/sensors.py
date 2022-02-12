@@ -48,6 +48,9 @@ NAME_MAP = {
 
 @router.post('/upload_measurement')
 def upload_measurement(data: SensorData, request: Request):
+    """
+    Принимаем данные от датчиков
+    """
     # print('upload_measurement', data)
     from back.models.node import Node, SensorLocation
     node = None
