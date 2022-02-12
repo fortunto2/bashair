@@ -1,6 +1,6 @@
 from typing import Union
 
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from fastapi import HTTPException, Depends, APIRouter, Body
 from fastapi.security import OAuth2PasswordRequestForm
