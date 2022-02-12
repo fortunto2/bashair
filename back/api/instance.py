@@ -7,6 +7,14 @@ from back.utils.exceptions import NotFound
 router = APIRouter(tags=["instance"], prefix="/instance")
 
 
+@router.get('/all')
+def get_all_instance():
+    instance_query = InstanceModel.objects.all()
+    if instance_query:
+        instances = [InstanceGet.from_orm(obj).dict() for obj in instance_query]
+        return instances
+
+
 @router.get('/{city_id}', response_model=InstanceGet)
 def get_instance(city_id: int):
     """
