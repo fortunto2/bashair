@@ -33,7 +33,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
     sensor_position = models.IntegerField(
         null=True)  # 0 = no information, 1 = in backyard, 10 = just in front of the house at the street
     location = models.ForeignKey("SensorLocation", on_delete=models.DO_NOTHING)
-    email = models.EmailField(null=True, blank=True)
+    # email = models.EmailField(null=True, blank=True)
     last_notify = models.DateTimeField(null=True, blank=True)
     description_internal = models.TextField(null=True,
                                             blank=True)  # for internal purposes, should never been provided via API / dump / ...

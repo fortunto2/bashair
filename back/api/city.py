@@ -13,9 +13,9 @@ router = APIRouter(tags=["city"], prefix="/city")
 
 @router.get('/all')
 def get_all_cities():
-    city_query = CityModel.objects.all()
+    city_query = City.objects.all()
     if city_query:
-        cities = [City.from_orm(obj).dict() for obj in city_query]
+        cities = [CityGet.from_orm(obj).dict() for obj in city_query]
         return cities
 
 

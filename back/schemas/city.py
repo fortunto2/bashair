@@ -4,6 +4,7 @@ from pydantic import BaseModel, AnyUrl, EmailStr
 
 
 class CityBase(BaseModel):
+    id: int
     display_name: str
     latitude: Optional[float]
     longitude: Optional[float]

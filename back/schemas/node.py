@@ -57,9 +57,21 @@ class NodePointWindGet(BaseModel):
 
 class NodePointGet(BaseModel):
     id: int
+    uid: str
+    name: str
+    description: Optional[str]
+    description: Optional[str]
+    location_id: int
+    city: str
+
     pm25: Optional[float]
     wind: NodePointWindGet
     location: SensorLocationPointGet
+
+    # @validator(pre=True)
+    # def get_city(cls, values):
+    #     if cls.fi
+    #     return values
 
     class Config:
         orm_mode = True
