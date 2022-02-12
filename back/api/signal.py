@@ -56,6 +56,5 @@ def create_signal_to_instance(signal_to_instance: SignalToInstanceCreate):
     """
     Для формы жалобы в инстанции различные, такие как ЕДДС
     """
-    signal_to_instance = SignalToInstanceModel.objects.create(**signal_to_instance.dict())
     signal_to_instance = SignalToInstance.objects.create(**signal_to_instance.dict())
     return signal_to_instance
