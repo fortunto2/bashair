@@ -29,7 +29,7 @@ def get_total(city_id: int):
       |> range(start: -15m)
       |> filter(fn: (r) => r["city_id"] == "{city_id}")
       |> filter(fn: (r) => r["_field"] == "aqi" or r["_field"] == "humidity" or r["_field"] == "pm10" or r["_field"] == "pm25" or r["_field"] == "pressure" or r["_field"] == "temperature")
-      |> aggregateWindow(every: 15m, fn: sum, createEmpty: false)
+      |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
       |> last()
     """
 

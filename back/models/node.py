@@ -6,6 +6,7 @@ from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
 
 from back.models.city import City
+from back.schemas.node import NodeMetrics
 from config.influx import query_api
 from config.owm import weather_manager
 
@@ -47,26 +48,35 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
     def __str__(self):
         return self.uid
 
-    @property
-    def pm25(self):
-        result = query_api.query_csv(f"""
+    def get_metrics(self):
+        print('IN metrics')
+        table = query_api.query_csv(f"""
         from(bucket: "air")
           |> range(start: -15m)
           |> filter(fn: (r) => r["node"] == "{self.uid}")
-          |> filter(fn: (r) => r["_field"] == "pm25")
+          |> filter(fn: (r) => r["_field"] == "aqi" or r["_field"] == "humidity" or r["_field"] == "pm10" or r["_field"] == "pm25" or r["_field"] == "pressure" or r["_field"] == "temperature")
           |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
           |> last()
         """)
-        value = None
-        value_index = None
-        for row in result:
+        result = {}
+        fields = {}
+        for row in table:
             if len(row) > 1:
-                if row[1] == 'result' and value_index is None:
-                    value_index = next((index for index, col in enumerate(row) if col == '_value'), None)
-                if row[0] == '' and row[1] == '' and value_index is not None:
-                    value = row[value_index]
-                    value = round(float(value), 1)
-        return value
+                if row[1] == 'result':
+                    for index, col in enumerate(row):
+                        if col in ['_value', '_field', '_time']:
+                            fields[col] = index
+                if row[0] == '' and row[1] == '':
+                    field = row[fields['_field']]
+                    value = row[fields['_value']]
+                    if field not in result:
+                        result[field] = 0
+                    result[field] += round(float(value), 1)
+
+        result = NodeMetrics(**result)
+        print(result)
+        return result
+
 
     @property
     def history(self):

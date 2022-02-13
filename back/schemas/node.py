@@ -55,7 +55,17 @@ class NodePointWindGet(BaseModel):
         orm_mode = True
 
 
-class NodePointGet(BaseModel):
+class NodeMetrics(BaseModel):
+    pm25: Optional[float]
+    pm10: Optional[float]
+    temperature: Optional[float]
+    pressure: Optional[float]
+    humidity: Optional[float]
+    aqi: Optional[float]
+    aqi_category: Optional[str]
+
+
+class NodePointGet(NodeMetrics):
     id: int
     uid: str
     name: str
@@ -64,9 +74,8 @@ class NodePointGet(BaseModel):
     location_id: int
     city: Optional[str]
 
-    pm25: Optional[float]
     wind: Optional[NodePointWindGet]
-    location: SensorLocationPointGet
+    location: Optional[SensorLocationPointGet]
 
     # @validator(pre=True)
     # def get_city(cls, values):

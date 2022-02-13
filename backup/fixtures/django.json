@@ -1,0 +1,1088 @@
+[
+  {
+    "model": "back.country",
+    "pk": 1,
+    "fields": {
+      "name": "Russia",
+      "name_ascii": "",
+      "slug": "country",
+      "geoname_id": null,
+      "alternate_names": "",
+      "code2": null,
+      "code3": null,
+      "continent": "EU",
+      "tld": "",
+      "phone": null
+    }
+  },
+  {
+    "model": "back.region",
+    "pk": 1,
+    "fields": {
+      "name": "Башкортостан",
+      "name_ascii": "",
+      "slug": "region",
+      "geoname_id": null,
+      "alternate_names": "",
+      "display_name": "",
+      "geoname_code": null,
+      "country": 1
+    }
+  },
+  {
+    "model": "back.city",
+    "pk": 1,
+    "fields": {
+      "name": "Стерлитамак",
+      "name_ascii": "Sterlitamak",
+      "slug": "sterlitamak",
+      "geoname_id": null,
+      "alternate_names": "",
+      "display_name": "Стерлитамак, Russia",
+      "search_names": "sterlitamakrussia",
+      "latitude": "53.62461",
+      "longitude": "55.95015",
+      "subregion": null,
+      "region": null,
+      "country": 1,
+      "population": null,
+      "feature_code": null,
+      "timezone": null
+    }
+  },
+  {
+    "model": "back.city",
+    "pk": 2,
+    "fields": {
+      "name": "Салават",
+      "name_ascii": "Salavat",
+      "slug": "salavat",
+      "geoname_id": null,
+      "alternate_names": "",
+      "display_name": "Салават, Russia",
+      "search_names": "salavatrussia",
+      "latitude": null,
+      "longitude": null,
+      "subregion": null,
+      "region": null,
+      "country": 1,
+      "population": null,
+      "feature_code": null,
+      "timezone": null
+    }
+  },
+  {
+    "model": "back.sensortype",
+    "pk": 1,
+    "fields": {
+      "created": "2021-04-17T00:27:46.132Z",
+      "modified": "2021-04-17T00:27:46.132Z",
+      "uid": "sds011",
+      "name": "SDS011",
+      "manufacturer": "china",
+      "description": null
+    }
+  },
+  {
+    "model": "back.sensortype",
+    "pk": 2,
+    "fields": {
+      "created": "2021-04-17T00:28:20.814Z",
+      "modified": "2021-04-17T00:28:20.815Z",
+      "uid": "bme280",
+      "name": "BME280",
+      "manufacturer": "china",
+      "description": null
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 1,
+    "fields": {
+      "created": "2021-04-17T00:28:39.777Z",
+      "modified": "2021-04-17T00:28:39.777Z",
+      "uid": "esp8266-11545355",
+      "owner": 1,
+      "name": "Светлая",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 1,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 2,
+    "fields": {
+      "created": "2021-04-17T00:32:31.716Z",
+      "modified": "2021-04-17T00:32:31.716Z",
+      "uid": "esp8266-6504878",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 2,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 3,
+    "fields": {
+      "created": "2021-04-17T00:36:35.694Z",
+      "modified": "2021-04-17T00:38:45.887Z",
+      "uid": "esp8266-15568680",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 3,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 4,
+    "fields": {
+      "created": "2021-04-17T00:38:18.132Z",
+      "modified": "2021-04-17T00:38:18.132Z",
+      "uid": "esp8266-6506785",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 4,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 5,
+    "fields": {
+      "created": "2021-04-17T00:41:50.354Z",
+      "modified": "2022-02-08T23:22:17.168Z",
+      "uid": "esp8266-11645760",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 150,
+      "sensor_position": 1,
+      "location": 5,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 6,
+    "fields": {
+      "created": "2021-04-17T00:45:59.697Z",
+      "modified": "2022-02-08T23:22:01.392Z",
+      "uid": "esp8266-11590088",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 6,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 7,
+    "fields": {
+      "created": "2021-04-17T00:47:10.852Z",
+      "modified": "2021-04-17T00:47:10.852Z",
+      "uid": "esp8266-15567731",
+      "owner": 1,
+      "name": "",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 7,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 8,
+    "fields": {
+      "created": "2021-04-26T03:25:20.440Z",
+      "modified": "2021-04-26T03:25:20.440Z",
+      "uid": "esp8266-6520336",
+      "owner": 1,
+      "name": "Север, Новый Краснояр",
+      "description": "",
+      "height": 150,
+      "sensor_position": 3,
+      "location": 8,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 9,
+    "fields": {
+      "created": "2022-02-08T23:20:21.566Z",
+      "modified": "2022-02-08T23:21:32.048Z",
+      "uid": "esp8266-15001625",
+      "owner": 1,
+      "name": "Шиханы",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 9,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 10,
+    "fields": {
+      "created": "2022-02-08T23:26:19.167Z",
+      "modified": "2022-02-08T23:26:19.167Z",
+      "uid": "esp8266-15071576",
+      "owner": 1,
+      "name": "Рощинский",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 10,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.node",
+    "pk": 11,
+    "fields": {
+      "created": "2022-02-08T23:35:39.207Z",
+      "modified": "2022-02-08T23:35:39.207Z",
+      "uid": "esp8266-15008259",
+      "owner": 1,
+      "name": "Заашкадарье",
+      "description": "",
+      "height": 1,
+      "sensor_position": 1,
+      "location": 11,
+      "last_notify": null,
+      "description_internal": "",
+      "indoor": false,
+      "inactive": false,
+      "exact_location": false
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 1,
+    "fields": {
+      "created": "2021-04-17T00:28:39.779Z",
+      "modified": "2021-04-17T00:28:39.779Z",
+      "node": 1,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 2,
+    "fields": {
+      "created": "2021-04-17T00:28:39.781Z",
+      "modified": "2021-04-17T00:28:39.781Z",
+      "node": 1,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 3,
+    "fields": {
+      "created": "2021-04-17T00:32:31.718Z",
+      "modified": "2021-04-17T00:32:31.718Z",
+      "node": 2,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 4,
+    "fields": {
+      "created": "2021-04-17T00:32:31.720Z",
+      "modified": "2021-04-17T00:32:31.720Z",
+      "node": 2,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 5,
+    "fields": {
+      "created": "2021-04-17T00:38:18.134Z",
+      "modified": "2021-04-17T00:38:18.134Z",
+      "node": 4,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 6,
+    "fields": {
+      "created": "2021-04-17T00:38:18.137Z",
+      "modified": "2021-04-17T00:38:18.137Z",
+      "node": 4,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 7,
+    "fields": {
+      "created": "2021-04-17T00:38:45.889Z",
+      "modified": "2021-04-17T00:38:45.889Z",
+      "node": 3,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 8,
+    "fields": {
+      "created": "2021-04-17T00:38:45.890Z",
+      "modified": "2021-04-17T00:38:45.891Z",
+      "node": 3,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 9,
+    "fields": {
+      "created": "2022-02-08T23:21:32.049Z",
+      "modified": "2022-02-08T23:21:32.049Z",
+      "node": 9,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 10,
+    "fields": {
+      "created": "2022-02-08T23:21:32.050Z",
+      "modified": "2022-02-08T23:21:32.050Z",
+      "node": 9,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 11,
+    "fields": {
+      "created": "2022-02-08T23:22:01.393Z",
+      "modified": "2022-02-08T23:22:01.393Z",
+      "node": 6,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 12,
+    "fields": {
+      "created": "2022-02-08T23:22:01.394Z",
+      "modified": "2022-02-08T23:22:01.394Z",
+      "node": 6,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 13,
+    "fields": {
+      "created": "2022-02-08T23:22:17.168Z",
+      "modified": "2022-02-08T23:22:17.168Z",
+      "node": 5,
+      "pin": "1",
+      "sensor_type": 1,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensor",
+    "pk": 14,
+    "fields": {
+      "created": "2022-02-08T23:22:17.169Z",
+      "modified": "2022-02-08T23:22:17.169Z",
+      "node": 5,
+      "pin": "2",
+      "sensor_type": 2,
+      "description": "",
+      "public": true
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 1,
+    "fields": {
+      "created": "2021-04-17T00:27:16.447Z",
+      "modified": "2022-02-11T23:02:55.739Z",
+      "location": "Юго-Запад, Светлая",
+      "latitude": "53.62646160000",
+      "longitude": "55.88513680000",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Светлая",
+      "street_number": "11",
+      "postalcode": "453100",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2021-04-17T00:25:04Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 2,
+    "fields": {
+      "created": "2021-04-17T00:32:03.632Z",
+      "modified": "2022-02-11T23:00:54.741Z",
+      "location": "Наумовка",
+      "latitude": "53.51335320000",
+      "longitude": "55.90418100000",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Речная",
+      "street_number": "6",
+      "postalcode": "453167",
+      "city": 1,
+      "traffic_in_area": 3,
+      "oven_in_area": 3,
+      "industry_in_area": 3,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2021-04-17T00:30:51Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 3,
+    "fields": {
+      "created": "2021-04-17T00:36:32.139Z",
+      "modified": "2022-02-11T23:02:30.649Z",
+      "location": "Центр, Салават",
+      "latitude": "53.35020770000",
+      "longitude": "55.92279412496",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Ленина",
+      "street_number": "27а",
+      "postalcode": "",
+      "city": 2,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 4,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2021-04-17T00:34:36Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 4,
+    "fields": {
+      "created": "2021-04-17T00:38:03.598Z",
+      "modified": "2022-02-11T23:01:37.357Z",
+      "location": "Стерлитамак, Мира 150",
+      "latitude": "53.63037637437",
+      "longitude": "55.97273468971",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Мира",
+      "street_number": "140",
+      "postalcode": "453100",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2021-04-17T00:36:55Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 5,
+    "fields": {
+      "created": "2021-04-17T00:41:42.422Z",
+      "modified": "2022-02-11T23:02:44.234Z",
+      "location": "Юг, Байрак",
+      "latitude": "53.57463036951",
+      "longitude": "55.87743043900",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Ягодная",
+      "street_number": "30",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2021-04-17T00:39:49Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 6,
+    "fields": {
+      "created": "2021-04-17T00:45:49.363Z",
+      "modified": "2022-02-11T23:01:28.108Z",
+      "location": "Сода, Тукаева",
+      "latitude": "53.64016230000",
+      "longitude": "55.96642230000",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Тукаева",
+      "street_number": "",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": null,
+      "description": "",
+      "timestamp": "2021-04-17T00:42:56Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 7,
+    "fields": {
+      "created": "2021-04-17T00:47:07.453Z",
+      "modified": "2022-02-11T23:01:56.294Z",
+      "location": "Центр, Николаева",
+      "latitude": null,
+      "longitude": null,
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Николаева",
+      "street_number": "5",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": null,
+      "description": "",
+      "timestamp": "2021-04-17T00:46:17Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 8,
+    "fields": {
+      "created": "2021-04-26T03:25:11.390Z",
+      "modified": "2022-02-11T23:01:15.498Z",
+      "location": "с. Новый Краснояр",
+      "latitude": "53.74676179526",
+      "longitude": "56.05419874191",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Мира",
+      "street_number": "30",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": null,
+      "description": "",
+      "timestamp": "2021-04-26T03:24:11Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 9,
+    "fields": {
+      "created": "2022-02-08T23:18:31.147Z",
+      "modified": "2022-02-11T23:01:46.504Z",
+      "location": "Торатау",
+      "latitude": "53.55360930000",
+      "longitude": "56.08360150000",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Шиханы",
+      "street_number": "",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2022-02-08T23:16:18Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 10,
+    "fields": {
+      "created": "2022-02-08T23:25:45.649Z",
+      "modified": "2022-02-11T23:01:05.518Z",
+      "location": "Рощинский",
+      "latitude": "53.74811680000",
+      "longitude": "55.91928010000",
+      "altitude": null,
+      "indoor": false,
+      "street_name": "",
+      "street_number": "",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2022-02-08T23:24:52Z"
+    }
+  },
+  {
+    "model": "back.sensorlocation",
+    "pk": 11,
+    "fields": {
+      "created": "2022-02-08T23:34:22.201Z",
+      "modified": "2022-02-11T23:00:45.875Z",
+      "location": "Восток, стерлитамак",
+      "latitude": null,
+      "longitude": null,
+      "altitude": null,
+      "indoor": false,
+      "street_name": "Заашкадарье",
+      "street_number": "",
+      "postalcode": "",
+      "city": 1,
+      "traffic_in_area": 1,
+      "oven_in_area": 1,
+      "industry_in_area": 1,
+      "owner": 1,
+      "description": "",
+      "timestamp": "2022-02-08T23:33:34Z"
+    }
+  },
+  {
+    "model": "back.instance",
+    "pk": 2,
+    "fields": {
+      "name": "ЕДДС Стерлитамак",
+      "description": "",
+      "phone": "8 (347) 320-00-45",
+      "email": null,
+      "address": "ул. Мира, 4а",
+      "website": "https://mbuass.ru/",
+      "report_url": null,
+      "city": 1
+    }
+  },
+  {
+    "model": "back.instance",
+    "pk": 3,
+    "fields": {
+      "name": "ЕДДС Салават",
+      "description": "",
+      "phone": "8 (347) 635-98-01",
+      "email": null,
+      "address": "",
+      "website": null,
+      "report_url": null,
+      "city": 2
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 1,
+    "fields": {
+      "name": "Гарь",
+      "group": "smells"
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 2,
+    "fields": {
+      "name": "Химический запах",
+      "group": "smells"
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 3,
+    "fields": {
+      "name": "Тухлый",
+      "group": "smells"
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 4,
+    "fields": {
+      "name": "Головная боль",
+      "group": "symptoms"
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 5,
+    "fields": {
+      "name": "Кашель",
+      "group": "symptoms"
+    }
+  },
+  {
+    "model": "back.signalproperties",
+    "pk": 6,
+    "fields": {
+      "name": "Рвота",
+      "group": "symptoms"
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 1,
+    "fields": {
+      "created": "2022-02-11T23:51:23.215Z",
+      "modified": "2022-02-11T23:51:23.215Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:51:23.216Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 2,
+    "fields": {
+      "created": "2022-02-11T23:51:50.226Z",
+      "modified": "2022-02-11T23:51:50.226Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:51:50.226Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 3,
+    "fields": {
+      "created": "2022-02-11T23:52:08.277Z",
+      "modified": "2022-02-11T23:52:08.277Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:52:08.277Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 4,
+    "fields": {
+      "created": "2022-02-11T23:52:21.593Z",
+      "modified": "2022-02-11T23:52:21.593Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:52:21.594Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 5,
+    "fields": {
+      "created": "2022-02-11T23:55:30.291Z",
+      "modified": "2022-02-11T23:55:30.292Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:55:30.292Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 6,
+    "fields": {
+      "created": "2022-02-11T23:57:09.462Z",
+      "modified": "2022-02-11T23:57:09.462Z",
+      "text": "Мне плохааа! Памагите суки!",
+      "owner": null,
+      "location": "Стерлитамак",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": null,
+      "time_of_incident": "2022-02-11T23:57:09.462Z",
+      "status": "sent",
+      "properties": [
+        1,
+        4
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 8,
+    "fields": {
+      "created": "2022-02-12T05:24:41.601Z",
+      "modified": "2022-02-12T05:24:41.601Z",
+      "text": "string",
+      "owner": null,
+      "location": "string",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": 2,
+      "time_of_incident": "2022-02-12T05:24:41.601Z",
+      "status": "sent",
+      "properties": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "back.signal",
+    "pk": 9,
+    "fields": {
+      "created": "2022-02-12T05:45:59.933Z",
+      "modified": "2022-02-12T05:45:59.933Z",
+      "text": "string",
+      "owner": 1,
+      "location": "string",
+      "latitude": "0E-11",
+      "longitude": "0E-11",
+      "city": 2,
+      "time_of_incident": "2022-02-12T05:45:59.934Z",
+      "status": "sent",
+      "properties": []
+    }
+  },
+  {
+    "model": "back.signaltoinstance",
+    "pk": 2,
+    "fields": {
+      "created": "2022-02-12T00:09:46.973Z",
+      "modified": "2022-02-12T00:09:46.974Z",
+      "text": "Памагите мне!!!",
+      "signal": 5,
+      "instance": 2,
+      "time_of_report": "2022-02-12T00:09:46.974Z",
+      "response": "Пошёл нахуй",
+      "time_of_response": "2022-02-12T00:09:46.974Z",
+      "status": "answered",
+      "other_comment": ""
+    }
+  },
+  {
+    "model": "back.factory",
+    "pk": 2,
+    "fields": {
+      "created": "2022-02-11T23:39:12.613Z",
+      "modified": "2022-02-12T00:03:49.287Z",
+      "name": "БСК",
+      "description": "",
+      "phone": "8 (347) 329-76-09",
+      "email": null,
+      "address": "",
+      "website": null,
+      "city": 1,
+      "location": "На севере стерлитамака",
+      "latitude": null,
+      "longitude": null,
+      "factory_type": null,
+      "danger_score": 0,
+      "photo": "",
+      "icon": ""
+    }
+  },
+  {
+    "model": "back.factory",
+    "pk": 3,
+    "fields": {
+      "created": "2022-02-11T23:39:42.898Z",
+      "modified": "2022-02-11T23:39:42.898Z",
+      "name": "Тау Нефтехим",
+      "description": "",
+      "phone": null,
+      "email": null,
+      "address": "",
+      "website": null,
+      "city": 1,
+      "location": "",
+      "latitude": null,
+      "longitude": null,
+      "factory_type": null,
+      "danger_score": 0,
+      "photo": "",
+      "icon": ""
+    }
+  },
+  {
+    "model": "back.factory",
+    "pk": 4,
+    "fields": {
+      "created": "2022-02-11T23:40:00.091Z",
+      "modified": "2022-02-11T23:40:00.091Z",
+      "name": "Газпром Нефтехим Салават",
+      "description": "",
+      "phone": null,
+      "email": null,
+      "address": "",
+      "website": null,
+      "city": 2,
+      "location": "",
+      "latitude": null,
+      "longitude": null,
+      "factory_type": null,
+      "danger_score": 0,
+      "photo": "",
+      "icon": ""
+    }
+  },
+  {
+    "model": "back.community",
+    "pk": 1,
+    "fields": {
+      "created": "2022-02-12T02:46:27.821Z",
+      "modified": "2022-02-12T03:56:47.862Z",
+      "name": "Стерлитамак, Дыши!",
+      "description": "",
+      "phone": "8 (962) 523-91-49",
+      "email": "info@bashair.ru",
+      "address": "",
+      "website": "http://bashair.ru",
+      "social": "https://vk.com/vozduh_str",
+      "social2": null,
+      "social3": null,
+      "news_feed": "https://bashair.ru/feed/",
+      "city": 1,
+      "owner": 1,
+      "logo": "192.png"
+    }
+  }
+]
