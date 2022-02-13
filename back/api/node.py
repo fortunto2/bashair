@@ -10,7 +10,7 @@ from back.utils.exceptions import NotFound, PermissionDenied
 router = APIRouter(tags=["node"], prefix="/node")
 
 
-@router.get('/all')
+@router.get('/all/')
 def get_nodes():
     nodes_query = Node.objects.select_related('location').only(
         'id', 'uid', 'location__longitude', 'location__latitude'
