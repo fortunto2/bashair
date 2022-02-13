@@ -4,7 +4,7 @@ from django_extensions.db.models import TimeStampedModel
 from phonenumber_field.modelfields import PhoneNumberField
 
 from back.models.city import City
-
+from django.contrib.gis.db import models as geomodel
 
 # class FactoryType(models.Model):
 #     "Тип, например химическое производство, тэц, мусорка"
@@ -13,7 +13,7 @@ from back.models.city import City
 
 
 class Factory(TimeStampedModel):
-    name = models.CharField(max_length=200)
+    name = geomodel.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     phone = PhoneNumberField(null=True, blank=True)
     email = models.EmailField(max_length=200, blank=True, null=True)
@@ -22,9 +22,11 @@ class Factory(TimeStampedModel):
 
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='factory')
 
-    location = models.TextField(null=True, blank=True)
+    # location = models.TextField(null=True, blank=True)
     latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
     longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
+
+    location = geomodel.PointField(blank=True, null=True)
 
     TYPES = (
         ('zavod', 'Завод'),

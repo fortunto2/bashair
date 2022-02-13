@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cities_light',
     'phonenumber_field',
+    'django.contrib.gis'
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,8 @@ DEFAULT_CHARSET = 'utf8'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': envs.POSTGRES_DB,
         'USER': envs.POSTGRES_USER,
         'PASSWORD': envs.POSTGRES_PASSWORD,
@@ -121,3 +123,5 @@ CITIES_LIGHT_APP_NAME = 'back'
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'RU'
 PHONENUMBER_DEFAULT_FORMAT = 'NATIONAL'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

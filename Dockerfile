@@ -16,6 +16,10 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 RUN pip install psycopg2 --no-binary psycopg2
 
+RUN apt-get install -y gdal-bin libgdal-dev
+RUN apt-get install -y python3-gdal
+RUN apt-get install -y binutils libproj-dev
+
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
 COPY poetry.lock pyproject.toml /app/
