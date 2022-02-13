@@ -25,7 +25,7 @@ def get_nodes():
     return nodes
 
 
-@router.get('/{node_id}', response_model=NodePointGet)
+@router.get('/{node_id}/', response_model=NodePointGet)
 def get_node(node_id: int):
     """
     Данные по датчику
