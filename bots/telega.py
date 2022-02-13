@@ -4,19 +4,19 @@ from pprint import pprint
 sys.path.append('../')
 sys.path.append('.')
 
-from config import settings
+from config.envs import envs
 
 import logging
 
 from aiogram import Bot, Dispatcher, executor, types
 
 # Configure logging
-from db.influx import client, get_air_values_mean
+from back.time_series.air import get_air_values_mean
 
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
-bot = Bot(token=settings.TELEGRAM_TOKEN)
+bot = Bot(token=envs.TELEGRAM_TOKEN)
 dp = Dispatcher(bot)
 
 

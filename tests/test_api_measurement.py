@@ -1,11 +1,15 @@
 import json
 from pprint import pprint
+import sys
+sys.path.append('..')
+sys.path.append('.')
+
 
 from fastapi.testclient import TestClient
 
-from main import app
+from config.asgi import fastapp
 
-client = TestClient(app)
+client = TestClient(fastapp)
 
 with open('tests/data/measurement.json') as json_file:
     data = json.load(json_file)
@@ -23,8 +27,22 @@ r_data = {'aqi': 16.0,
           'temperature': 26.43}
 
 
-def test_api_warning():
+def test_api_measurement():
     response = client.post("/upload_measurement", json=data)
     pprint(response.json())
     assert response.status_code == 200
-    assert response.json() == r_data
+    # assert response.json() == r_data
+    assert response.json() == {'result': True}
+
+
+def test_bad_sensor_api_measurement():
+    data['esp8266id'] = 'xxxx'
+    response = client.post("/upload_measurement", json=data)
+    pprint(response.status_code)
+    assert response.json() == {'result': False}
+
+
+def test_data_mean():
+    response = client.get("/data/mean")
+    pprint(response.status_code)
+    assert response.json()['result']
