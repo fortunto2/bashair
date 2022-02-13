@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from back.api import sensors, ping, instance, signal, node, city, community, auth, nmu
+from back.api import sensors, ping, instance, signal, node, city, community, auth, nmu, factory
 
 app_router = APIRouter()
 
@@ -13,3 +13,4 @@ app_router.include_router(node.router)
 app_router.include_router(city.router)
 app_router.include_router(auth.router)
 app_router.include_router(ping.router)
+app_router.include_router(factory.router)
