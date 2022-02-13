@@ -38,6 +38,8 @@ def get_node(node_id: int):
         result = NodePointGet(**node.__dict__)
         print(result)
         metrics = node.get_metrics()
+        result.aqi = metrics.aqi
+        result.aqi_category = metrics.aqi_category
         result.pm25 = metrics.pm25
         result.pm10 = metrics.pm10
         result.humidity = metrics.humidity
