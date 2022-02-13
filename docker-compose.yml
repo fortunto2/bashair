@@ -32,7 +32,7 @@ services:
     command: uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000 --lifespan off
 
 
-  postgres:
+  postgres:  &postgres
     build:
       context: compose/postgres
       dockerfile: ./Dockerfile
@@ -43,6 +43,29 @@ services:
       - .docker/postgres/backup:/backups
     ports:
       - "5433:5432"
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    command: postgres -c 'max_connections=1000'
+
+
+postgres_gis:
+    build:
+      context: compose/postgres
+      dockerfile: ./DockerfileGis
+    image: postgres_gis
+    restart: unless-stopped
+    volumes:
+      - .docker/postgres_gis/data:/var/lib/postgresql/data
+      - .docker/postgres_gis/backup:/backups
+    ports:
+      - "5442:5432"
     env_file:
       - .env
     stdin_open: true
