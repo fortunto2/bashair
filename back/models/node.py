@@ -96,7 +96,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                     if field not in result[time]:
                         result[time][field] = 0
                     result[time][field] += round(float(value), 1)
-        return result
+        return [{'time': key, **values} for key, values in result.items()]
 
     @property
     def wind(self):
