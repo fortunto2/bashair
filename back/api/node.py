@@ -12,16 +12,32 @@ router = APIRouter(tags=["node"], prefix="/node")
 
 @router.get('/all/')
 def get_nodes():
-    nodes_query = Node.objects.select_related('location').only(
-        'id', 'uid', 'location__longitude', 'location__latitude'
-    ).filter(
-        location__longitude__isnull=False,
-        location__latitude__isnull=False,
-    )
+    print('all')
+    nodes_query = Node.objects.all()
+    print(nodes_query)
     nodes = []
     for node in nodes_query:
-        node_schema = NodePointGet.from_orm(node)
-        nodes.append(node_schema.dict())
+        result = NodePointGet.from_orm(node)
+
+        print(result)
+        metrics = node.get_metrics()
+
+        if not metrics.pm25:
+            continue
+
+        result.aqi = metrics.aqi
+        result.aqi_category = metrics.aqi_category
+        result.pm25 = metrics.pm25
+        result.pm10 = metrics.pm10
+        result.humidity = metrics.humidity
+        result.temperature = metrics.temperature
+        result.pressure = metrics.pressure
+        result.wind = node.wind
+        result.city = node.city
+        location = SensorLocationPointGet(longitude=node.location.longitude, latitude=node.location.latitude)
+        result.location = location
+
+        nodes.append(result.dict())
     return nodes
 
 
