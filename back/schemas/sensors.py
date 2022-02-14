@@ -21,9 +21,10 @@ def get_aqi(pm10, pm25):
 
 
 def get_aqi_category(aqi_value):
-    for limits, category in AQI_CATEGORIES.items():
-        if aqi_value > limits[0] and aqi_value <= limits[1]:
-            return category
+    if aqi_value:
+        for limits, category in AQI_CATEGORIES.items():
+            if aqi_value > limits[0] and aqi_value <= limits[1]:
+                return category
 
 
 class SensorMeasurement(BaseModel):
@@ -46,9 +47,7 @@ class SensorMeasurement(BaseModel):
     @property
     def get_aqi_value(self):
         if self.pm25 and self.pm10:
-            self.aqi = float(
-                aqi.to_aqi([(aqi.POLLUTANT_PM10, self.pm10), (aqi.POLLUTANT_PM25, self.pm25)])
-            )
+            self.aqi = get_aqi(pm10=self.pm10, pm25=self.pm25)
             return self.aqi
 
     @property
@@ -70,6 +69,7 @@ class SensorData(BaseModel):
     software_version: str
     esp8266id: Optional[str]
     rpiid: Optional[str]
+    test: Optional[bool] = False # для тестов
 
     @property
     def node_tag(self):
