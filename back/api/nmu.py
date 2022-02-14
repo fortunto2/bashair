@@ -34,18 +34,21 @@ def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_
     )
 
     if tables:
-        result = next(table.records[0]['_value'] for table in tables)
-        time = next(table.records[0]['_time'] for table in tables)
+        result = [table.records[0]['_value'] for table in tables]
+        time = [table.records[0]['_time'] for table in tables]
         print(result, time)
 
-    return result, time
+    result_last = result[-1]
+    time_last = time[-1]
+
+    return result_last, time_last
 
 
 @router.get('', response_model=NmuBase)
 def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
     result, time = get_nmu_influx(city_id=city_id, region_id=region_id)
-    if result:
+    if time:
 
         print(f'get NMU for {region_id}, {city_id} = {result}')
 
