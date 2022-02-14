@@ -1,8 +1,8 @@
 import json
 from pprint import pprint
 import sys
-sys.path.append('..')
-sys.path.append('.')
+sys.path.append('../../..')
+sys.path.append('')
 
 
 from fastapi.testclient import TestClient
@@ -11,7 +11,7 @@ from config.asgi import fastapp
 
 client = TestClient(fastapp)
 
-with open('tests/data/measurement.json') as json_file:
+with open('back/tests/api/data/measurement.json') as json_file:
     data = json.load(json_file)
     print(data)
 
