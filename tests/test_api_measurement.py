@@ -15,7 +15,7 @@ with open('tests/data/measurement.json') as json_file:
     data = json.load(json_file)
 
 r_data = {'aqi': 16.0,
-          'aqi_category': 'Good',
+          # 'aqi_category': 'Good',
           'humidity': 23.77,
           'max_micro': 20370,
           'min_micro': 27,

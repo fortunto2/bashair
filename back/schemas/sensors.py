@@ -36,7 +36,7 @@ class SensorMeasurement(BaseModel):
     pressure: float
     humidity: float
     aqi: Optional[float]
-    aqi_category: Optional[str]
+    # aqi_category: Optional[str]
 
     samples: int
     min_micro: int
