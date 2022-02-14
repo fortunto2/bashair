@@ -76,9 +76,6 @@ def upload_measurement(data: SensorData, request: Request):
         return JSONResponse(content={'result': False})
 
     sensor_measurement.aqi = sensor_measurement.get_aqi_value
-    sensor_measurement.aqi_category = sensor_measurement.get_aqi_category
-
-    # print(sensor_measurement.dict())
 
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
