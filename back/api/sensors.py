@@ -51,9 +51,13 @@ def upload_measurement(data: SensorData, request: Request):
     """
     Принимаем данные от датчиков
     """
+
     # print('upload_measurement', data)
     from back.models.node import Node, SensorLocation
     node = None
+
+    test_mode = data.test
+
     try:
         node: Node = Node.objects.select_related('location').get(uid=data.node_tag)
     except Exception as e:
@@ -95,6 +99,12 @@ def upload_measurement(data: SensorData, request: Request):
 
     p = Point.from_dict(_dict)
 
-    write_api.write(bucket=envs.MEASUREMENT_NAME, record=p)
+    if test_mode:
+        x = write_api.write(bucket='test', record=p)
+        print(_dict)
+        print(x)
+        return JSONResponse(content={'result': True})
+    else:
+        write_api.write(bucket=envs.MEASUREMENT_NAME, record=p)
 
     return JSONResponse(content={'result': True})

@@ -13,6 +13,7 @@ client = TestClient(fastapp)
 
 with open('tests/data/measurement.json') as json_file:
     data = json.load(json_file)
+    print(data)
 
 r_data = {'aqi': 16.0,
           # 'aqi_category': 'Good',
@@ -24,7 +25,8 @@ r_data = {'aqi': 16.0,
           'pressure': 99505.19,
           'samples': 1039137,
           'signal': -50.0,
-          'temperature': 26.43}
+          'temperature': 26.43,
+          }
 
 
 def test_api_measurement():
@@ -41,8 +43,3 @@ def test_bad_sensor_api_measurement():
     pprint(response.status_code)
     assert response.json() == {'result': False}
 
-
-def test_data_mean():
-    response = client.get("/data/mean")
-    pprint(response.status_code)
-    assert response.json()['result']
