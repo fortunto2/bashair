@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel, validator
 
+from back.schemas.sensors import get_aqi_category
+
 
 class SensorTypeBase(BaseModel):
     pass
@@ -56,13 +58,16 @@ class NodePointWindGet(BaseModel):
 
 
 class NodeMetrics(BaseModel):
-    pm25: Optional[float]
-    pm10: Optional[float]
-    temperature: Optional[float]
-    pressure: Optional[float]
-    humidity: Optional[float]
-    aqi: Optional[float]
+    pm25: Optional[int]
+    pm10: Optional[int]
+    temperature: Optional[int]
+    pressure: Optional[int]
+    humidity: Optional[int]
+    aqi: Optional[int]
     aqi_category: Optional[str]
+
+    def get_aqi_category(self):
+        return get_aqi_category(self.aqi)
 
 
 class NodePointGet(NodeMetrics):

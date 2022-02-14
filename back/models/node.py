@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
+from influxdb_client.client.flux_table import FluxTable, FluxRecord
 
 from back.models.city import City
 from back.schemas.node import NodeMetrics
@@ -50,32 +51,31 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
 
     def get_metrics(self):
         print('IN metrics')
-        table = query_api.query_csv(f"""
+        result_query = query_api.query(f"""
         from(bucket: "air")
           |> range(start: -15m)
           |> filter(fn: (r) => r["node"] == "{self.uid}")
-          |> filter(fn: (r) => r["_field"] == "aqi" or r["_field"] == "humidity" or r["_field"] == "pm10" or r["_field"] == "pm25" or r["_field"] == "pressure" or r["_field"] == "temperature")
+          |> filter(fn: (r) => r["_field"] == "aqi" 
+                or r["_field"] == "humidity" 
+                or r["_field"] == "pm10" 
+                or r["_field"] == "pm25" 
+                or r["_field"] == "pressure" 
+                or r["_field"] == "temperature")
           |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
+          |> group(columns: ["_field"])
           |> last()
         """)
-        result = {}
-        fields = {}
-        for row in table:
-            if len(row) > 1:
-                if row[1] == 'result':
-                    for index, col in enumerate(row):
-                        if col in ['_value', '_field', '_time']:
-                            fields[col] = index
-                if row[0] == '' and row[1] == '':
-                    field = row[fields['_field']]
-                    value = row[fields['_value']]
-                    if field not in result:
-                        result[field] = 0
-                    result[field] += round(float(value), 1)
 
-        result = NodeMetrics(**result)
-        print(result)
-        return result
+        results = {}
+        table: FluxTable
+        for table in result_query:
+            record: FluxRecord
+
+            for record in table.records:
+                results[record.get_field()] = round(record.get_value(), 2)
+
+        metrics = NodeMetrics(**results)
+        return metrics
 
 
     @property

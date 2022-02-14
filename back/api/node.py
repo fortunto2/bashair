@@ -26,7 +26,7 @@ def get_nodes():
             continue
 
         result.aqi = metrics.aqi
-        result.aqi_category = metrics.aqi_category
+        result.aqi_category = metrics.get_aqi_category()
         result.pm25 = metrics.pm25
         result.pm10 = metrics.pm10
         result.humidity = metrics.humidity
@@ -55,7 +55,7 @@ def get_node(node_id: int):
         print(result)
         metrics = node.get_metrics()
         result.aqi = metrics.aqi
-        result.aqi_category = metrics.aqi_category
+        result.aqi_category = metrics.get_aqi_category()
         result.pm25 = metrics.pm25
         result.pm10 = metrics.pm10
         result.humidity = metrics.humidity
