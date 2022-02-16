@@ -11,7 +11,6 @@ from back.api.weather import get_weather
 from back.models.city import City
 from back.schemas.node import NodeMetrics
 from config.influx import query_api
-from config.owm import weather_manager
 
 
 class SensorType(TimeStampedModel):
