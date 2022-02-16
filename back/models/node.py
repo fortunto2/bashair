@@ -5,7 +5,9 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django.utils.timezone import now
 from influxdb_client.client.flux_table import FluxTable, FluxRecord
+from pydantic import ValidationError
 
+from back.api.weather import get_weather
 from back.models.city import City
 from back.schemas.node import NodeMetrics
 from config.influx import query_api
@@ -51,6 +53,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
 
     def get_metrics(self):
         print('IN metrics')
+
         result_query = query_api.query(f"""
         from(bucket: "air")
           |> range(start: -15m)
@@ -74,8 +77,14 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
             for record in table.records:
                 results[record.get_field()] = round(record.get_value(), 2)
 
-        metrics = NodeMetrics(**results)
-        return metrics
+        if results:
+            try:
+                metrics = NodeMetrics(**results)
+            except ValidationError as e:
+                print(e)
+                return Node
+
+            return metrics
 
 
     @property
@@ -110,16 +119,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
 
     @property
     def wind(self):
-        if self.location.latitude is not None and self.location.longitude is not None:
-            try:
-                response = weather_manager.weather_at_coords(
-                    lat=float(self.location.latitude),
-                    lon=float(self.location.longitude)
-                )
-                return response.weather.wnd
-            except Exception as e:
-                print(f'WARNING! Error weather API: {e}')
-        return {}
+        return get_weather(latitude=self.location.latitude, longitude=self.location.longitude)
 
     @property
     def city(self):

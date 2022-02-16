@@ -4,8 +4,9 @@ from fastapi import APIRouter
 from influxdb_client.client.flux_table import FluxTable, FluxRecord
 from pydantic import ValidationError
 
+from back.api.weather import get_weather
 from back.models.city import City
-from back.schemas.city import CityGet, CityTotalGet
+from back.schemas.city import CityGet, CityTotalGet, ListCities
 from back.schemas.node import NodePointGet
 from back.utils.exceptions import NotFound, NoData
 from config.influx import query_api
@@ -14,11 +15,16 @@ from config.owm import weather_manager
 router = APIRouter(tags=["city"], prefix="/city")
 
 
-@router.get('/all')
+@router.get('/all', response_model=ListCities)
 def get_all_cities():
     city_query = City.objects.all()
-    cities = [CityGet.from_orm(obj).dict() for obj in city_query]
-    return cities
+    result = []
+
+    for row in city_query:
+        city = CityGet.from_orm(row)
+        result.append(city)
+
+    return result
 
 
 @router.get('/{city_id}/total/')
@@ -61,14 +67,6 @@ def get_total(city_id: int):
 
     city_total.aqi_category = city_total.get_aqi_category()
 
-    if city.latitude is not None and city.longitude is not None:
-        try:
-            response = weather_manager.weather_at_coords(
-                lat=float(city.latitude),
-                lon=float(city.longitude)
-            )
-            city_total.wind = response.weather.wnd
-        except Exception as e:
-            print(f'WARNING! Error weather API: {e}')
+    city_total.wind = get_weather(city.latitude, city.longitude)
 
     return city_total
