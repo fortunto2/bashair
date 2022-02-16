@@ -1,11 +1,14 @@
 from statistics import mean
+import sys
 
+from influxdb_client.client.flux_table import FluxTable, FluxRecord
+
+sys.path.append('.')
 from config.influx import query_api
 
 
 def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="air", city=None):
-    # print(bucket, field, start)
-    field_mean = None
+
     city_q = ''
     if city:
         city_q = f'|> filter(fn: (r) => r["city"] == "{city}")'
@@ -18,20 +21,14 @@ def get_air_values_mean(bucket='air', field='pm25', start='-1h', measurement="ai
           |> filter(fn: (r) => r["_field"] == "{field}")
           {city_q}
           |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
-          |> yield(name: "mean")
+          |> group(columns: ["_field"])
+          |> mean(column: "_value")
         """
     )
 
     if tables:
-        field_mean = round(mean([table.records[0]['_value'] for table in tables]), 1)
-        print(field_mean)
-
-    # for table in tables:
-    #     print('-----------')
-    #     for row in table.records:
-    #         pprint(row.values)
-
-    return field_mean
+        field_mean = next(x.get_value() for x in tables[0].records)
+        return round(field_mean, 2)
 
 
 if __name__ == "__main__":
