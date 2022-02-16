@@ -1,7 +1,7 @@
 from typing import Optional, Union, List
 
 import aqi
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 AQI_CATEGORIES = {
     (-1, 50): "Good",
@@ -43,6 +43,18 @@ class SensorMeasurement(BaseModel):
     min_micro: int
     max_micro: int
     signal: float
+
+    @validator('temperature', pre=True)
+    def get_properties(cls, v):
+        if not v: return v
+
+        if v < -40:
+            # иногда возвращают -150 градусов почему-то
+            return None
+        elif v > 50:
+            return 50
+
+        return v
 
     @property
     def get_aqi_value(self):
