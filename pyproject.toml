@@ -11,7 +11,7 @@ django = "^3.2"
 uvicorn = "^0.11.8"
 whitenoise = "^5.2.0"
 fastapi = "^0.63.0"
-aiogram = "^2.12.1"
+aiogram = "^2.19"
 python-aqi = "^0.6.1"
 pydantic = {extras = ["dotenv"], version = "^1.8.1"}
 influxdb-client = "^1.15.0"

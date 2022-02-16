@@ -52,7 +52,6 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
         return self.uid
 
     def get_metrics(self):
-        print('IN metrics')
 
         result_query = query_api.query(f"""
         from(bucket: "air")
