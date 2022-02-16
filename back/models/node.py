@@ -82,7 +82,7 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
                 metrics = NodeMetrics(**results)
             except ValidationError as e:
                 print(e)
-                return Node
+                return None
 
             return metrics
 
