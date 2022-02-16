@@ -73,10 +73,10 @@ class NodeMetricsBase(BaseModel):
 class NodeMetrics(BaseModel):
     pm25: int
     pm10: int
-    temperature: int
-    pressure: int
-    humidity: int
-    aqi: int
+    temperature: Optional[int]
+    pressure: Optional[int]
+    humidity: Optional[int]
+    aqi: Optional[int]
     aqi_category: Optional[str]
     wind: Optional[NodePointWindGet]
 
