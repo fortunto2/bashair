@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, validator
 
@@ -57,14 +57,28 @@ class NodePointWindGet(BaseModel):
         orm_mode = True
 
 
-class NodeMetrics(BaseModel):
-    pm25: Optional[int]
-    pm10: Optional[int]
-    temperature: Optional[int]
-    pressure: Optional[int]
-    humidity: Optional[int]
-    aqi: Optional[int]
+class NodeMetricsBase(BaseModel):
+    pm25: int
+    pm10: int
+    temperature: int
+    pressure: int
+    humidity: int
+    aqi: int
     aqi_category: Optional[str]
+
+    def get_aqi_category(self):
+        return get_aqi_category(self.aqi)
+
+
+class NodeMetrics(BaseModel):
+    pm25: int
+    pm10: int
+    temperature: int
+    pressure: int
+    humidity: int
+    aqi: int
+    aqi_category: Optional[str]
+    wind: Optional[NodePointWindGet]
 
     def get_aqi_category(self):
         return get_aqi_category(self.aqi)
@@ -75,11 +89,9 @@ class NodePointGet(NodeMetrics):
     uid: str
     name: str
     description: Optional[str]
-    description: Optional[str]
     location_id: int
     city: Optional[str]
 
-    wind: Optional[NodePointWindGet]
     location: Optional[SensorLocationPointGet]
 
     # @validator(pre=True)
@@ -89,3 +101,8 @@ class NodePointGet(NodeMetrics):
 
     class Config:
         orm_mode = True
+
+
+class ListNodes(BaseModel):
+    __root__: List[NodePointGet]
+
