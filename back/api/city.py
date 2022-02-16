@@ -8,6 +8,7 @@ from back.api.weather import get_weather
 from back.models.city import City
 from back.schemas.city import CityGet, CityTotalGet, ListCities
 from back.schemas.node import NodePointGet
+from back.time_series.air import InfluxAir
 from back.utils.exceptions import NotFound, NoData
 from config.influx import query_api
 from config.owm import weather_manager
@@ -34,34 +35,27 @@ def get_total(city_id: int):
     except City.DoesNotExist:
         raise NotFound
 
-    query = f"""
-    from(bucket: "air")
-      |> range(start: -15m)
-      |> filter(fn: (r) => r["city_id"] == "{city_id}")
-      |> filter(fn: (r) => 
-          r["_field"] == "aqi" 
-          or r["_field"] == "humidity" 
-          or r["_field"] == "pm10" 
-          or r["_field"] == "pm25" 
-          or r["_field"] == "pressure" 
-          or r["_field"] == "temperature")
-      |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
-      |> group(columns: ["_field"])
-      |> last()
-    """
+    influx = InfluxAir(filters={'city_id': city_id}, last=True, mean=True, group=True)
+    metrics = influx.get_metrics()
 
-    result_query = query_api.query(query)
-
-    results = {}
-    table: FluxTable
-    for table in result_query:
-        record: FluxRecord
-
-        for record in table.records:
-            results[record.get_field()] = round(record.get_value(), 2)
+    # query = f"""
+    # from(bucket: "air")
+    #   |> range(start: -15m)
+    #   |> filter(fn: (r) => r["city_id"] == "{city_id}")
+    #   |> filter(fn: (r) =>
+    #       r["_field"] == "aqi"
+    #       or r["_field"] == "humidity"
+    #       or r["_field"] == "pm10"
+    #       or r["_field"] == "pm25"
+    #       or r["_field"] == "pressure"
+    #       or r["_field"] == "temperature")
+    #   |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
+    #   |> group(columns: ["_field"])
+    #   |> last()
+    # """
 
     try:
-        city_total = CityTotalGet(**results, **city.__dict__)
+        city_total = CityTotalGet(**metrics.dict(), **city.__dict__)
     except ValidationError as e:
         raise NoData
 

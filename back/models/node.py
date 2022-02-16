@@ -10,6 +10,7 @@ from pydantic import ValidationError
 from back.api.weather import get_weather
 from back.models.city import City
 from back.schemas.node import NodeMetrics
+from back.time_series.air import InfluxAir
 from config.influx import query_api
 
 
@@ -52,68 +53,16 @@ class Node(TimeStampedModel):  # ЭТО ДАТЧИК!
 
     def get_metrics(self):
 
-        result_query = query_api.query(f"""
-        from(bucket: "air")
-          |> range(start: -15m)
-          |> filter(fn: (r) => r["node"] == "{self.uid}")
-          |> filter(fn: (r) => r["_field"] == "aqi" 
-                or r["_field"] == "humidity" 
-                or r["_field"] == "pm10" 
-                or r["_field"] == "pm25" 
-                or r["_field"] == "pressure" 
-                or r["_field"] == "temperature")
-          |> aggregateWindow(every: 15m, fn: mean, createEmpty: false)
-          |> group(columns: ["_field"])
-          |> last()
-        """)
+        influx = InfluxAir(filters={'node': self.uid})
+        metrics = influx.get_metrics()
 
-        results = {}
-        table: FluxTable
-        for table in result_query:
-            record: FluxRecord
+        return metrics
 
-            for record in table.records:
-                results[record.get_field()] = round(record.get_value(), 2)
+    def get_history(self):
+        influx = InfluxAir(filters={'node': self.uid})
+        history = influx.get_history()
 
-        if results:
-            try:
-                metrics = NodeMetrics(**results)
-            except ValidationError as e:
-                print(e)
-                return None
-
-            return metrics
-
-
-    @property
-    def history(self):
-        table = query_api.query_csv(f"""
-        from(bucket: "air")
-          |> range(start: -24h)
-          |> filter(fn: (r) => r["node"] == "{self.uid}")
-          |> filter(fn: (r) => r["_field"] == "aqi" or r["_field"] == "humidity" or r["_field"] == "pm10" or r["_field"] == "pm25" or r["_field"] == "pressure" or r["_field"] == "temperature")
-          |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
-          |> yield(name: "mean")
-          |> truncateTimeColumn(unit: 1h)
-        """)
-        result = {}
-        fields = {}
-        for row in table:
-            if len(row) > 1:
-                if row[1] == 'result':
-                    for index, col in enumerate(row):
-                        if col in ['_value', '_field', '_time']:
-                            fields[col] = index
-                if row[0] == '' and row[1] == '':
-                    field = row[fields['_field']]
-                    value = row[fields['_value']]
-                    time = row[fields['_time']]
-                    if time not in result:
-                        result[time] = {}
-                    if field not in result[time]:
-                        result[time][field] = 0
-                    result[time][field] += round(float(value), 1)
-        return [{'time': key, **values} for key, values in result.items()]
+        return history
 
     @property
     def wind(self):
