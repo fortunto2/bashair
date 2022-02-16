@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, List
 
 from pydantic import BaseModel, validator
@@ -79,6 +80,7 @@ class NodeMetrics(BaseModel):
     aqi: Optional[int]
     aqi_category: Optional[str]
     wind: Optional[NodePointWindGet]
+    time: Optional[datetime]
 
     def get_aqi_category(self):
         return get_aqi_category(self.aqi)
@@ -105,4 +107,8 @@ class NodePointGet(NodeMetrics):
 
 class ListNodes(BaseModel):
     __root__: List[NodePointGet]
+
+
+class ListNodeMetrics(BaseModel):
+    __root__: List[NodeMetrics]
 

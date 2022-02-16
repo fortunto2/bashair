@@ -6,7 +6,8 @@ from pydantic import ValidationError
 from back.api.weather import get_weather
 from back.depends.user import get_current_active_user
 from back.models.node import Node
-from back.schemas.node import NodePointGet, SensorLocationPointGet, ListNodes
+from back.schemas.node import NodePointGet, SensorLocationPointGet, ListNodes, ListNodeMetrics
+from back.time_series.air import InfluxAir
 from back.utils.exceptions import NotFound, PermissionDenied
 from config.owm import weather_manager
 
@@ -42,6 +43,7 @@ def get_nodes():
 
     for node in nodes_query:
         if not node.location: continue
+        # todo: не делать много повторно запросов к инфлюкс а сразу брать все
         result = create_node_response(node)
         if result:
             nodes.append(result.dict())
@@ -65,13 +67,13 @@ def get_node(node_id: int):
     return result
 
 
-@router.get('/{node_id}/history/')
+@router.get('/{node_id}/history/', response_model=ListNodeMetrics)
 def get_node_history(node_id: int):
     try:
         node = Node.objects.get(id=node_id)
     except Node.DoesNotExist:
         raise NotFound
-    return node.history
+    return node.get_history()
 
 
 @router.post('/')

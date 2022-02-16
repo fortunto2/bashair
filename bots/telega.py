@@ -11,7 +11,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor, types
 
 # Configure logging
-from back.time_series.air import get_air_values_mean
+from back.time_series.air import InfluxAir
 
 logging.basicConfig(level=logging.INFO)
 
@@ -34,15 +34,19 @@ async def send_welcome(message: types.Message):
 async def get_air(message: types.Message):
     pprint(message.from_user.__dict__)
     pprint(message.chat.__dict__)
+
+    influx = InfluxAir(filters={'city_id':1}, last=True, mean=True)
+    metrics = influx.get_metrics()
+
     txt = \
-f"""
-Средние данные за час воздуха в Стерлитамаке: 
-PM2.5: {get_air_values_mean(field='pm25')}
-PM10: {get_air_values_mean(field='pm10')}
-AQI: {get_air_values_mean(field='aqi')}
-TEMP: {get_air_values_mean(field='temperature')}
-Подробнее на карте https://maps.sensor.community/?nowind#12/53.6582/55.9335
 """
+Средние данные за час воздуха в Стерлитамаке: 
+PM2.5: {pm25}
+PM10: {pm10}
+AQI: {aqi}
+TEMP: {temperature}
+Подробнее на карте https://aircms.online/#/d/11545355
+""".format(**metrics.dict())
 
     await message.reply(txt)
 
