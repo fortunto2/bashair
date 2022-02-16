@@ -33,9 +33,9 @@ class SensorMeasurement(BaseModel):
     """
     pm25: float
     pm10: float
-    temperature: float
-    pressure: float
-    humidity: float
+    temperature: Optional[float]
+    pressure: Optional[float]
+    humidity: Optional[float]
     aqi: Optional[float]
     # aqi_category: Optional[str]
 
