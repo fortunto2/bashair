@@ -61,7 +61,7 @@ for row in rows:
         print(text)
         if 'накоплен' in text and 'незначительн' in text:
             nmu = 1
-        elif 'резвычайн' in text:
+        elif 'чрезвычайн' in text:
             nmu = 3
         elif 'повышенн' in text:
             nmu = 2

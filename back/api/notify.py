@@ -5,6 +5,15 @@ from bots.telega import bot
 
 router = APIRouter()
 
+# {'dashboardId': 1,
+# 'evalMatches':
+# [{'value': 100, 'metric': 'High value', 'tags': None},
+# {'value': 200, 'metric': 'Higher Value', 'tags': None}],
+# 'imageUrl': 'https://grafana.com/assets/img/blog/mixed_styles.png',
+# 'message': 'Someone is testing the alert notification within Grafana.',
+# 'orgId': 0, 'panelId': 1, 'ruleId': 0, 'ruleName': 'Test notification',
+# 'ruleUrl': 'http://panel.bashair.ru/', 'state': 'alerting', 'tags': {},
+# 'title': '[Alerting] Test notification'}
 
 @router.post('/notify')
 async def influx_notify(payload: dict = Body(...)):
