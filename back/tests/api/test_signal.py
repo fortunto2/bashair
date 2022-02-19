@@ -9,10 +9,10 @@ client = TestClient(fastapp)
 
 
 def test_signal():
-    response = client.get("/signal/count/")
+    response = client.get("/signal/count")
     assert response.status_code == 200
 
-    response = client.get("/signal/10/")
+    response = client.get("/signal/10")
     assert response.status_code == 200
     pprint(response.json())
     try:

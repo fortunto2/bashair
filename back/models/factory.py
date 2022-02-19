@@ -3,6 +3,7 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from phonenumber_field.modelfields import PhoneNumberField
 
+from back.models.base import LocationModel
 from back.models.city import City
 from django.contrib.gis.db import models as geomodel
 
@@ -12,21 +13,16 @@ from django.contrib.gis.db import models as geomodel
 #     danger_class = models.IntegerField(default=1)
 
 
-class Factory(TimeStampedModel):
+class Factory(TimeStampedModel, LocationModel):
     name = geomodel.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     phone = PhoneNumberField(null=True, blank=True)
     email = models.EmailField(max_length=200, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
     website = models.URLField(max_length=200,blank=True, null=True)
-
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='factory')
 
-    # location = models.TextField(null=True, blank=True)
-    latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
+    polygon = geomodel.MultiPolygonField("Периметр территория", blank=True, null=True)
 
-    location = geomodel.PointField(blank=True, null=True)
 
     TYPES = (
         ('zavod', 'Завод'),

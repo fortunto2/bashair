@@ -11,7 +11,7 @@ from back.utils.exceptions import NotFound
 router = APIRouter(tags=["signal"], prefix="/signal")
 
 
-@router.get('/properties/')
+@router.get('/properties')
 def get_properties():
     """
     Для формы жалобы, параметры такие как возможные запахи и симптомы
@@ -21,7 +21,7 @@ def get_properties():
     return properties
 
 
-@router.get('/count/')
+@router.get('/count')
 def get_count(time=None, city=None, user=None):
     """
     Количество жалоб счетчик
@@ -46,7 +46,7 @@ def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_
     return signal
 
 
-@router.get('/{signal_id}/', response_model=SignalGet)
+@router.get('/{signal_id}', response_model=SignalGet)
 def get_signal(signal_id: int):
     """
     Данные по конкретной жалобе подробнее
@@ -58,7 +58,7 @@ def get_signal(signal_id: int):
     return signal
 
 
-@router.post('/instance/', response_model=SignalToInstanceGet)
+@router.post('/instance', response_model=SignalToInstanceGet)
 def create_signal_to_instance(signal_to_instance: SignalToInstanceCreate, user: User = Depends(get_current_active_user)):
     """
     Для формы жалобы в инстанции различные, такие как ЕДДС

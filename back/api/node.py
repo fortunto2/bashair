@@ -25,24 +25,23 @@ def create_node_response(node: Node) -> NodePointGet:
         print(e)
         return
 
-    result.wind = get_weather(latitude=node.location.latitude, longitude=node.location.longitude)
-    result.location = node.location
+    result.wind = get_weather(latitude=node.latitude, longitude=node.longitude)
+    # result.location = node.location
     result.aqi_category = result.get_aqi_category()
     # TODO: где имя? пустое приходит
     result.name = node.name
-    result.city = node.location.city.name
+    result.city = node.city.name
 
     return result
 
 
-# @router.get('/all')
-@router.get('/all/', response_model=ListNodes)
+@router.get('/all', response_model=ListNodes)
 def get_nodes():
-    nodes_query = Node.objects.select_related('location').all()
+    nodes_query = Node.objects.all()
     nodes = []
 
     for node in nodes_query:
-        if not node.location: continue
+        if not node.point: continue
         # todo: не делать много повторно запросов к инфлюкс а сразу брать все
         result = create_node_response(node)
         if result:
@@ -50,7 +49,7 @@ def get_nodes():
     return nodes
 
 
-@router.get('/{node_id}/', response_model=NodePointGet)
+@router.get('/{node_id}', response_model=NodePointGet)
 def get_node(node_id: int):
     """
     Данные по датчику
@@ -58,7 +57,7 @@ def get_node(node_id: int):
     """
 
     try:
-        node = Node.objects.select_related('location').get(id=node_id)
+        node = Node.objects.get(id=node_id)
     except Node.DoesNotExist:
         raise NotFound
 
@@ -67,7 +66,7 @@ def get_node(node_id: int):
     return result
 
 
-@router.get('/{node_id}/history/', response_model=ListNodeMetrics)
+@router.get('/{node_id}/history', response_model=ListNodeMetrics)
 def get_node_history(node_id: int):
     try:
         node = Node.objects.get(id=node_id)

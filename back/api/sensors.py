@@ -1,10 +1,6 @@
 import os
-# os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-from http.client import HTTPException
-
 from typing import Optional
-import logging
-from asgiref.sync import sync_to_async
+
 from fastapi import APIRouter
 from influxdb_client import Point
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -38,13 +34,13 @@ def upload_measurement(data: SensorData, request: Request):
     """
 
     # print('upload_measurement', data)
-    from back.models.node import Node, SensorLocation
+    from back.models.node import Node
     node = None
 
     test_mode = data.test
 
     try:
-        node: Node = Node.objects.select_related('location').get(uid=data.node_tag)
+        node: Node = Node.objects.get(uid=data.node_tag)
     except Exception as e:
         print(e, data.node_tag)
 
@@ -73,12 +69,12 @@ def upload_measurement(data: SensorData, request: Request):
         "fields": sensor_measurement.dict(),
         "tags": {
             "node": data.node_tag,
-            "location": node.location.location,
-            "lat": float(node.location.latitude),
-            "lon": float(node.location.longitude),
-            "city": node.location.city.name,
-            "city_id": node.location.city.id,
-            "street": node.location.street_name,
+            "name": node.name,
+            "lat": float(node.latitude),
+            "lon": float(node.longitude),
+            "city": node.city.name,
+            "city_id": node.city.id,
+            "street": node.street_name,
         },
     }
 

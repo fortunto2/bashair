@@ -18,7 +18,7 @@ class SignalProperties(SignalPropertiesBase):
 
 class SignalBase(BaseModel):
     text: str
-    location: Optional[str]
+    point: Optional[str]
     latitude: float
     longitude: float
     time_of_incident: datetime

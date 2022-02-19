@@ -12,7 +12,7 @@ class FactoryBase(BaseModel):
     website: Optional[AnyUrl]
 
     city_id: int
-    location: Optional[str]
+    point: Optional[str]
     latitude: Optional[float]
     longitude: Optional[float]
 

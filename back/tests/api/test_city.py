@@ -20,7 +20,7 @@ def test_city_all():
 
 def test_city_total():
 
-    response = client.get(f"/city/1/total/")
+    response = client.get(f"/city/1/total")
     assert response.status_code == 200
 
     schema = CityTotalGet(**response.json())

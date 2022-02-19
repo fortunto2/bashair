@@ -423,6 +423,29 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "geojson-pydantic"
+version = "0.3.1"
+description = "Pydantic data models for the GeoJSON spec"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+pydantic = "*"
+
+[package.extras]
+dev = ["pytest", "pytest-cov", "pre-commit"]
+test = ["pytest", "pytest-cov"]
+
+[[package]]
+name = "geomodel"
+version = "0.2.0"
+description = "Indexing and querying geospatial data in App Engine."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "h11"
 version = "0.9.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -1565,7 +1588,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "56ec42edba61f1f53ff428095bffe406d6ce60df0a803e55fd03a58e791a00db"
+content-hash = "f643e245d139b4fbbb59a5b25a6725e94d269c5d4f40be8bb18194fd43af51db"
 
 [metadata.files]
 aiogram = [
@@ -1946,6 +1969,13 @@ frozenlist = [
 geojson = [
     {file = "geojson-2.5.0-py2.py3-none-any.whl", hash = "sha256:ccbd13368dd728f4e4f13ffe6aaf725b6e802c692ba0dde628be475040c534ba"},
     {file = "geojson-2.5.0.tar.gz", hash = "sha256:6e4bb7ace4226a45d9c8c8b1348b3fc43540658359f93c3f7e03efa9f15f658a"},
+]
+geojson-pydantic = [
+    {file = "geojson-pydantic-0.3.1.tar.gz", hash = "sha256:6542614b63f018c0ffcac4c48ade9997a6ee982bdd53af4128cce334744292b2"},
+]
+geomodel = [
+    {file = "geomodel-0.2.0-py2.5.egg", hash = "sha256:500bfb528001004d37a47ee48fab55fc604e9d2bedd62564809ba660a613381d"},
+    {file = "geomodel-0.2.0.tar.gz", hash = "sha256:61f99cdd8959e4cfc5981c6b8dc3f989acb5239d5876d73c4e7358bd824c2751"},
 ]
 h11 = [
     {file = "h11-0.9.0-py2.py3-none-any.whl", hash = "sha256:4bc6d6a1238b7615b266ada57e0618568066f57dd6fa967d1290ec9309b2f2f1"},

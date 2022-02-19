@@ -29,6 +29,8 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 Pillow = "^9.0.1"
 python-multipart = "^0.0.5"
 beautifulsoup4 = "^4.10.0"
+geomodel = "^0.2.0"
+geojson-pydantic = "^0.3.1"
 
 
 

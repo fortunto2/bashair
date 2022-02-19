@@ -15,6 +15,6 @@ class MapView(TemplateView):
     def get_context_data(self, **kwargs):
         """Return the view context data."""
         context = super().get_context_data(**kwargs)
-        context["markers"] = json.loads(serialize("geojson", Factory.objects.filter().only('name', 'location')))
+        context["markers"] = json.loads(serialize("geojson", Factory.objects.filter().only('name', 'point')))
         pprint(context)
         return context

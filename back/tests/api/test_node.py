@@ -10,7 +10,7 @@ client = TestClient(fastapp)
 
 
 def test_node():
-    response = client.get("/node/1/")
+    response = client.get("/node/1")
     assert response.status_code == 200
     schema = NodePointGet(**response.json())
     pprint(schema)
@@ -18,12 +18,12 @@ def test_node():
 
 
 def test_node_history():
-    response = client.get("/node/1/history/")
+    response = client.get("/node/1/history")
     assert response.status_code == 200
 
 
 def test_node_all():
-    response = client.get("/node/all/")
+    response = client.get("/node/all")
     assert response.status_code == 200
 
     for node in response.json():

@@ -28,7 +28,7 @@ def get_all_cities():
     return result
 
 
-@router.get('/{city_id}/total/')
+@router.get('/{city_id}/total')
 def get_total(city_id: int):
     try:
         city = City.objects.get(id=city_id)

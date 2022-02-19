@@ -36,7 +36,7 @@ def authenticate_user(username: str, password: str) -> Union[User, bool]:
     return user
 
 
-@router.post("/token/", response_model=TokenGet)
+@router.post("/token", response_model=TokenGet)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), auth: AuthJWT = Depends()):
     denylist_add(auth.get_raw_jwt())
     user = authenticate_user(form_data.username, form_data.password)
@@ -51,7 +51,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), aut
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
 
 
-@router.post("/token/refresh/", response_model=TokenGet)
+@router.post("/token/refresh", response_model=TokenGet)
 def refresh_access_token(auth: AuthJWT = Depends()):
     auth.jwt_refresh_token_required()
     denylist_add(auth.get_raw_jwt())
@@ -61,7 +61,7 @@ def refresh_access_token(auth: AuthJWT = Depends()):
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
 
 
-@router.post("/register/", response_model=TokenGet)
+@router.post("/register", response_model=TokenGet)
 def create_user(user: UserCreate, auth: AuthJWT = Depends()):
     exists = User.objects.filter(username=user.username).exists()
     if exists:
@@ -83,7 +83,7 @@ def create_user(user: UserCreate, auth: AuthJWT = Depends()):
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
 
 
-@router.post("/change_password/")
+@router.post("/change_password")
 def change_password(new_password: str = Body(...), current_password: str = Body(...), current_user: User = Depends(get_current_active_user)):
     if not verify_password(current_password, current_user.password):
         raise HTTPException(
