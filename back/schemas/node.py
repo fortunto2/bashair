@@ -4,6 +4,7 @@ from typing import Optional, List, Dict
 from django.contrib.gis.geos import Point
 from pydantic import BaseModel, validator
 
+from back.schemas.location import LocationBase
 from back.schemas.sensors import get_aqi_category
 from geojson_pydantic import Point as PointJson
 
@@ -88,35 +89,16 @@ class NodeMetrics(BaseModel):
         return get_aqi_category(self.aqi)
 
 
-class NodePointGet(NodeMetrics):
+class NodePointGet(NodeMetrics, LocationBase):
     id: int
     uid: str
     name: str
     description: Optional[str]
-    point: Optional[str]
-
-    latitude: Optional[float]
-    longitude: Optional[float]
 
     city: Optional[str]
-    street_name: Optional[str]
-    street_number: Optional[str]
 
     created: Optional[datetime]
     modified: Optional[datetime]
-
-    # @validator(pre=True)
-    # def get_city(cls, values):
-    #     if cls.fi
-    #     return values
-
-    @validator("point", pre=True)
-    def point_validation(cls, v: Point):
-        try:
-            return v.json
-        except Exception as e:
-            print(e)
-        return v
 
     class Config:
         orm_mode = True

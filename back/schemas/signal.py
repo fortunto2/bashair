@@ -3,6 +3,8 @@ from typing import Optional, List
 
 from pydantic import BaseModel, validator
 
+from back.schemas.location import LocationBase
+
 
 class SignalPropertiesBase(BaseModel):
     name: str
@@ -16,11 +18,8 @@ class SignalProperties(SignalPropertiesBase):
         orm_mode = True
 
 
-class SignalBase(BaseModel):
+class SignalBase(LocationBase):
     text: str
-    point: Optional[str]
-    latitude: float
-    longitude: float
     time_of_incident: datetime
 
 
@@ -31,7 +30,6 @@ class SignalCreate(SignalBase):
 
 class SignalGet(SignalBase):
     id: int
-    city_id: int
     owner_id: Optional[int]
     properties: Optional[List[SignalProperties]]
     status: str

@@ -23,7 +23,6 @@ class Factory(TimeStampedModel, LocationModel):
 
     polygon = geomodel.MultiPolygonField("Периметр территория", blank=True, null=True)
 
-
     TYPES = (
         ('zavod', 'Завод'),
         ('musorka', 'Мусорка'),
