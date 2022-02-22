@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  fastapi: &fastapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: backend_fastapi
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    ports:
+      - "8010:8000"
+    command: uvicorn config.asgi:fastapp --reload --host 0.0.0.0 --port 8000
+
+
+  django:
+    <<: *fastapi
+    image: backend_django
+    ports:
+      - "8011:8000"
+#    command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings
+    command: uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000 --lifespan off
+
+
