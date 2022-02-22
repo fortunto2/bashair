@@ -28,6 +28,8 @@ RUN echo 'alias pip=pip3' >> ~/.bashrc
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
+RUN pip install poetry
+
 # This will install latest version of GDAL
 # Copy only requirements to cache them in docker layer
 WORKDIR /app
