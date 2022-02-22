@@ -29,4 +29,11 @@ ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
 # This will install latest version of GDAL
-RUN pip3 install GDAL
+# Copy only requirements to cache them in docker layer
+WORKDIR /app
+COPY poetry.lock pyproject.toml /app/
+
+# Project initialization:
+RUN poetry config virtualenvs.create false \
+  && poetry install $(test "$YOUR_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
+
