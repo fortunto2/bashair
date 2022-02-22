@@ -26,6 +26,7 @@ services:
 
   django:
     <<: *fastapi
+    image: backend_django
     ports:
       - "8001:8000"
 #    command: python manage.py runserver 0.0.0.0:8000 --settings=config.settings
