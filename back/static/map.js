@@ -14,7 +14,7 @@ function callback(response) {
 };
 
 $.ajax({
-    url: "http://127.0.0.1:8001/geo",
+    url: "https://api-dev.bashair.ru/geo",
     dataType: "json",
     success: function (response) {
         callback(response)
