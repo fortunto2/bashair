@@ -24,3 +24,7 @@ services:
     command: uvicorn config.asgi:application --reload --host 0.0.0.0 --port 8000 --lifespan off
 
 
+networks:
+  default:
+    external:
+      name: bashair_default
