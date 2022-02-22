@@ -5,8 +5,10 @@ from django.core.serializers import serialize
 from fastapi import APIRouter
 from geojson_pydantic import Feature, FeatureCollection, Point
 
+from back.api.node import create_node_response
 from back.models.factory import Factory
 from back.models.node import Node
+from back.schemas.node import NodePointGet
 from back.utils.exceptions import NotFound
 
 router = APIRouter(tags=["geo"], prefix="/geo")
@@ -24,11 +26,22 @@ def get_geomap(city_id: Optional[int] = None):
         raise NotFound
 
     factory_geojson = serialize("geojson", factories, geometry_field='polygon', fields=('name', 'id'))
-    nodes_geojson = serialize("geojson", Node.objects.all(), geometry_field='point', fields=('name', 'id'))
+    f = FeatureCollection(**json.loads(factory_geojson))
 
-    f = json.loads(factory_geojson)
-    n = json.loads(nodes_geojson)
+    nodes_features = []
 
-    f['features'] = n['features'] + f['features']
+    for node in Node.objects.all():
 
-    return f
+        feature = Feature(geometry=Point(coordinates=node.point.coords))
+
+        node_point: NodePointGet = create_node_response(node)
+
+        if node_point:
+            feature.properties = node_point.dict()
+
+        nodes_features.append(feature)
+
+
+    # f.features = n.features + f.features
+
+    return FeatureCollection(features=nodes_features)

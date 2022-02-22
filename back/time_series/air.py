@@ -107,7 +107,7 @@ class InfluxAir(BaseModel):
     def get_metrics(self) -> NodeMetrics:
 
         tables = query_api.query(self.__create_query(group=True, mean=True, last=True))
-        print('tables len:', len(tables))
+        # print('tables len:', len(tables))
 
         return self.__transform_answer(tables)
 
@@ -122,7 +122,7 @@ class InfluxAir(BaseModel):
         # print(query_str)
 
         tables = query_api.query(query_str)
-        print('tables len:', len(tables))
+        # print('tables len:', len(tables))
 
         results = {}
         history = []

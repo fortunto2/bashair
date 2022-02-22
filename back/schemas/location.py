@@ -8,7 +8,7 @@ import json
 
 class LocationBase(BaseModel):
     city_id: int
-    point: PointJson
+    # point: PointJson
 
     latitude: Optional[float]
     longitude: Optional[float]
@@ -16,11 +16,11 @@ class LocationBase(BaseModel):
     street_name: Optional[str]
     street_number: Optional[str]
     postalcode: Optional[int]
-
-    @validator("point", pre=True)
-    def point_validation(cls, v: Point):
-        try:
-            return json.loads(v.json)
-        except Exception as e:
-            print(e)
-        return v
+    #
+    # @validator("point", pre=True)
+    # def point_validation(cls, v: Point):
+    #     try:
+    #         return json.loads(v.json)
+    #     except Exception as e:
+    #         print(e)
+    #     return v
