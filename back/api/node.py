@@ -38,6 +38,7 @@ def create_node_response(node: Node) -> NodePointGet:
 
 
 @router.get('/all', response_model=ListNodes)
+@router.get('/all/', response_model=ListNodes) #old
 def get_nodes(city_id: Optional[int] = None):
 
     try:
@@ -59,6 +60,7 @@ def get_nodes(city_id: Optional[int] = None):
     return nodes
 
 
+@router.get('/{node_id}/', response_model=NodePointGet)
 @router.get('/{node_id}', response_model=NodePointGet)
 def get_node(node_id: int):
     """
@@ -76,6 +78,7 @@ def get_node(node_id: int):
     return result
 
 
+@router.get('/{node_id}/history/', response_model=ListNodeMetrics)
 @router.get('/{node_id}/history', response_model=ListNodeMetrics)
 def get_node_history(node_id: int):
     try:
