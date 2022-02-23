@@ -65,7 +65,7 @@ function callback(response) {
             // console.log(feature)
             return L.marker
             .arrowCircle(latlng, {
-              iconOptions: { rotation: 180 - feature.properties.wind.deg},
+              iconOptions: { rotation: feature.properties.wind.deg - 180},
             })
         }
     }).addTo(map);
