@@ -1,3 +1,5 @@
+from typing import Optional
+
 from django.contrib.auth.models import User
 from django.db.models import Q
 from fastapi import APIRouter, Depends
@@ -36,8 +38,16 @@ def create_node_response(node: Node) -> NodePointGet:
 
 
 @router.get('/all', response_model=ListNodes)
-def get_nodes():
-    nodes_query = Node.objects.all()
+def get_nodes(city_id: Optional[int] = None):
+
+    try:
+        if city_id:
+            nodes_query = Node.objects.filter(city_id=city_id)
+        else:
+            nodes_query = Node.objects.all()
+    except Node.DoesNotExist:
+        raise NotFound
+
     nodes = []
 
     for node in nodes_query:

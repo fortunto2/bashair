@@ -1,15 +1,10 @@
 import json
 from typing import Optional, Dict
 
-from django.core.serializers import serialize
 from fastapi import APIRouter
-from geojson_pydantic import Feature, FeatureCollection, Point
 
-
-from back.models.community import Community as CommunityModel
 from back.models.factory import Factory
 from back.models.node import Node
-from back.schemas.community import Community
 from back.schemas.factory import FactoryGet, ListFactories
 from back.utils.exceptions import NotFound
 
