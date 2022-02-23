@@ -50,7 +50,7 @@ function callback(response) {
     L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
-            // console.log(feature)
+            console.log(feature)
 
             let node_color = "#a2a2a2"
             let arrow_deg = 0
@@ -72,7 +72,7 @@ function callback(response) {
                     iconOptions: { rotation: arrow_deg, color: node_color, size: 60},
                  }).bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
             } else {
-                return L.circleMarker(latlng, geojsonMarkerOptions).bindPopup(`Датчик отключен`);
+                return L.circleMarker(latlng, geojsonMarkerOptions).bindPopup(`[${feature.id}] отключен `);
             }
 
 
@@ -82,8 +82,8 @@ function callback(response) {
 };
 
 $.ajax({
-    // url: "https://api-dev.bashair.ru/geo",
-    url: "http://localhost:8001/geo",
+    url: "https://api-dev.bashair.ru/geo",
+    // url: "http://localhost:8001/geo",
     dataType: "json",
     success: function (response) {
         callback(response)

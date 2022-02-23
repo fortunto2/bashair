@@ -48,9 +48,10 @@ def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_
 def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
     result = get_nmu_influx(city_id=city_id, region_id=region_id)
-    mode = result[0]
-    time = result[1]
+
     if result:
+        mode = result[0]
+        time = result[1]
 
         print(f'get NMU for {region_id}, {city_id} = {result}')
 
@@ -60,6 +61,8 @@ def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
             'time': time.strftime("%H:%M"),
             'date': time.strftime("%Y-%m-%d"),
         }
+    # else:
+    #     return JSONResponse(content={'result': False})
 
 
 
