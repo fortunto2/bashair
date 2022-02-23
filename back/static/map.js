@@ -73,8 +73,8 @@ function callback(response) {
 };
 
 $.ajax({
-    // url: "https://api-dev.bashair.ru/geo",
-    url: "http://localhost:8001/geo",
+    url: "https://api-dev.bashair.ru/geo",
+    // url: "http://localhost:8001/geo",
     dataType: "json",
     success: function (response) {
         callback(response)
