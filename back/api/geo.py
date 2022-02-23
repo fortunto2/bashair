@@ -9,7 +9,7 @@ from back.api.node import create_node_response
 from back.models.factory import Factory
 from back.models.node import Node
 from back.schemas.factory import FactoryGet
-from back.schemas.node import NodePointGet
+from back.schemas.node import NodePointGet, NodePointGeo
 from back.utils.exceptions import NotFound
 
 router = APIRouter(tags=["geo"], prefix="/geo")
@@ -41,7 +41,7 @@ def get_geomap(city_id: Optional[int] = None):
 
         if not node_point:
             # todo: show offline nodes
-            continue
+            node_point = NodePointGeo(**node.__dict__)
 
         feature.properties = node_point.dict()
 

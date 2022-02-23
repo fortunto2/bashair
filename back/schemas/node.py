@@ -104,6 +104,11 @@ class NodePointGet(NodeMetrics, LocationBase):
         orm_mode = True
 
 
+class NodePointGeo(NodePointGet):
+    pm25: Optional[int]
+    pm10: Optional[int]
+
+
 class ListNodes(BaseModel):
     __root__: List[NodePointGet]
 

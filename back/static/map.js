@@ -11,25 +11,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
 
-    if (feature.properties && feature.properties.name) {
-        layer.bindPopup(feature.properties.name);
-    }
+    // if (feature.properties && feature.properties.name) {
+    //     layer.bindPopup(feature.properties.name);
+    // }
     if (feature.geometry && feature.geometry.type === "MultiPolygon" ) {
         // console.log('factory')
     }
     if (feature.geometry && feature.geometry.type === "Point" ) {
         // console.log('point')
     }
-    if (feature.properties && feature.properties.pm25) {
-        layer.bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
-
-    }
+    // if (feature.properties && feature.properties.pm25) {
+    //     layer.bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+    //
+    // } else {
+    //     layer.bindPopup(`Датчик отключен`);
+    // }
 
 }
 
 var geojsonMarkerOptions = {
     radius: 8,
-    fillColor: "#ff7800",
+    fillColor: "#8d8d8d",
     color: "#000",
     weight: 1,
     opacity: 1,
@@ -50,7 +52,8 @@ function callback(response) {
         pointToLayer: function (feature, latlng) {
             // console.log(feature)
 
-            let node_color = "#82ff53"
+            let node_color = "#a2a2a2"
+            let arrow_deg = 0
 
             switch (feature.properties.aqi_category) {
                 case "Good": node_color = "#6fc94c"; break;
@@ -61,18 +64,26 @@ function callback(response) {
                 case 'Hazardous':  node_color = "#7c1208"; break;
             }
 
-            return L.marker
+            if (feature.properties && feature.properties.pm25) {
+               arrow_deg = feature.properties.wind.deg - 180;
+
+               return L.marker
                 .arrowCircle(latlng, {
-                iconOptions: { rotation: feature.properties.wind.deg - 180, color: node_color, size: 60},
-            })
+                    iconOptions: { rotation: arrow_deg, color: node_color, size: 60},
+                 }).bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+            } else {
+                return L.circleMarker(latlng, geojsonMarkerOptions).bindPopup(`Датчик отключен`);
+            }
+
+
         }
     }).addTo(map);
 
 };
 
 $.ajax({
-    url: "https://api-dev.bashair.ru/geo",
-    // url: "http://localhost:8001/geo",
+    // url: "https://api-dev.bashair.ru/geo",
+    url: "http://localhost:8001/geo",
     dataType: "json",
     success: function (response) {
         callback(response)
