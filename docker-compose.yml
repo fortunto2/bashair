@@ -4,7 +4,7 @@ services:
   fastapi: &fastapi
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerfileGdal
     image: backend_fastapi
     volumes:
       - .:/app
@@ -22,7 +22,7 @@ services:
   telega:
     <<: *fastapi
     ports: []
-    command: python bots/telega.py
+    command: python3 bots/telega.py
 
   django:
     <<: *fastapi
