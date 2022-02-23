@@ -10,19 +10,19 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 
 
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
-    console.log(feature)
-    console.log(layer)
+
     if (feature.properties && feature.properties.name) {
         layer.bindPopup(feature.properties.name);
     }
     if (feature.geometry && feature.geometry.type === "MultiPolygon" ) {
-        console.log('factory')
+        // console.log('factory')
     }
     if (feature.geometry && feature.geometry.type === "Point" ) {
-        console.log('point')
+        // console.log('point')
     }
     if (feature.properties && feature.properties.pm25) {
         layer.bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+
     }
 
 }
@@ -39,7 +39,7 @@ var geojsonMarkerOptions = {
 
 function callback(response) {
 
-    console.log(response);
+    // console.log(response);
 
     // L.geoJSON(response, {
     //     onEachFeature: onEachFeature
@@ -47,25 +47,23 @@ function callback(response) {
 
     L.geoJSON(response, {
         onEachFeature: onEachFeature,
-        style: function(feature) {
-            console.log(feature)
-            if (feature.geometry && feature.geometry.type === "Point" ) {
-                switch (feature.properties.aqi_category) {
-
-                    case "Good": return {color: "#82ff53"};
-                    case 'Moderate':   return {color: "#ffd500"};
-                    case 'Unhealthy for Sensitive Groups':   return {color: "#ff6f6f"};
-                    case 'Unhealthy':   return {color: "#c7005a"};
-                    case 'Very Unhealthy':   return {color: "#5e0029"};
-                    case 'Hazardous':   return {color: "#340000"};
-                }
-            }
-        },
         pointToLayer: function (feature, latlng) {
             // console.log(feature)
+
+            let node_color = "#82ff53"
+
+            switch (feature.properties.aqi_category) {
+                case "Good": node_color = "#6fc94c"; break;
+                case 'Moderate':  node_color = "#eccf43"; break;
+                case 'Unhealthy for Sensitive Groups':  node_color = "#d27533"; break;
+                case 'Unhealthy':  node_color = "#bb402f"; break;
+                case 'Very Unhealthy':   node_color = "#a61b0a"; break;
+                case 'Hazardous':  node_color = "#7c1208"; break;
+            }
+
             return L.marker
-            .arrowCircle(latlng, {
-              iconOptions: { rotation: feature.properties.wind.deg - 180},
+                .arrowCircle(latlng, {
+                iconOptions: { rotation: feature.properties.wind.deg - 180, color: node_color, size: 60},
             })
         }
     }).addTo(map);

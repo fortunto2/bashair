@@ -1,4 +1,5 @@
 "use strict";
+// https://github.com/coyotesqrl/Leaflet.ArrowCircle
 
 (function (factory, window) {
   // define an AMD module that relies on 'leaflet'
