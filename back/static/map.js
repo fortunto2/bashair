@@ -104,14 +104,16 @@ function callback(response) {
 
         var clickedMarker = event.layer;
         var properties = clickedMarker.feature.properties;
-        console.log('click', properties)
-
         const _sidebar_html = `
+
         <div class="person">
             <h2>Индекс воздуха AQI: ${properties.aqi}</h2>
-            <h3>Категория: ${properties.aqi_category}</h3>
+            <h3>${properties.name}, ${properties.city}</h3>
+            <hr />
+            <h5>Категория: ${properties.aqi_category}</h5>
             <li class="pm25">pm2.5: <b>${properties.pm25}</b></li>
             <li class="pm10">pm10: <b>${properties.pm10}</b></li>
+            <li class="humidity">температура: <b>${properties.temperature}</b></li>
             <li class="humidity">влажность: <b>${properties.humidity}</b></li>
             <li class="pressure">давление: <b>${properties.pressure}</b></li>
             <br />
@@ -119,9 +121,16 @@ function callback(response) {
             <li class="wind_deg">угол: <b>${properties.wind.deg}</b></li>
             <li class="wind_gust">порыв: <b>${properties.wind.gust}</b></li>
             <li class="wind_speed">скорость: <b>${properties.wind.speed}</b></li>
+            
+            <br />
+            <br />
+            <button type="button" class="button_alarm"><a href="https://bashair.ru/help/">Куда жаловаться?</a></button>
+            
 
          </div>
         `
+
+        console.log('click', properties)
 
         sidebar.setContent(_sidebar_html);
 
