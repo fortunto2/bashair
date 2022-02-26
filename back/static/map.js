@@ -1,12 +1,17 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
+var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: attribution}).addTo(map);
 // const markers = JSON.parse(document.getElementById('markers-data').textContent);
 // let feature = L.geoJSON(markers).bindPopup(function (layer) { return layer.feature.properties.name; }).addTo(map);
 
+var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+});
 
+map.addControl(sidebar);
 
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
@@ -39,6 +44,18 @@ var geojsonMarkerOptions = {
 };
 
 
+function addMarker(e){
+    // Add marker to map at click location; add popup window
+    var newMarker = new L.marker(e.latlng).addTo(map);
+}
+
+function markerOnClick(e) {
+  var attributes = e.layer.properties;
+  console.log(attributes.name, attributes.desctiption, attributes.othervars);
+  // do some stuff…
+}
+
+
 function callback(response) {
 
     // console.log(response);
@@ -47,10 +64,10 @@ function callback(response) {
     //     onEachFeature: onEachFeature
     // }).addTo(map);
 
-    L.geoJSON(response, {
+    var markersLayer = L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
-            console.log(feature)
+            // console.log(feature)
 
             let node_color = "#a2a2a2"
             let arrow_deg = 0
@@ -78,6 +95,38 @@ function callback(response) {
 
         }
     }).addTo(map);
+
+    newMarkerGroup = new L.LayerGroup();
+    // map.on('click', addMarker);
+
+    markersLayer.on("click", function (event) {
+        sidebar.show();
+
+        var clickedMarker = event.layer;
+        var properties = clickedMarker.feature.properties;
+        console.log('click', properties)
+
+        const _sidebar_html = `
+        <div class="person">
+            <h2>Индекс воздуха AQI: ${properties.aqi}</h2>
+            <h3>Категория: ${properties.aqi_category}</h3>
+            <li class="pm25">pm2.5: <b>${properties.pm25}</b></li>
+            <li class="pm10">pm10: <b>${properties.pm10}</b></li>
+            <li class="humidity">влажность: <b>${properties.humidity}</b></li>
+            <li class="pressure">давление: <b>${properties.pressure}</b></li>
+            <br />
+            <h4>Ветер:</h4>
+            <li class="wind_deg">угол: <b>${properties.wind.deg}</b></li>
+            <li class="wind_gust">порыв: <b>${properties.wind.gust}</b></li>
+            <li class="wind_speed">скорость: <b>${properties.wind.speed}</b></li>
+
+         </div>
+        `
+
+        sidebar.setContent(_sidebar_html);
+
+    });
+
 
 };
 
