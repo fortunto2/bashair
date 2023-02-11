@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 django = "^4.1"
-uvicorn = "^0.20.0"
+uvicorn = "~0.11.8" # выше 11 версии не получетася обновить, фастапи падает
 whitenoise = "^5.2.0"
 fastapi = "^0.91.0"
 aiogram = "^2.19"
@@ -32,7 +32,7 @@ beautifulsoup4 = "^4.10.0"
 geomodel = "^0.2.0"
 geojson-pydantic = "^0.3.1"
 itsdangerous = "^2.1.2"
-httpx = "^0.23.3"
+#httpx = "^0.23.3"
 
 
 
