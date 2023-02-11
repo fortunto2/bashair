@@ -24,14 +24,15 @@ django-phonenumber-field = "^6.0.0"
 phonenumbers = "^8.12.43"
 pyowm = "^3.2.0"
 fastapi-jwt-auth = "^0.5.0"
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+#passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
-Pillow = "^9.0.1"
+Pillow = "9.0.1"
 python-multipart = "^0.0.5"
 beautifulsoup4 = "^4.10.0"
 geomodel = "^0.2.0"
 geojson-pydantic = "^0.3.1"
 itsdangerous = "^2.1.2"
+httpx = "^0.23.3"
 
 
 
