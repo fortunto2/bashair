@@ -1,3 +1,4 @@
+import uuid
 from typing import Union
 
 from django.contrib.auth.hashers import check_password
@@ -6,7 +7,8 @@ from fastapi import HTTPException, Depends, APIRouter, Body
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_jwt_auth import AuthJWT
 from starlette import status
-from starlette.responses import Response
+from starlette.responses import Response, JSONResponse
+from fastapi.security import OAuth2PasswordBearer
 
 from back.depends.user import get_current_active_user
 from back.models.deny_list import DenyList
@@ -48,7 +50,8 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), aut
         )
     access_token = auth.create_access_token(subject=user.username)
     refresh_token = auth.create_refresh_token(subject=user.username)
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer",
+            "ttl": auth._access_token_expires * 1000}
 
 
 @router.post("/token/refresh", response_model=TokenGet)
@@ -58,7 +61,8 @@ def refresh_access_token(auth: AuthJWT = Depends()):
     current_user = auth.get_jwt_subject()
     access_token = auth.create_access_token(subject=current_user)
     refresh_token = auth.create_refresh_token(subject=current_user)
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer",
+            "ttl": auth._access_token_expires * 1000}
 
 
 @router.post("/register", response_model=TokenGet)
@@ -80,11 +84,13 @@ def create_user(user: UserCreate, auth: AuthJWT = Depends()):
     user.save()
     access_token = auth.create_access_token(subject=user.username)
     refresh_token = auth.create_refresh_token(subject=user.username)
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer", "ttl": auth._access_token_expires * 1000}
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer",
+            "ttl": auth._access_token_expires * 1000}
 
 
 @router.post("/change_password")
-def change_password(new_password: str = Body(...), current_password: str = Body(...), current_user: User = Depends(get_current_active_user)):
+def change_password(new_password: str = Body(...), current_password: str = Body(...),
+                    current_user: User = Depends(get_current_active_user)):
     if not verify_password(current_password, current_user.password):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -93,3 +99,19 @@ def change_password(new_password: str = Body(...), current_password: str = Body(
     current_user.set_password(new_password)
     current_user.save()
     return Response()
+
+
+@router.post("/anonymous/login")
+def login_for_anonymous_user(auth: AuthJWT = Depends()):
+    user = authenticate_user('anonym', '3fi0bv*HM3JI')
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect anonym",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = auth.create_access_token(subject=user.username)
+    refresh_token = auth.create_refresh_token(subject=user.username)
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer",
+            "ttl": auth._access_token_expires * 1000}
