@@ -27,7 +27,7 @@ function onEachFeature(feature, layer) {
         // console.log('factory')
     }
     if (feature.geometry && feature.geometry.type === "Point") {
-        // console.log('point')
+        // console.log(feature)
     }
     // if (feature.properties && feature.properties.pm25) {
     //     layer.bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
@@ -183,16 +183,10 @@ function sendMarkerData(lat, lng, text, selectedProperties) {
 
 function callback(response) {
 
-    // console.log(response);
-
-    // L.geoJSON(response, {
-    //     onEachFeature: onEachFeature
-    // }).addTo(map);
-
     var markersLayer = L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
-            // console.log(feature)
+            console.log(feature)
 
             let node_color = "#a2a2a2"
             let arrow_deg = 0
@@ -283,3 +277,4 @@ $.ajax({
         callback(response)
     }
 })
+

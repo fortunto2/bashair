@@ -30,7 +30,7 @@ class SignalCreate(SignalBase):
 
 class SignalGet(SignalBase):
     id: int
-    owner_id: Optional[int]
+    # owner_id: Optional[int]
     properties: Optional[List[SignalProperties]]
     status: str
 

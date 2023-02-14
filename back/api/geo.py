@@ -10,21 +10,26 @@ from back.models.factory import Factory
 from back.models.node import Node
 from back.schemas.factory import FactoryGet
 from back.schemas.node import NodePointGet, NodePointGeo
+from back.schemas.signal import SignalGet
 from back.utils.exceptions import NotFound
-
+from datetime import datetime, timedelta
+from back.models.signal import Signal, SignalToInstance, SignalProperties
 router = APIRouter(tags=["geo"], prefix="/geo")
 
 
 @router.get('', response_model=FeatureCollection)
 def get_geomap(city_id: Optional[int] = None):
+    time_threshold = datetime.now() - timedelta(hours=24)
 
     try:
         if city_id:
             factories = Factory.objects.filter(city_id=city_id)
             nodes = Node.objects.filter(city_id=city_id)
+            signals = Signal.objects.filter(created__gte=time_threshold, city_id=city_id)
         else:
             factories = Factory.objects.all()
             nodes = Node.objects.all()
+            signals = Signal.objects.filter(created__gte=time_threshold)
     except Factory.DoesNotExist:
         raise NotFound
 
@@ -57,6 +62,19 @@ def get_geomap(city_id: Optional[int] = None):
         factory_model = FactoryGet(**factory.__dict__)
 
         feature.properties = factory_model.dict()
+
+        features.append(feature)
+
+    for signal in signals:
+
+        feature = Feature(
+            geometry=Point(coordinates=node.point.coords),
+            id=f'signal_{signal.id}'
+        )
+
+        signal_point = SignalGet(**signal.__dict__)
+
+        feature.properties = signal_point.dict()
 
         features.append(feature)
 

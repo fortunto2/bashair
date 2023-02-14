@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import List
 
+from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
@@ -66,12 +67,15 @@ def get_signal(signal_id: int):
     return signal
 
 
-@router.get("/all", response_model=List[SignalGet])
-async def get_signals():
+@router.get("/all/", response_model=List[SignalGet])
+def get_signals():
     """Get all Signal instances created within the last 24 hours"""
     time_threshold = datetime.now() - timedelta(hours=24)
+    # signals = Signal.objects.filter(created__gte=time_threshold, city_id=1)
+    # get signals use sync_to_async
     signals = Signal.objects.filter(created__gte=time_threshold, city_id=1)
-    return signals
+
+    return list(signals)
 
 
 @router.post('/instance', response_model=SignalToInstanceGet)
