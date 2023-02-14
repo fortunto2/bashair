@@ -1,6 +1,6 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 2</a> contributors'
-var url = "https://api.bashair.ru";
-// var url = "http://127.0.0.1:8001";
+// var url = "https://api.bashair.ru";
+var url = "http://127.0.0.1:8001";
 
 var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
@@ -157,7 +157,7 @@ function sendMarkerData(lat, lng, text, selectedProperties) {
 
     $.ajax({
         type: "POST",
-        url: url + "/signal/",
+        url: url + "/signal/send",
         headers: {
             "Authorization": "Bearer " + token
         },
