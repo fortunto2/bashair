@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
+from fastapi import HTTPException
 
 from back.depends.user import get_current_active_user
 from back.models.signal import Signal, SignalToInstance, SignalProperties
@@ -31,20 +32,24 @@ def get_count(time=None, city=None, user=None):
     return int(count_query)
 
 
-@router.post(
-    '/',
-    response_model=SignalGet
-)
+@router.post('/', response_model=SignalGet)
 def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_user)):
     """
-    Создаем запись с жалобой в базу
+    Create a signal record in the database
     """
     properties = signal.properties
-    signal: Signal = Signal.objects.create(owner_id=user.id, **signal.dict(exclude={'properties'}))
+    signal_dict = signal.dict(exclude={"properties"})
+    signal = Signal(**signal_dict)
+    signal.owner = user
+    signal.owner_id = user.id
+    signal.save()
     if properties:
-        signal.properties.add(*properties)
+        try:
+            signal.properties.add(*properties)
+        except Exception as e:
+            signal.delete()
+            raise HTTPException(status_code=400, detail=str(e))
     return signal
-
 
 @router.get('/{signal_id}', response_model=SignalGet)
 def get_signal(signal_id: int):

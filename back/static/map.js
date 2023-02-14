@@ -62,22 +62,52 @@ function addMarker(lat, lng) {
 
     sidebar.show();
     const _sidebar_html = `
-    <form id="add-note-form">
-      <input type="text" id="note-input" placeholder="Enter custom note">
-      <button type="submit">Add Note</button>
-    </form>
-    `;
+        
+        <form id="create-signal-form">
+          <label for="text">Сообщение:</label>
+          <input type="text" name="text" id="text">
+          <br>
+          <br>
+    
+          <label for="properties">Что вы чувствуете:</label>
+          <div id="properties-checkboxes"></div>
+          <br>
+    
+          <button type="submit">Отправить</button>
+        </form>
+      `;
     sidebar.setContent(_sidebar_html);
 
+    // Populate properties dropdown list
+    $.ajax({
+        type: "GET",
+        url: url + "/signal/properties",
+        success: function (response) {
+            var properties = response;
+            var checkboxes = '';
+            for (var i = 0; i < properties.length; i++) {
+                checkboxes += '<div class="properties"><input type="checkbox" name="properties" value="' + properties[i].id + '"><label>' + properties[i].name + '</label></div>';
+            }
+            $('#properties-checkboxes').html(checkboxes);
+
+        },
+        error: function (response) {
+            console.error(response);
+        }
+    });
 
     // Add custom note to marker when form is submitted
-    $("#add-note-form").submit(function (event) {
+    $("#create-signal-form").submit(function (event) {
         event.preventDefault();
-        var note = $("#note-input").val();
-        marker.setPopupContent(note);
+        var text = $("#text").val();
+        var selectedProperties = $("#properties-checkboxes input:checked").map(function () {
+            return $(this).val();
+        }).get();
+        marker.setPopupContent(text);
         marker.openPopup();
-        sendMarkerData(lat, lng, note);
-        $("#note-input").val("");
+        sendMarkerData(lat, lng, text, selectedProperties);
+        $("#text").val("");
+        $("#properties input:checked").prop("checked", false);
         sidebar.hide()
     });
 }
@@ -117,7 +147,7 @@ $(document).ready(function () {
     }
 });
 
-function sendMarkerData(lat, lng, note) {
+function sendMarkerData(lat, lng, text, selectedProperties) {
     if (!token) {
         console.error("No token found in local storage after anonymousLogin");
         return;
@@ -134,7 +164,8 @@ function sendMarkerData(lat, lng, note) {
         data: JSON.stringify({
             "latitude": lat,
             "longitude": lng,
-            "text": note,
+            "text": text,
+            "properties": selectedProperties,
             "city_id": 1,
             "time_of_incident": new Date().toISOString()
         }),

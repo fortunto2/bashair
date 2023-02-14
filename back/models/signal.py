@@ -25,6 +25,9 @@ class SignalProperties(models.Model):
         default='smells',
     )
 
+    def __str__(self):
+        return f"{self.name} ({self.group})"
+
 
 class Signal(TimeStampedModel, LocationModel):
     text = models.TextField()
@@ -45,6 +48,9 @@ class Signal(TimeStampedModel, LocationModel):
         choices=SIGNAL_STATUS,
         default='sent',
     )
+
+    def __str__(self):
+        return f"{self.text} ({self.time_of_incident.strftime('%Y-%m-%d %H:%M:%S')})"
 
 
 class SignalMedia(TimeStampedModel):
