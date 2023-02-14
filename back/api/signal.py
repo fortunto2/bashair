@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+from typing import List
+
 from django.contrib.auth.models import User
 from fastapi import APIRouter, Depends
 from fastapi.security import HTTPBearer
@@ -32,7 +35,7 @@ def get_count(time=None, city=None, user=None):
     return int(count_query)
 
 
-@router.post('/', response_model=SignalGet)
+@router.post('/send', response_model=SignalGet)
 def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_user)):
     """
     Create a signal record in the database
@@ -61,6 +64,14 @@ def get_signal(signal_id: int):
     except Signal.DoesNotExist:
         raise NotFound
     return signal
+
+
+@router.get("/all", response_model=List[SignalGet])
+async def get_signals():
+    """Get all Signal instances created within the last 24 hours"""
+    time_threshold = datetime.now() - timedelta(hours=24)
+    signals = Signal.objects.filter(created__gte=time_threshold, city_id=1)
+    return signals
 
 
 @router.post('/instance', response_model=SignalToInstanceGet)
