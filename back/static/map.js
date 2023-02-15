@@ -1,6 +1,6 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 2</a> contributors'
-var url = "https://api.bashair.ru";
-// var url = "http://127.0.0.1:8001";
+// var url = "https://api.bashair.ru";
+var url = "http://127.0.0.1:8001";
 
 var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
@@ -38,9 +38,18 @@ function onEachFeature(feature, layer) {
 
 }
 
-var geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#8d8d8d",
+var geojsonNodeOptions = {
+    radius: 6,
+    fillColor: "#a6a6a6",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+};
+
+var geojsonSignalOptions = {
+    radius: 10,
+    fillColor: "#de4f4f",
     color: "#000",
     weight: 1,
     opacity: 1,
@@ -186,7 +195,6 @@ function callback(response) {
     var markersLayer = L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
-            console.log(feature)
 
             let node_color = "#a2a2a2"
             let arrow_deg = 0
@@ -212,16 +220,23 @@ function callback(response) {
                     break;
             }
 
+            var marker_item;
+
             if (feature.properties && feature.properties.pm25) {
                 arrow_deg = feature.properties.wind.deg - 180;
 
-                return L.marker
-                    .arrowCircle(latlng, {
-                        iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
-                    }).bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+                marker_item = L.marker.arrowCircle(latlng, {
+                    iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
+                }).bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+
+            } else if (feature.id.startsWith('signal')) {
+                marker_item = L.marker(latlng, geojsonSignalOptions).bindPopup(`${feature.properties.text}`);
+
             } else {
-                return L.circleMarker(latlng, geojsonMarkerOptions).bindPopup(`[${feature.id}] отключен `);
+                marker_item = L.circleMarker(latlng, geojsonNodeOptions).bindPopup(`[${feature.id}] отключен`);
             }
+
+            return marker_item
 
 
         }
@@ -234,34 +249,66 @@ function callback(response) {
         sidebar.show();
 
         var clickedMarker = event.layer;
-        var properties = clickedMarker.feature.properties;
-        const _sidebar_html = `
+        var feature = clickedMarker.feature;
+        var properties = feature.properties;
 
-        <div class="person">
-            <h2>Индекс воздуха AQI: ${properties.aqi}</h2>
-            <h3>${properties.name}, ${properties.city}</h3>
-            <hr />
-            <h5>Категория: ${properties.aqi_category}</h5>
-            <li class="pm25">pm2.5: <b>${properties.pm25}</b></li>
-            <li class="pm10">pm10: <b>${properties.pm10}</b></li>
-            <li class="humidity">температура: <b>${properties.temperature}</b></li>
-            <li class="humidity">влажность: <b>${properties.humidity}</b></li>
-            <li class="pressure">давление: <b>${properties.pressure}</b></li>
-            <br />
-            <h4>Ветер:</h4>
-            <li class="wind_deg">угол: <b>${properties.wind.deg}</b></li>
-            <li class="wind_gust">порыв: <b>${properties.wind.gust}</b></li>
-            <li class="wind_speed">скорость: <b>${properties.wind.speed}</b></li>
-            
-            <br />
-            <br />
-            <button type="button" class="button_alarm"><a href="https://bashair.ru/help/">Куда жаловаться?</a></button>
-            
+        var _sidebar_html;
 
-         </div>
-        `
+        const date = new Date(properties.created);
+        const options = {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric'
+        };
+        const humanDateTime = date.toLocaleString('ru-RU', options); // Returns 'February 15, 2023, 9:29:45 PM' in en-US locale
 
-        console.log('click', properties)
+
+        if (feature.id.startsWith('signal')) {
+            _sidebar_html = `
+            <div class="person">
+                <h2>${properties.text}</h2>
+                <h4>${humanDateTime}</h4>
+                <div>${properties.properties}</div>
+                <br />
+                <button type="button" class="button_alarm"><a href="https://bashair.ru/help/">Куда жаловаться?</a></button>
+             </div>
+            `;
+        } else if (feature.properties && feature.properties.pm25) {
+
+            _sidebar_html = `
+            <div class="person">
+                <h2>Индекс воздуха AQI: ${properties.aqi}</h2>
+                <h3>${properties.name}, ${properties.city}</h3>
+                <hr />
+                <h5>Категория: ${properties.aqi_category}</h5>
+                <li class="pm25">pm2.5: <b>${properties.pm25}</b></li>
+                <li class="pm10">pm10: <b>${properties.pm10}</b></li>
+                <li class="humidity">температура: <b>${properties.temperature}</b></li>
+                <li class="humidity">влажность: <b>${properties.humidity}</b></li>
+                <li class="pressure">давление: <b>${properties.pressure}</b></li>
+                <br />
+                <h4>Ветер:</h4>
+                <li class="wind_deg">угол: <b>${properties.wind.deg}</b></li>
+                <li class="wind_gust">порыв: <b>${properties.wind.gust}</b></li>
+                <li class="wind_speed">скорость: <b>${properties.wind.speed}</b></li>
+                <br />
+                <br />
+                <button type="button" class="button_alarm"><a href="https://bashair.ru/help/">Куда жаловаться?</a></button>
+             </div>
+            `;
+        } else {
+            _sidebar_html = `
+            <div class="person">
+                <h2>Датчик отключен</h2>
+             </div>
+            `;
+        }
+
+        sidebar.setContent(_sidebar_html);
+        console.log('click', feature)
 
         sidebar.setContent(_sidebar_html);
 

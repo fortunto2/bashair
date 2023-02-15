@@ -15,9 +15,11 @@ from back.utils.exceptions import NotFound
 from datetime import datetime, timedelta
 from back.models.signal import Signal, SignalToInstance, SignalProperties
 router = APIRouter(tags=["geo"], prefix="/geo")
+from fastapi_cache.decorator import cache
 
 
 @router.get('', response_model=FeatureCollection)
+@cache(expire=60)
 def get_geomap(city_id: Optional[int] = None):
     time_threshold = datetime.now() - timedelta(hours=24)
 
@@ -68,7 +70,7 @@ def get_geomap(city_id: Optional[int] = None):
     for signal in signals:
 
         feature = Feature(
-            geometry=Point(coordinates=node.point.coords),
+            geometry=Point(coordinates=signal.point.coords),
             id=f'signal_{signal.id}'
         )
 
@@ -79,3 +81,4 @@ def get_geomap(city_id: Optional[int] = None):
         features.append(feature)
 
     return FeatureCollection(features=features)
+
