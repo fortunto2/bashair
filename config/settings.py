@@ -125,3 +125,7 @@ PHONENUMBER_DEFAULT_REGION = 'RU'
 PHONENUMBER_DEFAULT_FORMAT = 'NATIONAL'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# CSRF_TRUSTED_ORIGINS
+
+CSRF_TRUSTED_ORIGINS = ['https://api.bashair.ru', 'https://map.bashair.ru']
