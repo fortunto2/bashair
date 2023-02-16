@@ -46,7 +46,6 @@ def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_
 
 
 @router.get('', response_model=NmuBase)
-@cache(expire=360)
 def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
     result = get_nmu_influx(city_id=city_id, region_id=region_id)
