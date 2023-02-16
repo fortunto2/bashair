@@ -34,6 +34,7 @@ geojson-pydantic = "^0.3.1"
 itsdangerous = "^2.1.2"
 #httpx = "^0.23.3"
 fastapi-cache2 = "^0.2.1"
+django-debug-toolbar = "^3.8.1"
 
 
 [tool.poetry.dev-dependencies]

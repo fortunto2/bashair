@@ -5,7 +5,6 @@ from config.envs import envs
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-
 # Quick-start development envs - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -16,7 +15,6 @@ SECRET_KEY = "i@dpxlb-$zm!bwldm*gg0qx&t&*^4lf2#)2*$)rb1u@5nwmcss"
 DEBUG = envs.DEBUG
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -30,7 +28,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cities_light',
     'phonenumber_field',
-    'django.contrib.gis'
+    'django.contrib.gis',
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -42,6 +41,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -63,7 +64,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/envs/#databases
@@ -97,7 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -110,7 +109,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -129,3 +127,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # CSRF_TRUSTED_ORIGINS
 
 CSRF_TRUSTED_ORIGINS = ['https://api.bashair.ru', 'https://map.bashair.ru']
+
+# for debug toolbar
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]
