@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import APIRouter
+from fastapi_cache.decorator import cache
 from influxdb_client.client.flux_table import FluxTable, FluxRecord
 from pydantic import ValidationError
 
@@ -17,6 +18,7 @@ router = APIRouter(tags=["city"], prefix="/city")
 
 
 @router.get('/all', response_model=ListCities)
+@cache(expire=360)
 def get_all_cities():
     city_query = City.objects.all()
     result = []
@@ -29,6 +31,7 @@ def get_all_cities():
 
 
 @router.get('/{city_id}/total')
+@cache(expire=360)
 def get_total(city_id: int):
     try:
         city = City.objects.get(id=city_id)

@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
 from typing import List
 
-from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from fastapi import APIRouter, Depends
-from fastapi.security import HTTPBearer
 from fastapi import HTTPException
+from fastapi_cache.decorator import cache
 
 from back.depends.user import get_current_active_user
 from back.models.signal import Signal, SignalToInstance, SignalProperties
@@ -17,6 +16,7 @@ router = APIRouter(tags=["signal"], prefix="/signal")
 
 
 @router.get('/properties')
+@cache(expire=360)
 def get_properties():
     """
     Для формы жалобы, параметры такие как возможные запахи и симптомы

@@ -2,6 +2,7 @@ import json
 from typing import Optional, Dict
 
 from fastapi import APIRouter
+from fastapi_cache.decorator import cache
 
 from back.models.factory import Factory
 from back.models.node import Node
@@ -12,6 +13,7 @@ router = APIRouter(tags=["factory"], prefix="/factory")
 
 
 @router.get('/all', response_model=ListFactories)
+@cache(expire=360)
 def get_factories(city_id: Optional[int] = None):
     """
     Список всех возможных источников загрязнения
@@ -29,6 +31,7 @@ def get_factories(city_id: Optional[int] = None):
 
 
 @router.get('/{factory_id}', response_model=FactoryGet)
+@cache(expire=360)
 def get_factory(factory_id: int):
     """
      Завод по айди

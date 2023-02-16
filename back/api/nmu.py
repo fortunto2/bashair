@@ -1,5 +1,6 @@
 from typing import Optional, List
 
+from django.core.cache import cache
 from fastapi import APIRouter
 from influxdb_client.client.flux_table import FluxTable, FluxRecord
 from starlette.responses import JSONResponse
@@ -45,6 +46,7 @@ def get_nmu_influx(measurment='predictions', start='-24h', city_id=None, region_
 
 
 @router.get('', response_model=NmuBase)
+@cache(expire=360)
 def get_nmu(region_id: Optional[str] = '', city_id: Optional[str] = ''):
 
     result = get_nmu_influx(city_id=city_id, region_id=region_id)

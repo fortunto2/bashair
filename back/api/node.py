@@ -3,6 +3,7 @@ from typing import Optional
 from django.contrib.auth.models import User
 from django.db.models import Q
 from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
 from pydantic import ValidationError
 
 from back.api.weather import get_weather
@@ -39,6 +40,7 @@ def create_node_response(node: Node) -> NodePointGet:
 
 @router.get('/all', response_model=ListNodes)
 @router.get('/all/', response_model=ListNodes) #old
+@cache(expire=360)
 def get_nodes(city_id: Optional[int] = None):
 
     try:
@@ -62,6 +64,7 @@ def get_nodes(city_id: Optional[int] = None):
 
 @router.get('/{node_id}/', response_model=NodePointGet)
 @router.get('/{node_id}', response_model=NodePointGet)
+@cache(expire=360)
 def get_node(node_id: int):
     """
     Данные по датчику
@@ -80,6 +83,7 @@ def get_node(node_id: int):
 
 @router.get('/{node_id}/history/', response_model=ListNodeMetrics)
 @router.get('/{node_id}/history', response_model=ListNodeMetrics)
+@cache(expire=360)
 def get_node_history(node_id: int):
     try:
         node = Node.objects.get(id=node_id)
