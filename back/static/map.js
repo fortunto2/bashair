@@ -168,7 +168,11 @@ function sendMarkerData(lat, lng, text, selectedProperties) {
         type: "POST",
         url: url + "/signal/send",
         headers: {
-            "Authorization": "Bearer " + token
+            "Authorization": "Bearer " + token,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Origin": "https://api.bashair.ru,https://map.bashair.ru",
+            "Access-Control-Allow-Headers": "Authorization,Content-Type",
+            "Access-Control-Allow-Methods": "POST,OPTIONS"
         },
         data: JSON.stringify({
             "latitude": lat,
@@ -256,12 +260,12 @@ function callback(response) {
 
         const date = new Date(properties.created);
         const options = {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-          second: 'numeric'
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
         };
         const humanDateTime = date.toLocaleString('ru-RU', options); // Returns 'February 15, 2023, 9:29:45 PM' in en-US locale
 
