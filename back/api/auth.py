@@ -111,7 +111,7 @@ def login_for_anonymous_user(auth: AuthJWT = Depends()):
             detail="Incorrect anonym",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = auth.create_access_token(subject=user.username)
-    refresh_token = auth.create_refresh_token(subject=user.username)
-    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer",
-            "ttl": auth._access_token_expires * 1000}
+    access_token = auth.create_access_token(subject=user.username, expires_time=None)
+    refresh_token = auth.create_refresh_token(subject=user.username, expires_time=None)
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer"}
+
