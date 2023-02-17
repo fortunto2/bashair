@@ -1,6 +1,6 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 2</a> contributors'
-var url = "https://api.bashair.ru";
-// var url = "http://127.0.0.1:8001";
+// var url = "https://api.bashair.ru";
+var url = "http://127.0.0.1:8001";
 
 var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
@@ -16,6 +16,7 @@ var sidebar = L.control.sidebar('sidebar', {
 });
 
 map.addControl(sidebar);
+
 
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
@@ -200,34 +201,13 @@ function callback(response) {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
 
-            let node_color = "#a2a2a2"
             let arrow_deg = 0
 
-            switch (feature.properties.aqi_category) {
-                case "Good":
-                    node_color = "#6fc94c";
-                    break;
-                case 'Moderate':
-                    node_color = "#eccf43";
-                    break;
-                case 'Unhealthy for Sensitive Groups':
-                    node_color = "#d27533";
-                    break;
-                case 'Unhealthy':
-                    node_color = "#bb402f";
-                    break;
-                case 'Very Unhealthy':
-                    node_color = "#a61b0a";
-                    break;
-                case 'Hazardous':
-                    node_color = "#7c1208";
-                    break;
-            }
+            const node_color = getColor(feature.properties.aqi_category);
 
             var marker_item;
 
             if (feature.properties && feature.properties.pm25) {
-                arrow_deg = feature.properties.wind.deg - 180;
 
                 marker_item = L.marker.arrowCircle(latlng, {
                     iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
@@ -299,10 +279,21 @@ function callback(response) {
                 <li class="wind_gust">порыв: <b>${properties.wind.gust}</b></li>
                 <li class="wind_speed">скорость: <b>${properties.wind.speed}</b></li>
                 <br />
+                <div class="chart-container" >
+                    <canvas id="sensorChart"></canvas>
+                </div>
+                <br />
+                <a href="https://panel.bashair.ru/d/g5CKOmB7k/sterlitamak">Подробный график</a>
+                <br />
                 <br />
                 <button type="button" class="button_alarm"><a href="https://bashair.ru/help/">Куда жаловаться?</a></button>
              </div>
             `;
+
+            getChartData(url, properties.id, function (chartConfig) {
+                const sensorChart = new Chart($('#sensorChart'), chartConfig);
+            });
+
         } else {
             _sidebar_html = `
             <div class="person">
@@ -314,7 +305,10 @@ function callback(response) {
         sidebar.setContent(_sidebar_html);
         console.log('click', feature)
 
-        sidebar.setContent(_sidebar_html);
+        // const chartContainer = document.querySelector('.chart-container');
+        // chartContainer.style.height = '400px';
+        // chartContainer.style.width = '600px';
+
 
     });
 

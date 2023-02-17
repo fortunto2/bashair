@@ -11,9 +11,7 @@
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.3/leaflet.js"></script>
     <script src="{% static 'L.Control.Sidebar.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-
-    <script src="{% static 'L.ArrowCircle.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css"/>
@@ -27,8 +25,11 @@
     <h1>Информация</h1>
 </div>
 
-
+<script src="{% static 'charts.js' %}"></script>
+<script src="{% static 'L.ArrowCircle.js' %}"></script>
 <script src="{% static 'map.js' %}"></script>
+
+{% if settings.DEBUG %}
 
 <!-- Yandex.Metrika counter -->
 <script type="text/javascript">
@@ -52,6 +53,9 @@
     <div><img src="https://mc.yandex.ru/watch/84305110" style="position:absolute; left:-9999px;" alt=""/></div>
 </noscript>
 <!-- /Yandex.Metrika counter -->
+
+{% endif %}
+
 
 </body>
 </html>

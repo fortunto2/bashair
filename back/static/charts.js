@@ -1,56 +1,62 @@
+function getColor(aqi_category) {
+  switch (aqi_category) {
+    case "Good":
+      return "#6fc94c";
+    case 'Moderate':
+      return "#eccf43";
+    case 'Unhealthy for Sensitive Groups':
+      return "#d27533";
+    case 'Unhealthy':
+      return "#bb402f";
+    case 'Very Unhealthy':
+      return "#a61b0a";
+    case 'Hazardous':
+      return "#7c1208";
+    default:
+      return "gray";
+  }
+}
 
-const DATA_COUNT = 7;
-const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+function getChartData(url, nodeId, callback) {
+    // Construct the URL for the AJAX request using the nodeId parameter
+    url_history = url + `/node/${nodeId}/history`;
 
-const data = {
-  datasets: [
-    {
-      label: 'Fully Rounded',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.red,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-      borderWidth: 2,
-      borderRadius: Number.MAX_VALUE,
-      borderSkipped: false,
-    },
-    {
-      label: 'Small Radius',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.blue,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-      borderWidth: 2,
-      borderRadius: 5,
-      borderSkipped: false,
-    }
-  ]
-};
+    // Make the AJAX request using jQuery's $.getJSON() method
+    $.getJSON(url_history, function (data) {
 
-const config = {
-  type: 'bar',
-  data: data,
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart'
-      }
-    }
-  },
-};
+        // Extract the labels and data values from the response data
+        // const labels = data.map(entry => entry.time);
+        const labels = data.map(data => new Date(data.time));
+
+        // Convert the dates to a shorter format with only the hours
+        const formattedLabels = labels.map(date => date.toLocaleTimeString([], {hour: '2-digit'}));
+
+        const pm25Values = data.map(entry => entry.pm25);
+        const aqiCategory = data.map(entry => entry.aqi_category);
 
 
-const actions = [
-  {
-    name: 'Randomize',
-    handler(chart) {
-      chart.data.datasets.forEach(dataset => {
-        dataset.data = Utils.numbers({count: chart.data.labels.length, min: -100, max: 100});
-      });
-      chart.update();
-    }
-  },
-];
+// Set up the chart data and configuration options using the extracted data
+        const chartData = {
+            labels: formattedLabels,
+            datasets: [{
+                label: 'AQI',
+                data: pm25Values,
+                backgroundColor: aqiCategory.map(getColor),
+                borderWidth: 1
+            }]
+        };
+
+        const chartConfig = {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                height: 400,
+            }
+        };
+
+        // Call the callback function with the chart configuration options
+        callback(chartConfig);
+    });
+}
