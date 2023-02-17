@@ -32,6 +32,7 @@ function getChartData(url, nodeId, callback) {
         const formattedLabels = labels.map(date => date.toLocaleTimeString([], {hour: '2-digit'}));
 
         const pm25Values = data.map(entry => entry.pm25);
+        const aqiValues = data.map(entry => entry.aqi);
         const aqiCategory = data.map(entry => entry.aqi_category);
 
 
@@ -40,7 +41,7 @@ function getChartData(url, nodeId, callback) {
             labels: formattedLabels,
             datasets: [{
                 label: 'AQI',
-                data: pm25Values,
+                data: aqiValues,
                 backgroundColor: aqiCategory.map(getColor),
                 borderWidth: 1
             }]

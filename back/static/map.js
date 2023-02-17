@@ -211,7 +211,7 @@ function callback(response) {
 
                 marker_item = L.marker.arrowCircle(latlng, {
                     iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
-                }).bindPopup(`PM: ${feature.properties.pm25} [${feature.properties.aqi_category}]`);
+                }).bindPopup(`AQI: ${feature.properties.aqi} [${feature.properties.aqi_category}]`);
 
             } else if (feature.id.startsWith('signal')) {
                 marker_item = L.marker(latlng, geojsonSignalOptions).bindPopup(`${feature.properties.text}`);
