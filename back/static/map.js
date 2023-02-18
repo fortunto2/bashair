@@ -17,7 +17,6 @@ var sidebar = L.control.sidebar('sidebar', {
 
 map.addControl(sidebar);
 
-
 function onEachFeature(feature, layer) {
     // does this feature have a property named popupContent?
 
@@ -197,6 +196,8 @@ function sendMarkerData(lat, lng, text, selectedProperties) {
 
 function callback(response) {
 
+    var dataMarker = [];
+
     var markersLayer = L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {
@@ -213,6 +214,14 @@ function callback(response) {
                     iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
                 }).bindPopup(`AQI: ${feature.properties.aqi} [${feature.properties.aqi_category}]`);
 
+                // / Add the lat/lng point to the dataMarker array
+                dataMarker.push([
+                    latlng.lat,
+                    latlng.lng,
+                    getHeatIntensity(feature.properties.aqi_category, feature.properties.aqi)
+                ]);
+
+
             } else if (feature.id.startsWith('signal')) {
                 marker_item = L.marker(latlng, geojsonSignalOptions).bindPopup(`${feature.properties.text}`);
 
@@ -226,8 +235,37 @@ function callback(response) {
         }
     }).addTo(map);
 
+    map.on('zoomend', function() {
+    if (map.getZoom() < 8) {
+        markersLayer.remove();
+    } else {
+        markersLayer.addTo(map);
+    }
+});
+
     newMarkerGroup = new L.LayerGroup();
     // map.on('click', addMarker);
+
+    console.log(dataMarker)
+
+    let gradientColors = {
+        0.1: 'green',
+        0.3: 'lime',
+        0.5: 'yellow',
+        0.7: 'orange',
+        0.8: 'red'
+    };
+
+    // Create the heatmap layer
+    const heat = L.heatLayer(dataMarker, {
+        radius: 70,
+        blur: 50,
+        maxZoom: 11,
+        gradient: gradientColors
+    });
+
+    heat.addTo(map);
+
 
     markersLayer.on("click", function (event) {
         sidebar.show();
@@ -315,6 +353,35 @@ function callback(response) {
 
 };
 
+function getHeatIntensity(aqi_category, aqi) {
+    let intensity = 0;
+    switch (aqi_category) {
+        case 'Good':
+            intensity = aqi * 0.01;
+            break;
+        case 'Moderate':
+            intensity = aqi * 0.01;
+            break;
+        case 'Unhealthy for Sensitive Groups':
+            intensity = aqi * 0.01;
+            break;
+        case 'Unhealthy':
+            intensity = aqi * 0.01;
+            break;
+        case 'Very Unhealthy':
+            intensity = aqi * 0.01;
+            break;
+        case 'Hazardous':
+            intensity = aqi * 0.01;
+            break;
+        default:
+            intensity = 0;
+    }
+    return intensity;
+}
+
+
+
 $.ajax({
     url: url + "/geo",
     dataType: "json",
@@ -322,4 +389,5 @@ $.ajax({
         callback(response)
     }
 })
+
 
