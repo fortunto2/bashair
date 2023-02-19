@@ -21,3 +21,6 @@ class Community(TimeStampedModel):
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='community')
     owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='community')
     logo = models.ImageField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.name}"

@@ -632,6 +632,24 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "django-leaflet"
+version = "0.28.3"
+description = "Use Leaflet in your django projects"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-leaflet-0.28.3.tar.gz", hash = "sha256:073c10c1629b9427a54f7259468c76ad4bbf3295bc37f4c33fe6a9d871b63692"},
+    {file = "django_leaflet-0.28.3-py3-none-any.whl", hash = "sha256:529b88f149c81bd8dda1e34692dcb7c86597483f2e8b86353bf56ebc0f5e01d9"},
+]
+
+[package.dependencies]
+Django = "*"
+
+[package.extras]
+docs = ["sphinx", "sphinx-autobuild"]
+
+[[package]]
 name = "django-phonenumber-field"
 version = "6.4.0"
 description = "An international phone number field for django models."
@@ -2015,4 +2033,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "258764bd64085c4066ca663a0b1bb3f55ff707d20a28aa6e316e3cbfe959cc6c"
+content-hash = "174b9b492752a202d71fe1647437a26d2d644e6faef7c034e7f5ed52981bc80d"

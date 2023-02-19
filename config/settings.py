@@ -19,7 +19,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "back.apps.BackConfig",
+    # "back.apps.BackConfig",
+    "back",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,6 +31,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'django.contrib.gis',
     "debug_toolbar",
+    "leaflet"
 ]
 
 MIDDLEWARE = [

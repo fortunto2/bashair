@@ -1,6 +1,7 @@
 # https://github.com/opendata-stuttgart/feinstaub-api/blob/master/feinstaub/sensors/models.py
 
 from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
@@ -27,7 +28,7 @@ class SensorType(TimeStampedModel):
 class Node(TimeStampedModel, LocationModel):  # ЭТО ДАТЧИК!
     uid = models.SlugField(unique=True)
     mac = models.CharField(null=True, blank=True, max_length=20)
-    name = models.CharField(null=True, blank=True, max_length=200)
+    name = models.CharField(null=True, blank=True, max_length=200, validators=[MinLengthValidator(7)])
     owner = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='node')
 
