@@ -1,29 +1,53 @@
 from django.contrib.gis import admin
-from django.contrib.gis.geos import Point
+from django import forms
+from leaflet.forms.widgets import LeafletWidget
 
-from back.models.node import *
+from back.admin.base import MemberCityAdminAbstract, MemberCityFilter, OSMGeoAdminCustom
+from back.models.node import Node
+from leaflet.admin import LeafletGeoAdmin
+
+
+class NodeAdminForm(forms.ModelForm):
+    class Meta:
+        model = Node
+        fields = '__all__'
+        widgets = {
+            'uid': forms.TextInput(attrs={'placeholder': 'esp8266-'}),
+            'city': forms.Select(),
+            # 'point': forms.HiddenInput()
+            'point': LeafletWidget(attrs={
+                'settings_overrides': {
+                    'DEFAULT_CENTER': (6.0, 45.0),
+                }
+            })
+        }
+
 
 #
-# class SensorInline(admin.TabularInline):
-#     model = Sensor
-#     max_num = 5
-#     extra = 0
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         if self.instance and not self.instance.pk:
+#             self.fields['uid'].initial = 'esp8266-'
+#
+#         if self.request:
+#             self.fields['owner'].initial = self.request.user
+#
+#         self.fields['name'].required = True
 
 
 @admin.register(Node)
-class NodeAdmin(admin.OSMGeoAdmin):
-    pnt = Point(55.9144493, 53.6248106, srid=4326)  # notice how it's first long then lat
-    pnt.transform(900913)
-    default_lon, default_lat = pnt.coords
-    default_zoom = 13
+class NodeAdmin(MemberCityAdminAbstract, LeafletGeoAdmin):
 
     search_fields = ['uid', 'description']
     list_display = ['uid', 'owner', 'name', 'city', 'created']
+    list_filter = [MemberCityFilter, 'owner', 'inactive', 'industry_in_area', 'oven_in_area', 'traffic_in_area']
+    # formfield_overrides = FORMFIELD_OVERRIDES
+    # form = NodeAdminForm
+    settings_overrides = {
+       'DEFAULT_CENTER': (55.0, 45.0),
+    }
 
-    list_filter = ['city', 'owner', 'inactive', 'industry_in_area', 'oven_in_area', 'traffic_in_area']
-    # inlines = [
-    #     SensorInline,
-    # ]
+
 
 
 # @admin.register(Sensor)

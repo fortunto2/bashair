@@ -9,9 +9,3 @@ from back.models.city import City
 # class CityAdmin(LeafletGeoAdmin):
 #     pass
 
-    #
-    # pnt = Point(55.9144493, 53.6248106, srid=4326)  # notice how it's first long then lat
-    # pnt.transform(900913)
-    # default_lon, default_lat = pnt.coords
-    # default_zoom = 13
-

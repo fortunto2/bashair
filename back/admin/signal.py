@@ -1,6 +1,9 @@
 from django.contrib.gis import admin
 from django.contrib.gis.geos import Point
+from leaflet.admin import LeafletGeoAdmin
 
+from back.admin import MemberCityAdminAbstract
+from back.admin.sensor import MemberCityFilter
 from back.models.signal import *
 
 
@@ -11,15 +14,11 @@ class SignalMediaInline(admin.TabularInline):
 
 
 @admin.register(Signal)
-class SignalAdmin(admin.OSMGeoAdmin):
-    pnt = Point(55.9144493, 53.6248106, srid=4326)  # notice how it's first long then lat
-    pnt.transform(900913)
-    default_lon, default_lat = pnt.coords
-    default_zoom = 13
+class SignalAdmin(LeafletGeoAdmin, MemberCityAdminAbstract):
 
     search_fields = ['text', 'point', 'owner']
     list_display = ['owner', 'text', 'point', 'status', 'city', 'created']
-    list_filter = ['status']
+    list_filter = [MemberCityFilter, 'status']
     inlines = [
         SignalMediaInline,
     ]
@@ -31,10 +30,10 @@ class SignalPropertiesAdmin(admin.ModelAdmin):
     list_display = ['name', 'group']
 
 
-@admin.register(SignalMedia)
-class SignalMediaAdmin(admin.ModelAdmin):
-    search_fields = ['signal']
-    list_display = ['signal', 'file']
+# @admin.register(SignalMedia)
+# class SignalMediaAdmin(admin.ModelAdmin):
+#     search_fields = ['signal']
+#     list_display = ['signal', 'file']
 
 
 @admin.register(Instance)

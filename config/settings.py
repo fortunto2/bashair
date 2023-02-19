@@ -135,3 +135,16 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
 ]
+
+LEAFLET_CONFIG = {
+    'PLUGINS': {
+        'geocoder': {
+            'css': ['https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css'],
+            'js': ['https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js'],
+        },
+        'locatecontrol': {
+            'css': ['https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css'],
+            'js': ['https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js'],
+        }
+    }
+}

@@ -6,6 +6,17 @@ var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
 
 L.control.locate().addTo(map);
+// make add geocoder control to left side of map
+var geocoder = L.Control.geocoder({
+    position: 'topright',
+    collapsed: false,
+    placeholder: 'Поиск по адресу',
+    errorMessage: 'Адрес не найден',
+    showResultIcons: true,
+    defaultMarkGeocode: true,
+    geocoder: L.Control.Geocoder.nominatim()
+}).addTo(map);
+
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: attribution}).addTo(map);
 // const markers = JSON.parse(document.getElementById('markers-data').textContent);
