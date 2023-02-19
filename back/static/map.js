@@ -250,11 +250,13 @@ function callback(response) {
 
     let gradientColors = {
         0.1: 'green',
-        0.3: 'lime',
-        0.5: 'yellow',
-        0.7: 'orange',
+        0.2: 'lime',
+        0.4: 'yellow',
+        0.6: 'orange',
         0.8: 'red'
     };
+
+    console.log(dataMarker)
 
     // Create the heatmap layer
     const heat = L.heatLayer(dataMarker, {
@@ -357,22 +359,22 @@ function getHeatIntensity(aqi_category, aqi) {
     let intensity = 0;
     switch (aqi_category) {
         case 'Good':
-            intensity = aqi * 0.01;
+            intensity = aqi / 200;
             break;
         case 'Moderate':
-            intensity = aqi * 0.01;
+            intensity = aqi / 200;
             break;
         case 'Unhealthy for Sensitive Groups':
-            intensity = aqi * 0.01;
+            intensity = aqi / 200;
             break;
         case 'Unhealthy':
-            intensity = aqi * 0.01;
+            intensity = aqi / 300;
             break;
         case 'Very Unhealthy':
-            intensity = aqi * 0.01;
+            intensity = aqi / 300;
             break;
         case 'Hazardous':
-            intensity = aqi * 0.01;
+            intensity = aqi / 400;
             break;
         default:
             intensity = 0;
