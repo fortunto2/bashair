@@ -33,7 +33,6 @@ function chooseRadius(magnitude) {
 }
 
 check = 0;
-var overlayMaps = {};
 
 // Define the different tile layers
 var light = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -106,7 +105,7 @@ var weekLayer = L.layerGroup();
 
 // Add the default layers to the map
 light.addTo(map);
-dayLayer.addTo(map);
+hourLayer.addTo(map);
 
 // Create a layer switch control and add it to the map
 var overlayMaps = {
@@ -121,54 +120,31 @@ var layerGroups = {
 };
 // L.control.layers(baseMaps, overlayMaps).addTo(map);
 
+// Load the second earthquake data when the user clicks on the layer switch control
+map.on('overlayadd', function (eventLayer) {
+    console.log("overlayadd", eventLayer.name)
+    if (eventLayer.name === 'Earthquake Week') {
+        console.log("Week")
+        addEarthquakeData(urls[2].url, "Week", overlayMaps, layerGroups)
+            .then(layer => {
+                weekLayer.clearLayers();
+                weekLayer.addLayer(layer);
+            });
+    } else if (eventLayer.name === 'Earthquake Day') {
+        console.log("Day")
+        addEarthquakeData(urls[1].url, "Day", overlayMaps, layerGroups)
+            .then(layer => {
+                dayLayer.clearLayers();
+                dayLayer.addLayer(layer);
+            });
+    }
+});
 
-// Load the earthquake data and add it to the corresponding layer groups
-Promise.all(
-    urls.map(url => addEarthquakeData(url.url, url.name, overlayMaps, layerGroups))
-)
-    .then(layers => {
-        // Load the second earthquake data when the user clicks on the layer switch control
-        map.on('overlayadd', function (eventLayer) {
-            if (eventLayer.name === 'Week') {
-                addEarthquakeData(urls[2].url, "Week", overlayMaps, layerGroups)
-                    .then(layer => {
-                        weekLayer.clearLayers();
-                        weekLayer.addLayer(layer);
-                    });
-            } else if (eventLayer.name === 'Day') {
-                addEarthquakeData(urls[1].url, "Day", overlayMaps, layerGroups)
-                    .then(layer => {
-                        dayLayer.clearLayers();
-                        dayLayer.addLayer(layer);
-                    });
-            }
-        });
-
-        // Load the tectonic plates data and add it to the map
-        // var plates = "/static/PB2002_steps.json";
-        // fetch(plates)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // Define the geojson layer for the tectonic plates data
-        //         var geojson = L.geoJson(data, {
-        //             // Style each feature
-        //             style: {
-        //                 "color": "#ff7800",
-        //                 "weight": 2,
-        //                 "opacity": 0.65
-        //             },
-        //         });
-        //
-        //         // Add the tectonic plates layer to the overlayMaps and layerGroups objects
-        //         overlayMaps["Fault"] = geojson;
-        //         layerGroups["Fault"].addLayer(geojson);
-        //
-        //         return geojson; // Return the geoJSON layer
-        //
-        //     })
-        //     .catch(error => console.log(error));
+// Load the first earthquake data on page load
+addEarthquakeData(urls[0].url, "Hour", overlayMaps, layerGroups)
+    .then(layer => {
+        hourLayer.addLayer(layer);
     });
-
 
 
 //2nd data
@@ -194,7 +170,7 @@ fetch(plates)
 //if both data loaded, add button control, othewise wait.
         overlayMaps.Fault_lines = geojson;
 
-       L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
+        L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
 
     });
 
