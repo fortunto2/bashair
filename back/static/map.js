@@ -2,11 +2,20 @@ const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">Op
 var url = "https://api.bashair.ru";
 // var url = "http://127.0.0.1:8001";
 
-var newMarker, markerLocation;
-var map = L.map('map').setView([53.62, 55.91], 11);
 
-// make add geocoder control to left side of map
-var geocoder = L.Control.geocoder({
+const map = L.map('map');
+
+map.on('moveend', function () {
+    const latlng = map.getCenter();
+    const zoom = map.getZoom();
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('location', latlng.lat.toFixed(2) + ',' + latlng.lng.toFixed(2));
+    urlParams.set('zoom', zoom);
+    window.history.replaceState({}, '', '?' + urlParams.toString());
+});
+
+
+const geocoder = L.Control.geocoder({
     position: 'topright',
     collapsed: false,
     placeholder: 'Поиск по адресу',
@@ -14,11 +23,46 @@ var geocoder = L.Control.geocoder({
     showResultIcons: true,
     defaultMarkGeocode: true,
     geocoder: L.Control.Geocoder.nominatim()
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+const cityParam = urlParams.get('city');
+const locationParam = urlParams.get('location');
+const zoomParam = urlParams.get('zoom');
+console.log(locationParam, zoomParam, cityParam)
+
+
+if (locationParam && zoomParam) {
+    const locationArray = locationParam.split(',');
+    const lat = Number(locationArray[0]);
+    const lng = Number(locationArray[1]);
+    map.setView([lat, lng], zoomParam);
+} else if (cityParam) {
+    const geocoder = L.Control.Geocoder.nominatim();
+    geocoder.geocode(cityParam, function (results) {
+        if (results.length > 0) {
+            map.setView(results[0].center, zoomParam || 11, {setHistory: true});
+        }
+    });
+} else {
+    map.setView([53.62, 55.91], 11);
+}
+
+map.addControl(geocoder);
+L.control.locate({
+    position: 'topright',
+    flyTo: false,
+    keepCurrentZoomLevel: true,
+    cacheLocation: true,
+    setView: 'untilPan',
+    strings: {
+        title: "Show me where I am"
+    },
+    locateOptions: {
+        maxZoom: 16
+    },
+    initialZoomLevel: zoomParam || 11
 }).addTo(map);
-
-
-L.control.locate({position: 'topright'}).addTo(map);
-
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: attribution}).addTo(map);
 // const markers = JSON.parse(document.getElementById('markers-data').textContent);
@@ -248,13 +292,13 @@ function callback(response) {
         }
     }).addTo(map);
 
-    map.on('zoomend', function() {
-    if (map.getZoom() < 8) {
-        markersLayer.remove();
-    } else {
-        markersLayer.addTo(map);
-    }
-});
+    map.on('zoomend', function () {
+        if (map.getZoom() < 8) {
+            markersLayer.remove();
+        } else {
+            markersLayer.addTo(map);
+        }
+    });
 
     newMarkerGroup = new L.LayerGroup();
     // map.on('click', addMarker);
@@ -394,7 +438,6 @@ function getHeatIntensity(aqi_category, aqi) {
     }
     return intensity;
 }
-
 
 
 $.ajax({

@@ -106,7 +106,7 @@ var weekLayer = L.layerGroup();
 
 // Add the default layers to the map
 light.addTo(map);
-hourLayer.addTo(map);
+dayLayer.addTo(map);
 
 // Create a layer switch control and add it to the map
 var overlayMaps = {
@@ -183,7 +183,7 @@ fetch(plates)
 // Style each feature
             style: {
                 "color": "#ff7800",
-                "weight": 2,
+                "weight": 4,
                 "opacity": 0.65
             },
         });
@@ -194,7 +194,7 @@ fetch(plates)
 //if both data loaded, add button control, othewise wait.
         overlayMaps.Fault_lines = geojson;
 
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
+       L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
 
     });
 
