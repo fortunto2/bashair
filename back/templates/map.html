@@ -23,9 +23,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css">
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"
             charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.4/openlocationcode.min.js"></script>
 
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster-src.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+
 
 </head>
 <body>
@@ -37,6 +39,7 @@
 <script src="{% static 'charts.js' %}"></script>
 <script src="{% static 'L.ArrowCircle.js' %}"></script>
 <script src="{% static 'map.js' %}"></script>
+<script src="{% static 'quake.js' %}"></script>
 
 {% if settings.DEBUG %}
 

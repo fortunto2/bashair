@@ -35,97 +35,141 @@ function chooseRadius(magnitude) {
 check = 0;
 var overlayMaps = {};
 
-
-// define the URLs for the earthquake data
-var url1 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson";
-var url2 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
-var url3 = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-
-function addEarthquakeData(url, name, overlayMaps) {
-  return fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      // define the geojson layer for the earthquake data
-      var geojson = L.geoJson(data, {
-        pointToLayer: function(feature, latlng) {
-          var radius = chooseRadius(feature.properties.mag);
-          var marker_color = chooseColor(feature.properties.mag);
-          return L.circleMarker(latlng, {
-              radius: radius,
-              color: marker_color,
-          });
-        },
-        onEachFeature: function(feature, layer) {
-          layer.bindPopup("<strong>" + feature.properties.place + "</strong><br>" +
-            new Date(feature.properties.time).toLocaleString() + "<br>" +
-            "Magnitude: " + feature.properties.mag);
-        },
-      });
-
-      // add the earthquake data layer to the overlayMaps object
-      overlayMaps[name] = geojson;
-
-      return geojson; // return the geoJSON layer
-    })
-    .catch(error => console.log(error));
-}
-
-Promise.all([
-    addEarthquakeData(url1, "Hour", overlayMaps),
-    addEarthquakeData(url2, "Day", overlayMaps),
-    addEarthquakeData(url3, "Week", overlayMaps),
-])
-  .then(layers => {
-    var hourLayer = L.layerGroup([layers[0]]);
-    var dayLayer = L.layerGroup([layers[1]]);
-    var weekLayer = L.layerGroup([layers[2]]);
-
-    // add the default layers to the map
-    light.addTo(map);
-    hourLayer.addTo(map);
-
-    // create a layer switch control and add it to the map
-    L.control.layers(baseMaps, {
-      "Earthquake Hour": hourLayer,
-      "Earthquake Day": dayLayer,
-      "Earthquake Week": weekLayer
-    }).addTo(map);
-
-    // load the second earthquake data when the user clicks on the layer switch control
-    map.on('overlayadd', function (eventLayer) {
-      if (eventLayer.name === 'Week') {
-        addEarthquakeData(url3, "Week", overlayMaps)
-          .then(layer => {
-            weekLayer.clearLayers();
-            weekLayer.addLayer(layer);
-          });
-      } else if (eventLayer.name === 'Day') {
-        addEarthquakeData(url2, "Day", overlayMaps)
-          .then(layer => {
-            dayLayer.clearLayers();
-            dayLayer.addLayer(layer);
-          });
-      }
-    });
-  });
-
-
-// define the different tile layers
+// Define the different tile layers
 var light = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-  maxZoom: 18,
+    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom: 18,
 });
 
 var satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-  attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
-  maxZoom: 18,
+    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
+    maxZoom: 18,
 });
 
-// add the different tile layers to the baseMaps object
+// Add the different tile layers to the baseMaps object
 var baseMaps = {
-  "Light Map": light,
-  "Satellite Map": satellite,
+    "Light Map": light,
+    "Satellite Map": satellite,
 };
+
+// Define the URLs for the earthquake data
+var urls = [
+    {
+        name: "Hour",
+        url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson",
+    },
+    {
+        name: "Day",
+        url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson",
+    },
+    {
+        name: "Week",
+        url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson",
+    },
+];
+
+// Define a function to add earthquake data to the map
+function addEarthquakeData(url, name, overlayMaps, layerGroups) {
+    return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // Define the geojson layer for the earthquake data
+            var geojson = L.geoJson(data, {
+                pointToLayer: function (feature, latlng) {
+                    var radius = chooseRadius(feature.properties.mag);
+                    var marker_color = chooseColor(feature.properties.mag);
+                    return L.circleMarker(latlng, {
+                        radius: radius,
+                        color: marker_color,
+                    });
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup("<strong>" + feature.properties.place + "</strong><br>" +
+                        new Date(feature.properties.time).toLocaleString() + "<br>" +
+                        "Magnitude: " + feature.properties.mag);
+                },
+            });
+
+            // Add the earthquake data layer to the overlayMaps and layerGroups objects
+            overlayMaps[name] = geojson;
+            layerGroups[name].addLayer(geojson);
+
+            return geojson; // Return the geoJSON layer
+        })
+        .catch(error => console.log(error));
+}
+
+// Create layer groups for the earthquake data layers
+var hourLayer = L.layerGroup();
+var dayLayer = L.layerGroup();
+var weekLayer = L.layerGroup();
+
+// Add the default layers to the map
+light.addTo(map);
+hourLayer.addTo(map);
+
+// Create a layer switch control and add it to the map
+var overlayMaps = {
+    "Earthquake Hour": hourLayer,
+    "Earthquake Day": dayLayer,
+    "Earthquake Week": weekLayer,
+};
+var layerGroups = {
+    "Hour": hourLayer,
+    "Day": dayLayer,
+    "Week": weekLayer,
+};
+// L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+
+// Load the earthquake data and add it to the corresponding layer groups
+Promise.all(
+    urls.map(url => addEarthquakeData(url.url, url.name, overlayMaps, layerGroups))
+)
+    .then(layers => {
+        // Load the second earthquake data when the user clicks on the layer switch control
+        map.on('overlayadd', function (eventLayer) {
+            if (eventLayer.name === 'Week') {
+                addEarthquakeData(urls[2].url, "Week", overlayMaps, layerGroups)
+                    .then(layer => {
+                        weekLayer.clearLayers();
+                        weekLayer.addLayer(layer);
+                    });
+            } else if (eventLayer.name === 'Day') {
+                addEarthquakeData(urls[1].url, "Day", overlayMaps, layerGroups)
+                    .then(layer => {
+                        dayLayer.clearLayers();
+                        dayLayer.addLayer(layer);
+                    });
+            }
+        });
+
+        // Load the tectonic plates data and add it to the map
+        // var plates = "/static/PB2002_steps.json";
+        // fetch(plates)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // Define the geojson layer for the tectonic plates data
+        //         var geojson = L.geoJson(data, {
+        //             // Style each feature
+        //             style: {
+        //                 "color": "#ff7800",
+        //                 "weight": 2,
+        //                 "opacity": 0.65
+        //             },
+        //         });
+        //
+        //         // Add the tectonic plates layer to the overlayMaps and layerGroups objects
+        //         overlayMaps["Fault"] = geojson;
+        //         layerGroups["Fault"].addLayer(geojson);
+        //
+        //         return geojson; // Return the geoJSON layer
+        //
+        //     })
+        //     .catch(error => console.log(error));
+    });
+
+
 
 //2nd data
 var plates = "/static/PB2002_steps.json";
@@ -153,6 +197,4 @@ fetch(plates)
         L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     });
-
-
 
