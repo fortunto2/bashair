@@ -5,7 +5,6 @@ var url = "https://api.bashair.ru";
 var newMarker, markerLocation;
 var map = L.map('map').setView([53.62, 55.91], 11);
 
-L.control.locate().addTo(map);
 // make add geocoder control to left side of map
 var geocoder = L.Control.geocoder({
     position: 'topright',
@@ -16,6 +15,9 @@ var geocoder = L.Control.geocoder({
     defaultMarkGeocode: true,
     geocoder: L.Control.Geocoder.nominatim()
 }).addTo(map);
+
+
+L.control.locate({position: 'topright'}).addTo(map);
 
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: attribution}).addTo(map);
