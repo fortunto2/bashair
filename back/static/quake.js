@@ -36,12 +36,10 @@ check = 0;
 
 // Define the different tile layers
 var light = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
     maxZoom: 18,
 });
 
 var satellite = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-    attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors',
     maxZoom: 18,
 });
 
@@ -102,6 +100,7 @@ function addEarthquakeData(url, name, overlayMaps, layerGroups) {
 var hourLayer = L.layerGroup();
 var dayLayer = L.layerGroup();
 var weekLayer = L.layerGroup();
+var faultLayer = L.layerGroup();
 
 // Add the default layers to the map
 light.addTo(map);
@@ -112,26 +111,25 @@ var overlayMaps = {
     "Earthquake Hour": hourLayer,
     "Earthquake Day": dayLayer,
     "Earthquake Week": weekLayer,
+    "Fault lines": faultLayer,
 };
 var layerGroups = {
     "Hour": hourLayer,
     "Day": dayLayer,
     "Week": weekLayer,
+    "Fault lines": faultLayer,
 };
 // L.control.layers(baseMaps, overlayMaps).addTo(map);
 
 // Load the second earthquake data when the user clicks on the layer switch control
 map.on('overlayadd', function (eventLayer) {
-    console.log("overlayadd", eventLayer.name)
     if (eventLayer.name === 'Earthquake Week') {
-        console.log("Week")
         addEarthquakeData(urls[2].url, "Week", overlayMaps, layerGroups)
             .then(layer => {
                 weekLayer.clearLayers();
                 weekLayer.addLayer(layer);
             });
     } else if (eventLayer.name === 'Earthquake Day') {
-        console.log("Day")
         addEarthquakeData(urls[1].url, "Day", overlayMaps, layerGroups)
             .then(layer => {
                 dayLayer.clearLayers();
@@ -147,30 +145,34 @@ addEarthquakeData(urls[0].url, "Hour", overlayMaps, layerGroups)
     });
 
 
-//2nd data
-var plates = "/static/PB2002_steps.json";
+map.on('overlayadd', function (eventLayer) {
+    if (eventLayer.name === 'Fault lines') {
+        fetch('/static/PB2002_steps.json')
+            .then(response => response.json())
+            .then(data => {
+                var geojson = L.geoJson(data, {
+                    style: {
+                        color: '#ff7800',
+                        weight: 2,
+                        opacity: 0.65
+                    }
+                });
 
-//load tetonic plates data
-fetch(plates)
-    .then(response => response.json())
-    .then(data => {
-//geojson layers
-        geojson = L.geoJson(data, {
-// Style each feature
-            style: {
-                "color": "#ff7800",
-                "weight": 4,
-                "opacity": 0.65
-            },
-        });
+                overlayMaps['Fault lines'] = geojson;
+                layerGroups['Fault lines'].addLayer(geojson);
 
-// add default layers to map
-        geojson.addTo(map);
+            })
+            .catch(error => console.log(error));
+    }
+});
 
-//if both data loaded, add button control, othewise wait.
-        overlayMaps.Fault_lines = geojson;
 
-        L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
+L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);
 
-    });
 
+// // Add the tectonic plates layer to the overlayMaps and layerGroups objects
+// overlayMaps["Fault Lines"] = geojsonFault;
+// layerGroups["Fault Lines"].addLayer(geojsonFault);
+//
+// // Add the layer control to the map
+// L.control.layers(baseMaps, overlayMaps, {position: 'topleft'}).addTo(map);

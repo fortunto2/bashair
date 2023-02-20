@@ -9,7 +9,7 @@ map.on('moveend', function () {
     const latlng = map.getCenter();
     const zoom = map.getZoom();
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('location', latlng.lat.toFixed(2) + ',' + latlng.lng.toFixed(2));
+    urlParams.set('location', latlng.lat.toFixed(4) + ',' + latlng.lng.toFixed(4));
     urlParams.set('zoom', zoom);
     window.history.replaceState({}, '', '?' + urlParams.toString());
 });
