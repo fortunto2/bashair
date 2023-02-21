@@ -269,6 +269,8 @@ function callback(response) {
 
             if (feature.properties && feature.properties.pm25) {
 
+                arrow_deg = feature.properties.wind.deg - 180;
+
                 marker_item = L.marker.arrowCircle(latlng, {
                     iconOptions: {rotation: arrow_deg, color: node_color, size: 60},
                 }).bindPopup(`AQI: ${feature.properties.aqi} [${feature.properties.aqi_category}]`);
