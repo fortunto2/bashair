@@ -55,6 +55,7 @@ def create_signal(signal: SignalCreate, user: User = Depends(get_current_active_
             raise HTTPException(status_code=400, detail=str(e))
     return signal
 
+
 @router.get('/{signal_id}', response_model=SignalGet)
 def get_signal(signal_id: int):
     """

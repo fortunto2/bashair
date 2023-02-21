@@ -113,5 +113,9 @@ def login_for_anonymous_user(auth: AuthJWT = Depends()):
         )
     access_token = auth.create_access_token(subject=user.username, expires_time=None)
     refresh_token = auth.create_refresh_token(subject=user.username, expires_time=None)
+    # Set the JWT cookies in the response
+    # auth.set_access_cookies(access_token)
+    # auth.set_refresh_cookies(refresh_token)
+
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "Bearer"}
 
