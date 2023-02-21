@@ -13,6 +13,8 @@ from fastapi_cache.backends.inmemory import InMemoryBackend
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
+from config import settings
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 application = get_asgi_application()
 
@@ -32,7 +34,7 @@ fastapp.add_middleware(
     allow_headers=["*"],
 )
 
-fastapp.add_middleware(SessionMiddleware, secret_key="c495ca086b6cc8b48d311706e1f725d89ecb9ba7b97593ad")
+fastapp.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 
 @fastapp.middleware("http")
 async def add_process_time_header(request, call_next):
