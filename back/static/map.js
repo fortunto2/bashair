@@ -1,6 +1,6 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 2</a> contributors'
-var url = "https://api.bashair.ru";
-// var url = "http://127.0.0.1:8001";
+// var url = "https://api.bashair.ru";
+var url = "http://127.0.0.1:8001";
 
 
 const map = L.map('map');
@@ -58,10 +58,6 @@ L.control.locate({
     strings: {
         title: "Show me where I am"
     },
-    locateOptions: {
-        maxZoom: 16
-    },
-    initialZoomLevel: zoomParam || 11
 }).addTo(map);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: attribution}).addTo(map);
@@ -184,7 +180,7 @@ function anonymousLogin() {
         url: url + "/auth/anonymous/login",
         method: "POST",
         success: function (data) {
-            const token = data.token;
+            const token = data.access_token;
             localStorage.setItem("token", token);
             console.info('success anonymous login')
         },
@@ -198,18 +194,7 @@ let token = localStorage.getItem("token");
 
 $(document).ready(function () {
     if (!token) {
-        $.ajax({
-            url: url + "/auth/anonymous/login",
-            method: "POST",
-            success: function (data) {
-                token = data.access_token;
-                localStorage.setItem("token", token);
-                console.log('success anonymous login', token)
-            },
-            error: function (error) {
-                console.error("An error occurred while logging in anonymously: ", error);
-            }
-        });
+        anonymousLogin();
     }
 });
 
@@ -246,6 +231,23 @@ function sendMarkerData(lat, lng, text, selectedProperties) {
         },
         error: function (response) {
             console.error(response);
+            if (response.status === 422) {
+                console.error("Invalid data sent to server");
+               $.ajax({
+                    url: url + "/auth/anonymous/login",
+                    method: "POST",
+                    success: function (data) {
+                        token = data.access_token;
+                        localStorage.setItem("token", token);
+                        console.log('success anonymous login', token)
+                        // Retry sending signal with new access token
+                        sendMarkerData(lat, lng, text, selectedProperties);
+                    },
+                    error: function (error) {
+                        console.error("An error occurred while logging in anonymously: ", error);
+                    }
+                });
+            }
         }
     });
 }
