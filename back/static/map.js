@@ -1,6 +1,6 @@
 const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap 2</a> contributors'
-// var url = "https://api.bashair.ru";
-var url = "http://127.0.0.1:8001";
+var url = "https://api.bashair.ru";
+// var url = "http://127.0.0.1:8001";
 
 
 const map = L.map('map');
