@@ -116,3 +116,16 @@ Prel = Pabs + h/8.3
 Prel is relative pressure (recalculating to the sea level) [hPa]
 Pabs is absolute pressure at the messurement place/site [hPa]
 h is altitude (height above sea level) [m]
+
+
+## MAP
+
+https://www.paulox.net/2020/12/08/maps-with-django-part-1-geodjango-spatialite-and-leaflet/
+https://realpython.com/location-based-app-with-geodjango-tutorial/
+
+
+## backup 
+python manage.py dumpdata back> backup/fixtures/django.json
+python manage.py loaddata backup/fixtures/django.json
+https://github.com/developmentseed/geojson-pydantic
+https://django-map-widgets.readthedocs.io/en/latest/widgets/point_field_map_widgets.html

@@ -14,6 +14,11 @@ class NotFound(BaseHTTPException):
     detail = 'Not found'
 
 
+class NoData(BaseHTTPException):
+    status_code = status.HTTP_404_NOT_FOUND
+    detail = 'No data'
+
+
 class PermissionDenied(BaseHTTPException):
     status_code = status.HTTP_403_FORBIDDEN
     detail = 'Forbidden'

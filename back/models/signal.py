@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
+from back.models.base import LocationModel
 from back.models.instance import Instance
 
 from back.models.city import City
@@ -24,14 +25,15 @@ class SignalProperties(models.Model):
         default='smells',
     )
 
+    def __str__(self):
+        return f"{self.name} ({self.group})"
 
-class Signal(TimeStampedModel):
+
+class Signal(TimeStampedModel, LocationModel):
     text = models.TextField()
     properties = models.ManyToManyField(SignalProperties, related_name='reports')
     owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='reports')
-    location = models.TextField(null=True, blank=True)
-    latitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=14, decimal_places=11, null=True, blank=True)
+
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, related_name='signal')
 
     time_of_incident = models.DateTimeField(auto_now=True)
@@ -46,6 +48,9 @@ class Signal(TimeStampedModel):
         choices=SIGNAL_STATUS,
         default='sent',
     )
+
+    def __str__(self):
+        return f"{self.text} ({self.time_of_incident.strftime('%Y-%m-%d %H:%M:%S')})"
 
 
 class SignalMedia(TimeStampedModel):

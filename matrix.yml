@@ -1,0 +1,41 @@
+# This compose file is compatible with Compose itself, it might need some
+# adjustments to run properly with stack.
+
+version: '3'
+services:
+  synapse:
+    container_name: synapse
+    hostname: matrix.bashair.ru
+    image: docker.io/matrixdotorg/synapse:latest
+    restart: unless-stopped
+    environment:
+      - SYNAPSE_SERVER_NAME=matrix.bashair.ru
+      - SYNAPSE_REPORT_STATS=yes
+      - SYNAPSE_NO_TLS=1
+      #- SYNAPSE_ENABLE_REGISTRATION=no
+      #- SYNAPSE_CONFIG_PATH=/config
+      # - SYNAPSE_LOG_LEVEL=DEBUG
+      - SYNAPSE_REGISTRATION_SHARED_SECRET=${REG_SHARED_SECRET}
+      - POSTGRES_DB=synapse
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - synapse-data:/data
+    depends_on:
+      - db
+    # In order to expose Synapse, remove one of the following, you might for
+    # instance expose the TLS port directly:
+    # ports:
+    #   - 8448:8448/tcp
+    networks:
+      - web
+      - backend
+
+volumes:
+  synapse-data:
+
+networks:
+  default:
+    external:
+      name: bashair_default

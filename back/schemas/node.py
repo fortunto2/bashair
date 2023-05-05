@@ -1,6 +1,12 @@
-from typing import Optional
+from datetime import datetime
+from typing import Optional, List, Dict
 
+from django.contrib.gis.geos import Point
 from pydantic import BaseModel, validator
+
+from back.schemas.location import LocationBase
+from back.schemas.sensors import get_aqi_category
+from geojson_pydantic import Point as PointJson
 
 
 class SensorTypeBase(BaseModel):
@@ -55,23 +61,58 @@ class NodePointWindGet(BaseModel):
         orm_mode = True
 
 
-class NodePointGet(BaseModel):
+class NodeMetricsBase(BaseModel):
+    pm25: int
+    pm10: int
+    temperature: int
+    pressure: int
+    humidity: int
+    aqi: int
+    aqi_category: Optional[str]
+
+    def get_aqi_category(self):
+        return get_aqi_category(self.aqi)
+
+
+class NodeMetrics(BaseModel):
+    pm25: int
+    pm10: int
+    temperature: Optional[int]
+    pressure: Optional[int]
+    humidity: Optional[int]
+    aqi: Optional[int]
+    aqi_category: Optional[str]
+    wind: Optional[NodePointWindGet]
+    time: Optional[datetime]
+
+    def get_aqi_category(self):
+        return get_aqi_category(self.aqi)
+
+
+class NodePointGet(NodeMetrics, LocationBase):
     id: int
     uid: str
     name: str
     description: Optional[str]
-    description: Optional[str]
-    location_id: int
+
     city: Optional[str]
 
-    pm25: Optional[float]
-    wind: Optional[NodePointWindGet]
-    location: SensorLocationPointGet
-
-    # @validator(pre=True)
-    # def get_city(cls, values):
-    #     if cls.fi
-    #     return values
+    created: Optional[datetime]
+    modified: Optional[datetime]
 
     class Config:
         orm_mode = True
+
+
+class NodePointGeo(NodePointGet):
+    pm25: Optional[int]
+    pm10: Optional[int]
+
+
+class ListNodes(BaseModel):
+    __root__: List[NodePointGet]
+
+
+class ListNodeMetrics(BaseModel):
+    __root__: List[NodeMetrics]
+

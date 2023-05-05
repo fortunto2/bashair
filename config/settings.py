@@ -5,7 +5,6 @@ from config.envs import envs
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-
 # Quick-start development envs - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -17,11 +16,11 @@ DEBUG = envs.DEBUG
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    "back.apps.BackConfig",
+    # "back.apps.BackConfig",
+    "back",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -30,6 +29,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'cities_light',
     'phonenumber_field',
+    'django.contrib.gis',
+    "debug_toolbar",
+    "leaflet"
 ]
 
 MIDDLEWARE = [
@@ -41,6 +43,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -63,7 +67,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/envs/#databases
 
@@ -71,7 +74,8 @@ DEFAULT_CHARSET = 'utf8'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': envs.POSTGRES_DB,
         'USER': envs.POSTGRES_USER,
         'PASSWORD': envs.POSTGRES_PASSWORD,
@@ -95,7 +99,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -109,7 +112,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -121,3 +123,28 @@ CITIES_LIGHT_APP_NAME = 'back'
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'RU'
 PHONENUMBER_DEFAULT_FORMAT = 'NATIONAL'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# CSRF_TRUSTED_ORIGINS
+
+CSRF_TRUSTED_ORIGINS = ['https://api.bashair.ru', 'https://map.bashair.ru']
+
+# for debug toolbar
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "localhost",
+]
+
+LEAFLET_CONFIG = {
+    'PLUGINS': {
+        'geocoder': {
+            'css': ['https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css'],
+            'js': ['https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js'],
+        },
+        'locatecontrol': {
+            'css': ['https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css'],
+            'js': ['https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js'],
+        }
+    }
+}

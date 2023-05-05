@@ -15,7 +15,7 @@ class AuthJWTSettings(BaseModel):
     authjwt_secret_key: str = settings.SECRET_KEY
     authjwt_access_token_expires: int = envs.ACCESS_TOKEN_EXPIRE_MINUTES * 60
     authjwt_refresh_token_expires: int = envs.REFRESH_TOKEN_EXPIRE_MINUTES * 60
-    authjwt_denylist_enabled: bool = True
+    authjwt_denylist_enabled: bool = False
     authjwt_denylist_token_checks: set = {"access", "refresh"}
 
 

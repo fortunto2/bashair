@@ -1,7 +1,7 @@
 from typing import Optional, Union, List
 
 import aqi
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 AQI_CATEGORIES = {
     (-1, 50): "Good",
@@ -21,9 +21,10 @@ def get_aqi(pm10, pm25):
 
 
 def get_aqi_category(aqi_value):
-    for limits, category in AQI_CATEGORIES.items():
-        if aqi_value > limits[0] and aqi_value <= limits[1]:
-            return category
+    if aqi_value:
+        for limits, category in AQI_CATEGORIES.items():
+            if aqi_value > limits[0] and aqi_value <= limits[1]:
+                return category
 
 
 class SensorMeasurement(BaseModel):
@@ -32,23 +33,33 @@ class SensorMeasurement(BaseModel):
     """
     pm25: float
     pm10: float
-    temperature: float
-    pressure: float
-    humidity: float
+    temperature: Optional[float]
+    pressure: Optional[float]
+    humidity: Optional[float]
     aqi: Optional[float]
-    aqi_category: Optional[str]
+    # aqi_category: Optional[str]
 
     samples: int
     min_micro: int
     max_micro: int
     signal: float
 
+    @validator('temperature', pre=True)
+    def get_properties(cls, v):
+        if not v: return v
+
+        if v < -40:
+            # иногда возвращают -150 градусов почему-то
+            return None
+        elif v > 50:
+            return 50
+
+        return v
+
     @property
     def get_aqi_value(self):
         if self.pm25 and self.pm10:
-            self.aqi = float(
-                aqi.to_aqi([(aqi.POLLUTANT_PM10, self.pm10), (aqi.POLLUTANT_PM25, self.pm25)])
-            )
+            self.aqi = get_aqi(pm10=self.pm10, pm25=self.pm25)
             return self.aqi
 
     @property
@@ -70,6 +81,7 @@ class SensorData(BaseModel):
     software_version: str
     esp8266id: Optional[str]
     rpiid: Optional[str]
+    test: Optional[bool] = False # для тестов
 
     @property
     def node_tag(self):

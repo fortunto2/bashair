@@ -55,17 +55,23 @@ rows = soup.findAll('td')
 nmu = 0
 text = ''
 
+# text = "В ближайшие сутки сохраняются метеоусловия, неблагоприятные для рассеивания вредных примесей в атмосферном воздухе"
+# text = "В ближайшие сутки ожидаются метеоусловия, неблагоприятные для рассеивания вредных примесей в атмосферном воздухе"
+
 for row in rows:
     text = row.get_text()
     if 'сутки' in text:
         print(text)
         if 'накоплен' in text and 'незначительн' in text:
             nmu = 1
-        elif 'резвычайн' in text:
-            nmu = 3
+        elif 'ожидаются' in text and 'неблагоприятн' in text:
+            nmu = 1
         elif 'повышенн' in text:
             nmu = 2
-
+        elif 'сохраняются' in text and 'неблагоприятн' in text:
+            nmu = 2
+        elif 'чрезвычайн' in text:
+            nmu = 3
 print(nmu)
 
 # city = City.objects.get(name='Стерлитамак')

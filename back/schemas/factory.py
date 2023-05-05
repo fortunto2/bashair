@@ -1,26 +1,28 @@
-from typing import Optional, List
+import json
+from typing import Optional, List, Dict
 
-from pydantic import BaseModel, AnyUrl, EmailStr, validator
+# from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Point
+from pydantic import BaseModel, AnyUrl, validator
+from geojson_pydantic import Feature, FeatureCollection, MultiPolygon
+
+from back.schemas.location import LocationBase
 
 
-class FactoryBase(BaseModel):
+class FactoryBase(LocationBase):
     name: str
     description: Optional[str]
     phone: Optional[str]
     email: Optional[str]
-    address: Optional[str]
     website: Optional[AnyUrl]
-
-    city_id: int
-    location: Optional[str]
-    latitude: Optional[float]
-    longitude: Optional[float]
 
     factory_type: Optional[str]
     danger_score: Optional[float]
 
     photo: Optional[str]
     icon: Optional[str]
+
+    polygon: MultiPolygon
 
     @validator("phone", pre=True)
     def phone_validation(cls, v):
@@ -33,6 +35,14 @@ class FactoryBase(BaseModel):
     @validator("icon", pre=True)
     def icon_validation(cls, v):
         return str(v)
+
+    @validator("polygon", pre=True)
+    def point_validation(cls, v: Point):
+        try:
+            return json.loads(v.json)
+        except Exception as e:
+            print(e)
+        return v
 
 
 class FactoryGet(FactoryBase):

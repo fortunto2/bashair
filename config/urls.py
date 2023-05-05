@@ -14,6 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
-urlpatterns = [path("admin/", admin.site.urls)]
+from back.views import MapView
+# add GeoMapView to urlpatterns
+from back.views import GeoMapView
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", MapView.as_view()),
+    path("geo", GeoMapView.as_view()),
+    path('__debug__/', include('debug_toolbar.urls')),
+
+]

@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Map.BashAir.ru - Карта гражданского мониторинга воздуха</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div id="main">
+
+{#    iterate markers as table#}
+
+    {% for marker in markers %}
+        <div class="marker">
+            <h2>{{ marker.id }}</h2>
+            <p>{{ marker.properties }}</p>
+        </div>
+    {% endfor %}
+
+
+</div>
+
+</body>
+</html>
